@@ -18,21 +18,8 @@ import { BiChevronDown } from "react-icons/bi";
 import { useContext } from "react";
 import { AppContext } from "@/pages/_app";
 
-type polorProps = {
-  id: number;
-  name: string;
-};
-
-export const polors = [
-  {
-    id: 1,
-    name: "ほくと",
-  },
-  {
-    id: 2,
-    name: "らら",
-  },
-];
+import { polors } from "@/data/sample";
+import { polorProps } from "./type";
 
 type DialogProps = {
   open: boolean;
@@ -87,7 +74,7 @@ const Header = () => {
   };
 
   return (
-    <div className="h-fit p-4 w-full fixed top-0 flex justify-between">
+    <div className="h-fit p-4 w-full fixed top-0 flex justify-between bg-white z-50">
       <div className="ml-[80px] text-3xl font-bold">カレンダー</div>
       <MUIDialog
         selectedValue={selectedValue}
@@ -95,11 +82,12 @@ const Header = () => {
         onClose={handleClose}
       />
       <Button
-        className=" rounded cursor-pointer text-black bg-white px-6 py-2"
+        className=" rounded cursor-pointer bg-backGround  text-black  px-6 py-2 "
         onClick={handleClickOpen}
-        endIcon={<BiChevronDown />}
+        variant="text"
       >
         {selectedValue.name}
+        <BiChevronDown />
       </Button>
     </div>
   );

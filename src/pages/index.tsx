@@ -3,7 +3,7 @@ import type { NextPageWithLayout } from "next";
 
 const Calender: NextPageWithLayout = () => {
   return (
-    <div className="h-screen  ml-[80px] bg-[#F8F9FF]">
+    <div className="pl-[80px] bg-backGround  pt-[75px] min-h-screen ">
       <CalenderContent />
     </div>
   );

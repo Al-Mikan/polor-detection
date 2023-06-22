@@ -1,135 +1,81 @@
 import React from "react";
-import { DateCalendar } from "@mui/x-date-pickers";
+import { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
-import {
-  DataGrid,
-  GridRowsProp,
-  GridColDef,
-  GridActionsCellItem,
-} from "@mui/x-data-grid";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { Card } from "@mui/material";
-
-import DayGrid from "./DayGrid";
-import { useContext, useEffect } from "react";
 import { AppContext } from "@/pages/_app";
 
-export type TimeDataProps = {
-  startTime: Date;
-  endTime: Date;
-};
+import DayGrid from "./DayGrid";
+import RecordCard from "./RecordCard";
+import EventCard from "./EventCard";
+import AddModal from "./AddModal";
 
-const timeData: TimeDataProps[] = [
-  {
-    startTime: new Date("2023-06-01T09:00:00"),
-    endTime: new Date("2023-06-01T12:00:00"),
-  },
-  {
-    startTime: new Date("2023-06-01T15:00:10"),
-    endTime: new Date("2023-06-01T17:10:00"),
-  },
-  {
-    startTime: new Date("2023-06-01T18:00:00"),
-    endTime: new Date("2023-06-01T18:15:00"),
-  },
-];
-const rows: GridRowsProp = [
-  {
-    id: 1,
-    col1: "9:00",
-    col2: "sakana",
-    col3: "100g",
-    col4: "あまり食べなかった",
-  },
-  {
-    id: 2,
-    col1: "16:00",
-    col2: "ninzin",
-    col3: "100g",
-    col4: "",
-  },
-  {
-    id: 3,
-    col1: "MUI",
-    col2: "sample",
-    col3: "",
-    col4: "sample",
-  },
-];
-const columns: GridColDef[] = [
-  {
-    field: "col1",
-    headerName: "時刻",
-    width: 100,
-    editable: true,
-    headerClassName: "bg-gray-200",
-  },
-  {
-    field: "col2",
-    headerName: "食べ物",
-    width: 100,
-    editable: true,
-    headerClassName: "bg-gray-100",
-  },
-  {
-    field: "col3",
-    headerName: "重さ",
-    width: 100,
-    editable: true,
-    headerClassName: "bg-gray-100",
-  },
-  {
-    field: "col4",
-    headerName: "メモ",
-    flex: 1,
-    editable: true,
-    headerClassName: "bg-gray-100",
-  },
-  {
-    field: "actions",
-    type: "actions",
-    headerClassName: "bg-gray-100",
-    getActions: () => [
-      <GridActionsCellItem icon={<EditIcon />} label="Edit" key={"edit"} />,
-      <GridActionsCellItem
-        icon={<DeleteIcon />}
-        label="Delete"
-        key={"delete"}
-      />,
-    ],
-  },
-];
+import { DateCalendar } from "@mui/x-date-pickers";
+import { Button } from "@mui/material";
+
+import {
+  timeData,
+  mealRows,
+  temperatureRows,
+  enrichments,
+  events,
+} from "@/data/sample";
+import { TimeDataProps } from "./type";
+
+const mealHead = ["時刻", "食べ物", "重さ(g)"];
+
+const temperatureHead = ["時刻", "気温(℃)"];
+
+//idと日付からデータを取得
+const getTimeDataByIdAndDate = (
+  id: number,
+  date: Date,
+  timeData: TimeDataProps[]
+): TimeDataProps[] | null => {
+  const targetData = timeData.filter(
+    (data) =>
+      data.id === id &&
+      data.startTime.getFullYear() === date.getFullYear() &&
+      data.startTime.getMonth() === date.getMonth() &&
+      data.startTime.getDate() === date.getDate()
+  );
+  return targetData ? targetData : null;
+};
+//合計値を計算
+const calculateTotalTime = (timeData: TimeDataProps[] | null): number[] => {
+  let totalMilliseconds = 0;
+  if (timeData === null) return [0, 0, 0];
+
+  // 各時間帯の差分を加算
+  for (const time of timeData) {
+    const diffInMilliseconds =
+      time.endTime.getTime() - time.startTime.getTime();
+    totalMilliseconds += diffInMilliseconds;
+  }
+  // 総計を時分秒に変換
+  const totalSeconds = Math.floor(totalMilliseconds / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return [hours, minutes, seconds];
+};
 
 const CalenderContent = () => {
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(dayjs());
   const { id, setId } = useContext(AppContext);
 
-  const [totalTimeAry, setTotalTimeAry] = React.useState<number[]>([0, 0, 0]);
-
+  const [totalTimeAry, setTotalTimeAry] = useState<number[]>([0, 0, 0]);
+  const [isAddmodalOpen, setisAddmodalOpen] = useState<boolean>(false);
+  const [targetData, setTargetData] = useState<TimeDataProps[] | null>(null);
   // 時間の総計を計算する関数
-  const calculateTotalTime = (timeData: TimeDataProps[]): number[] => {
-    let totalMilliseconds = 0;
 
-    // 各時間帯の差分を加算
-    for (const time of timeData) {
-      const diffInMilliseconds =
-        time.endTime.getTime() - time.startTime.getTime();
-      totalMilliseconds += diffInMilliseconds;
-    }
-    // 総計を時分秒に変換
-    const totalSeconds = Math.floor(totalMilliseconds / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    return [hours, minutes, seconds];
-  };
   useEffect(() => {
-    setTotalTimeAry(calculateTotalTime(timeData));
-  }, []);
+    if (date === null) return;
+    const targetData = getTimeDataByIdAndDate(id, date?.toDate(), timeData);
+    setTargetData(targetData);
+    setTotalTimeAry(calculateTotalTime(targetData));
+  }, [id, date]);
 
   return (
-    <div className="h-screen  p-8 mt-[73px]">
+    <div className="p-8">
       {id}
       <div className="flex items-start justify-start">
         <div className=" w-[256px] h-[256px]">
@@ -140,28 +86,54 @@ const CalenderContent = () => {
           />
         </div>
         <div className="ml-[40px] w-full">
-          <p className="text-3xl">{date?.format("YYYY年MM月DD日")}</p>
+          <div className="flex justify-between">
+            <p className="text-3xl">{date?.format("YYYY年MM月DD日")}</p>
+            <Button>動画を確認する</Button>
+          </div>
+
           <div className="flex items-end justify-between mt-9 mb-3">
             <p>
-              常同行動検知時間{" "}
+              常同行動検知時間
               <span className="text-3xl font-bold">
                 {totalTimeAry[0]}時間{totalTimeAry[1]}分{totalTimeAry[2]}秒
               </span>
             </p>
-            <p>最終検知時刻 2023-6-8 12:00</p>
+            <p>最終集計時刻 2023-6-8 12:00</p>
           </div>
-          <DayGrid timeData={timeData} />
+          <DayGrid timeData={targetData} />
         </div>
       </div>
       {/* <div className="border-2 w-fit px-6 py-2 cursor-pointer">＋追加</div> */}
-      <p className="text-xl font-bold py-6">記録</p>
-      <div>
-        <Card className="w-3/4" variant="outlined">
-          <div className="px-8 py-4">
-            <p className="text-xl  font-bold">ごはん</p>
-            <DataGrid rows={rows} columns={columns} sx={{ m: 2 }} />
-          </div>
-        </Card>
+      <div className=" mt-10 rounded p-6">
+        <div className="flex justify-between h-fit align-bottom mb-6">
+          <p className="text-2xl font-bold ">本日の記録</p>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setisAddmodalOpen(true);
+            }}
+            className="px-8 font-bold text-lg"
+            style={{ backgroundColor: "#2B7BF4" }}
+          >
+            ＋追加
+          </Button>
+          <AddModal
+            open={isAddmodalOpen}
+            handleClose={() => {
+              setisAddmodalOpen(false);
+            }}
+          />
+        </div>
+        <div className=" flex flex-wrap justify-between gap-6">
+          <RecordCard
+            heads={temperatureHead}
+            rows={temperatureRows}
+            title="気温"
+          />
+          <RecordCard heads={mealHead} rows={mealRows} title="食事" />
+          <EventCard title="エンリッチメント" content={enrichments} />
+          <EventCard title="イベント" content={events} />
+        </div>
       </div>
     </div>
   );

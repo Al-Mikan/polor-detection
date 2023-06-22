@@ -2,7 +2,7 @@ import Calender from "@/components/Calender";
 import type { NextPageWithLayout } from "next";
 import Layout from "@/layout/Layout";
 const Home: NextPageWithLayout = () => {
-  return <div className="h-screen w-screen">Graoh</div>;
+  return <div className="h-screen w-screen">Graph</div>;
 };
 
 Home.getLayout = (page) => <Layout>{page}</Layout>;

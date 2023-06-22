@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
 
 import * as React from "react";
-import { useState } from "react";
-import { TimeDataProps } from "./Calender";
+import { Tooltip } from "@mui/material";
+import { TimeDataProps } from "@/components/type";
 
 type DayGridProps = {
-  timeData: TimeDataProps[];
+  timeData: TimeDataProps[] | null;
 };
 
 const DayGrid = ({ timeData }: DayGridProps) => {
@@ -53,11 +53,13 @@ const DayGrid = ({ timeData }: DayGridProps) => {
           <Box sx={{ ...commonStyles, border: 1, borderLeft: 0 }}></Box>
           <Box sx={{ ...commonStyles, border: 1, borderLeft: 0 }}></Box>
           <Box sx={{ ...commonStyles, border: 1, borderLeft: 0 }}></Box>
-          {timeData.map((time, index) => {
+          {timeData?.map((time, index) => {
             const startTime = time.startTime.getHours();
             const startMinutes = time.startTime.getMinutes();
+            const startSeconds = time.startTime.getSeconds();
             const endTime = time.endTime.getHours();
             const endMinutes = time.endTime.getMinutes();
+            const endSeconds = time.endTime.getSeconds();
             const width =
               (((endTime - startTime) * 60 + endMinutes - startMinutes) /
                 timeWidth) *
@@ -65,20 +67,34 @@ const DayGrid = ({ timeData }: DayGridProps) => {
             const oneMinuteWidth = 100 / timeWidth;
             const startPosition =
               ((startTime - 5) * 60 + startMinutes) * oneMinuteWidth;
-            console.log(startTime, startMinutes);
-            console.log("start", startPosition);
+            const timeStr =
+              startTime.toString().padStart(2, "0") +
+              ":" +
+              startMinutes.toString().padStart(2, "0") +
+              ":" +
+              startSeconds.toString().padStart(2, "0") +
+              " - " +
+              endTime.toString().padStart(2, "0") +
+              ":" +
+              endMinutes.toString().padStart(2, "0") +
+              ":" +
+              endSeconds.toString().padStart(2, "0");
             return (
-              <Box
-                key={index}
-                sx={{
-                  position: "absolute",
-                  backgroundColor: "orange",
-                  width: `${width}%`,
-                  height: "120px",
-                  left: `${startPosition}%`,
-                  top: "0px",
-                }}
-              ></Box>
+              <>
+                <Tooltip title={timeStr}>
+                  <Box
+                    key={index}
+                    sx={{
+                      position: "absolute",
+                      backgroundColor: "#2B7BF4",
+                      width: `${width}%`,
+                      height: "120px",
+                      left: `${startPosition}%`,
+                      top: "0px",
+                    }}
+                  ></Box>
+                </Tooltip>
+              </>
             );
           })}
         </div>
