@@ -1,12 +1,13 @@
 import { Card, CardActionArea } from "@mui/material";
 import { useState } from "react";
-import EditModal from "./EditModal";
-import { eventProps, enrichmentProps } from "./type";
+import EditModal from "../EditModal";
+import { eventProps, enrichmentProps } from "../type";
 import { FaLeaf, FaCalendarDay } from "react-icons/fa";
 type RecordCardProps = {
   title: string;
   content: eventProps[] | enrichmentProps[];
 };
+import React from "react";
 
 const EventCard = ({ title, content }: RecordCardProps) => {
   const [isEditModalOpenIndex, setEditModalOpenIndex] = useState(-1);
@@ -18,11 +19,13 @@ const EventCard = ({ title, content }: RecordCardProps) => {
       </p>
       <div className="flex flex-col space-y-2">
         {content.map((el, i) => (
-          <>
+          <React.Fragment key={i}>
             {"enrichment" in el ? (
               <>
                 {el.enrichment === "" ? (
-                  <p style={{ width: "200px" }}>登録なし</p>
+                  <p style={{ width: "200px" }} key={i}>
+                    登録なし
+                  </p>
                 ) : (
                   <Card variant="outlined" key={i}>
                     <CardActionArea
@@ -47,7 +50,9 @@ const EventCard = ({ title, content }: RecordCardProps) => {
             ) : (
               <>
                 {el.event === "" ? (
-                  <p className="w-[200px] flex justify-center">登録なし</p>
+                  <p className="w-[200px] flex justify-center" key={i}>
+                    登録なし
+                  </p>
                 ) : (
                   <Card variant="outlined" key={i}>
                     <CardActionArea
@@ -79,7 +84,7 @@ const EventCard = ({ title, content }: RecordCardProps) => {
                 setEditModalOpenIndex(-1);
               }}
             />
-          </>
+          </React.Fragment>
         ))}
       </div>
     </div>

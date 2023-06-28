@@ -5,10 +5,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-
-import EditModal from "./EditModal";
+import React from "react";
+import EditModal from "../EditModal";
 import { useState } from "react";
-import { MealProps, temperatureProps } from "./type";
+import { MealProps, temperatureProps } from "../type";
 import { FaThermometerHalf, FaUtensils } from "react-icons/fa";
 
 type RecordCardProps = {
@@ -49,10 +49,9 @@ const RecordCard = ({ title, rows, heads }: RecordCardProps) => {
           </TableHead>
           <TableBody>
             {rowsArray.map((rowsContent, index) => (
-              <>
+              <React.Fragment key={index}>
                 <TableRow
                   hover
-                  key={index}
                   sx={{
                     "&:last-child td, &:last-child th": { border: 0 },
                     cursor: "pointer",
@@ -80,7 +79,7 @@ const RecordCard = ({ title, rows, heads }: RecordCardProps) => {
                     setEditModalOpenIndex(-1);
                   }}
                 />
-              </>
+              </React.Fragment>
             ))}
           </TableBody>
         </Table>

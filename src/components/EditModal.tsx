@@ -40,7 +40,6 @@ const EditModal = ({ title, content, open, handleClose }: EditModalProps) => {
     border: 0,
     p: 4,
   };
-  console.log(content);
 
   const enrichments = ["ボール", "浮き輪", "sample", "sample2"];
   return (
@@ -136,7 +135,9 @@ const EditModal = ({ title, content, open, handleClose }: EditModalProps) => {
         )}
 
         <div className="mt-6 flex space-x-4 justify-between">
-          <Button sx={{ color: "red" }}>削除</Button>
+          <Button sx={{ color: "red" }} onClick={() => alert("削除")}>
+            削除
+          </Button>
           <div className="flex gap-4">
             <Button onClick={handleClose} style={{ width: "100px" }}>
               キャンセル

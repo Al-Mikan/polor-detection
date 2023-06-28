@@ -11,12 +11,11 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
 import { blue } from "@mui/material/colors";
 import { BiChevronDown } from "react-icons/bi";
 import { useContext } from "react";
 import { AppContext } from "@/pages/_app";
+import { useRouter } from "next/router";
 
 import { polors } from "@/data/sample";
 import { polorProps } from "./type";
@@ -61,6 +60,8 @@ const Header = () => {
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(polors[0]);
   const { id, setId } = useContext(AppContext);
+  const router = useRouter();
+  const { pathname } = router;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -69,13 +70,14 @@ const Header = () => {
   const handleClose = (value: polorProps) => {
     setOpen(false);
     setSelectedValue(value);
-    console.log(value);
     setId(value.id);
   };
 
   return (
     <div className="h-fit p-4 w-full fixed top-0 flex justify-between bg-white z-50">
-      <div className="ml-[80px] text-3xl font-bold">カレンダー</div>
+      <div className="ml-[80px] text-3xl font-bold">
+        {pathname === "/graph" ? "グラフ" : "カレンダー"}
+      </div>
       <MUIDialog
         selectedValue={selectedValue}
         open={open}

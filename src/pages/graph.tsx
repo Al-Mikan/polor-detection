@@ -1,9 +1,13 @@
-import Calender from "@/components/Calender";
 import type { NextPageWithLayout } from "next";
 import Layout from "@/layout/Layout";
-const Home: NextPageWithLayout = () => {
-  return <div className="h-screen w-screen">Graph</div>;
+import BarChart from "@/components/BarChart";
+
+const Graph: NextPageWithLayout = () => {
+  return (
+    <div className="pl-[80px] bg-backGround  pt-[75px] min-h-screen">
+      <BarChart />
+    </div>
+  );
 };
 
-Home.getLayout = (page) => <Layout>{page}</Layout>;
-export default Home;
+export default Graph;

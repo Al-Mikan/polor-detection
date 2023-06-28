@@ -4,8 +4,8 @@ import dayjs from "dayjs";
 import { AppContext } from "@/pages/_app";
 
 import DayGrid from "./DayGrid";
-import RecordCard from "./RecordCard";
-import EventCard from "./EventCard";
+import RecordCard from "./Card/RecordCard";
+import EventCard from "./Card/EventCard";
 import AddModal from "./AddModal";
 
 import { DateCalendar } from "@mui/x-date-pickers";
