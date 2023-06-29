@@ -3,7 +3,7 @@ export type polorProps = {
   name: string;
 };
 export type TimeDataProps = {
-  id: number;
+  id: number | null;
   startTime: Date;
   endTime: Date;
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext, useEffect, useState } from "react";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { AppContext } from "@/pages/_app";
 
 import DayGrid from "./DayGrid";
@@ -10,6 +10,9 @@ import AddModal from "./AddModal";
 
 import { DateCalendar } from "@mui/x-date-pickers";
 import { Button } from "@mui/material";
+import Badge from "@mui/material/Badge";
+
+import { PickersDay, PickersDayProps } from "@mui/x-date-pickers/PickersDay";
 
 import {
   timeData,
@@ -65,7 +68,10 @@ const CalenderContent = () => {
   const [totalTimeAry, setTotalTimeAry] = useState<number[]>([0, 0, 0]);
   const [isAddmodalOpen, setisAddmodalOpen] = useState<boolean>(false);
   const [targetData, setTargetData] = useState<TimeDataProps[] | null>(null);
-  // 時間の総計を計算する関数
+  const [highlightedDays, setHighlightedDays] = useState([1, 2, 15]);
+  const [unRegisterdDays, setUnRegisterdDays] = useState([12, 13, 14]);
+
+  //もし、名前がdbになかったらmodalを出す
 
   useEffect(() => {
     if (date === null) return;
@@ -74,14 +80,56 @@ const CalenderContent = () => {
     setTotalTimeAry(calculateTotalTime(targetData));
   }, [id, date]);
 
+  const ServerDay = (
+    props: PickersDayProps<Dayjs> & {
+      highlightedDays?: number[];
+      unRegisterdDays?: number[];
+    }
+  ) => {
+    const {
+      highlightedDays = [],
+      unRegisterdDays = [],
+      day,
+      outsideCurrentMonth,
+      ...other
+    } = props;
+
+    const isSelectedDay =
+      !props.outsideCurrentMonth &&
+      highlightedDays.indexOf(props.day.date()) >= 0;
+    const isUnRegisterdDay =
+      !props.outsideCurrentMonth &&
+      unRegisterdDays.indexOf(props.day.date()) >= 0;
+
+    return (
+      <PickersDay
+        {...other}
+        outsideCurrentMonth={outsideCurrentMonth}
+        day={day}
+        className={
+          isSelectedDay ? "bg-red-300" : isUnRegisterdDay ? " bg-gray-300" : ""
+        }
+      />
+    );
+  };
+
   return (
     <div className="p-8">
-      {id}
-      <div className="flex items-start justify-start">
+      <div className="flex items-start justify-start bg-white p-6 rounded">
         <div className=" w-[256px] h-[256px]">
           <DateCalendar
+            defaultValue={dayjs("2023-6-18")}
             value={date}
             onChange={(day) => setDate(day)}
+            slots={{
+              day: ServerDay,
+            }}
+            slotProps={{
+              day: {
+                highlightedDays,
+                unRegisterdDays,
+              } as any,
+            }}
             className="scale-[0.8] origin-top-left bg-white rounded-md p-0 "
           />
         </div>
@@ -103,7 +151,6 @@ const CalenderContent = () => {
           <DayGrid timeData={targetData} />
         </div>
       </div>
-      {/* <div className="border-2 w-fit px-6 py-2 cursor-pointer">＋追加</div> */}
       <div className=" mt-10 rounded p-6">
         <div className="flex justify-between h-fit align-bottom mb-6">
           <p className="text-2xl font-bold ">本日の記録</p>
