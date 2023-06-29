@@ -1,5 +1,4 @@
 import type { NextPageWithLayout } from "next";
-import Layout from "@/layout/Layout";
 import BarChart from "@/components/BarChart";
 
 const Graph: NextPageWithLayout = () => {
