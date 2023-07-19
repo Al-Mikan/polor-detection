@@ -1,25 +1,32 @@
-from fastapi import APIRouter, Query, HTTPException
-from datetime import date,time,datetime
+from datetime import date, datetime, time
 from typing import List
 
+from fastapi import APIRouter, Depends, Query,HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 router = APIRouter()
 
+from api.db import get_db
 import api.schemas.temperature as schema
+import api.cruds.temperature as temperature_crud
 
-# ダミーデータ
-temperature_data = [
-    {"id": 1, "polorId": 1, "date": date(2023, 6, 1), "time": time(10, 0,0), "temperature": 36.5},
-    {"id": 2, "polorId": 1, "date": date(2023, 6, 1), "time": time(12, 0,0), "temperature": 36.7},
-    {"id": 3, "polorId": 1, "date": date(2023, 6, 1), "time": time(16, 20,0), "temperature": 36.8},
-    {"id": 4, "polorId": 1, "date": date(2023, 6, 2), "time": time(12, 30,30), "temperature": 36.6},
-    {"id": 5, "polorId": 2, "date": date(2023, 6, 3), "time": time(15, 45,23), "temperature": 36.5}
-]
 
-@router.get("/temperature/{polorId}", response_model=List[schema.Temperature])
-async def get_meals(polorId: int, date: str = Query(...)):
-    try:
+@router.get("/temperatures/{polorId}", response_model=List[schema.Temperature])
+async def get_temperatures(polorId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)):
         requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-        filtered_data = [item for item in temperature_data if item["polorId"] == polorId and item["date"] == requested_date]
-        return filtered_data
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return await temperature_crud.get_temperatures(requested_date,polorId,db)
+
+
+@router.post("/temperatures", response_model=schema.TemperatureCreateResponse)
+async def create_temperature(temp: schema.TemperatureCreate,db: AsyncSession = Depends(get_db)):
+    return await temperature_crud.create_temperature(db,temp)
+
+@router.put("/temperatures/{id}", response_model=schema.TemperatureCreateResponse)
+async def update_temperature(id: int, new_temp: schema.TemperatureBase ,db: AsyncSession = Depends(get_db)):
+    temperature = await temperature_crud.get_temperature_by_id(id,db)
+    if temperature is None:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return await temperature_crud.update_temperature(db,new_temp,temperature)
+
+@router.delete("/temperatures/{id}")
+async def delete_temperature(id: int, db: AsyncSession = Depends(get_db)):
+    return await temperature_crud.delete_temperature(id,db)

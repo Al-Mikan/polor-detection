@@ -1,13 +1,21 @@
+from sqlalchemy import select
+from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-import api.models.model as task_model
-import api.schemas.polor as polor_schema
+from api.models.model import Polor
 
-async def create_task(
-    db: AsyncSession, task_create: polor_schema.TaskCreate
-) -> task_model.Task:
-    task = task_model.Task(**task_create.dict())
-    db.add(task)
-    await db.commit()
-    await db.refresh(task)
-    return task
+
+async def get_polors(db: AsyncSession):
+    stmt = select(
+        Polor.id,
+        Polor.name,
+    ).order_by(Polor.id)
+
+    result = await db.execute(stmt)
+    polors = result.fetchall()
+
+    formatted_polors = []
+    for polor in polors:
+        formatted_polors.append({"id": polor.id, "name": polor.name})
+
+    return formatted_polors
