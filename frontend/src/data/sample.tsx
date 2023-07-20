@@ -1,4 +1,11 @@
-import { polorProps, TimeDataProps } from "@/components/type";
+import {
+  polorProps,
+  TimeDataProps,
+  MealProps,
+  TemperatureProps,
+  EnrichmentProps,
+  EventProps,
+} from "@/components/type";
 
 export const polors: polorProps[] = [
   {
@@ -74,19 +81,39 @@ export const timeData: TimeDataProps[] = [
     endTime: new Date("2023-06-01T17:10:00"),
   },
 ];
-export const mealRows = [
-  { time: "09:00", meal: "魚", value: 500 },
-  { time: "12:00", meal: "にんじん", value: 1000 },
-  { time: "15:00", meal: "肉", value: 800 },
-  { time: "18:00", meal: "sample", value: 200 },
+export const mealRows: MealProps[] = [
+  { id: 1, time: "09:00", meal: "魚", weight: 500 },
+  { id: 2, time: "12:00", meal: "にんじん", weight: 1000 },
+  { id: 3, time: "15:00", meal: "肉", weight: 800 },
+  { id: 4, time: "18:00", meal: "sample", weight: 200 },
 ];
 
-export const temperatureRows = [
-  { time: "09:00", temperature: 12 },
-  { time: "12:00", temperature: 6.5 },
-  { time: "15:00", temperature: 10 },
-  { time: "18:00", temperature: 20 },
+export const temperatureRows: TemperatureProps[] = [
+  { id: 1, time: "09:00", temperature: 12 },
+  { id: 2, time: "12:00", temperature: 6.5 },
+  { id: 3, time: "15:00", temperature: 10 },
+  { id: 4, time: "18:00", temperature: 20 },
 ];
 
-export const enrichments = [{ enrichment: "ボール" }, { enrichment: "sample" }];
-export const events = [{ event: "" }];
+export const enrichments: EnrichmentProps[] = [
+  {
+    id: 1,
+    startTime: "09:00",
+    endTime: "13:00",
+    enrichment: "ボール",
+  },
+  {
+    id: 2,
+    startTime: "09:00",
+    endTime: "13:00",
+    enrichment: "samplesamplesamplesample",
+  },
+];
+export const events: EnrichmentProps[] = [
+  {
+    id: 1,
+    startTime: "13:00",
+    endTime: "14:00",
+    enrichment: "イベント",
+  },
+];

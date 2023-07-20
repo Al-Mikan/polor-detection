@@ -4,44 +4,22 @@ import dayjs, { Dayjs } from "dayjs";
 import { AppContext } from "@/pages/_app";
 
 import DayGrid from "./DayGrid";
-import RecordCard from "./Card/RecordCard";
-import EventCard from "./Card/EventCard";
-import AddModal from "./AddModal";
+import RecordCard from "./RecordCard";
 
 import { DateCalendar } from "@mui/x-date-pickers";
 import { Button } from "@mui/material";
-import Badge from "@mui/material/Badge";
+import {
+  FaThermometerHalf,
+  FaUtensils,
+  FaLeaf,
+  FaCalendarDay,
+} from "react-icons/fa";
 
 import { PickersDay, PickersDayProps } from "@mui/x-date-pickers/PickersDay";
 
-import {
-  timeData,
-  mealRows,
-  temperatureRows,
-  enrichments,
-  events,
-} from "@/data/sample";
+import { timeData } from "@/data/sample";
 import { TimeDataProps } from "./type";
 
-const mealHead = ["時刻", "食べ物", "重さ(g)"];
-
-const temperatureHead = ["時刻", "気温(℃)"];
-
-//idと日付からデータを取得
-const getTimeDataByIdAndDate = (
-  id: number,
-  date: Date,
-  timeData: TimeDataProps[]
-): TimeDataProps[] | null => {
-  const targetData = timeData.filter(
-    (data) =>
-      data.id === id &&
-      data.startTime.getFullYear() === date.getFullYear() &&
-      data.startTime.getMonth() === date.getMonth() &&
-      data.startTime.getDate() === date.getDate()
-  );
-  return targetData ? targetData : null;
-};
 //合計値を計算
 const calculateTotalTime = (timeData: TimeDataProps[] | null): number[] => {
   let totalMilliseconds = 0;
@@ -62,11 +40,9 @@ const calculateTotalTime = (timeData: TimeDataProps[] | null): number[] => {
 };
 
 const CalenderContent = () => {
-  const [date, setDate] = React.useState<dayjs.Dayjs | null>(dayjs());
-  const { id, setId } = useContext(AppContext);
+  const { date, setDate } = useContext(AppContext);
 
   const [totalTimeAry, setTotalTimeAry] = useState<number[]>([0, 0, 0]);
-  const [isAddmodalOpen, setisAddmodalOpen] = useState<boolean>(false);
   const [targetData, setTargetData] = useState<TimeDataProps[] | null>(null);
   const [highlightedDays, setHighlightedDays] = useState([1, 2, 15]);
   const [unRegisterdDays, setUnRegisterdDays] = useState([12, 13, 14]);
@@ -74,11 +50,9 @@ const CalenderContent = () => {
   //もし、名前がdbになかったらmodalを出す
 
   useEffect(() => {
-    if (date === null) return;
-    const targetData = getTimeDataByIdAndDate(id, date?.toDate(), timeData);
-    setTargetData(targetData);
+    setTargetData(timeData);
     setTotalTimeAry(calculateTotalTime(targetData));
-  }, [id, date]);
+  }, []);
 
   const ServerDay = (
     props: PickersDayProps<Dayjs> & {
@@ -118,9 +92,8 @@ const CalenderContent = () => {
       <div className="flex items-start justify-start bg-white p-6 rounded">
         <div className=" w-[256px] h-[256px]">
           <DateCalendar
-            defaultValue={dayjs("2023-6-18")}
             value={date}
-            onChange={(day) => setDate(day)}
+            onChange={(day) => day && setDate(day)}
             slots={{
               day: ServerDay,
             }}
@@ -154,32 +127,30 @@ const CalenderContent = () => {
       <div className=" mt-10 rounded p-6">
         <div className="flex justify-between h-fit align-bottom mb-6">
           <p className="text-2xl font-bold ">本日の記録</p>
-          <Button
-            variant="contained"
-            onClick={() => {
-              setisAddmodalOpen(true);
-            }}
-            className="px-8 font-bold text-lg"
-            style={{ backgroundColor: "#2B7BF4" }}
-          >
-            ＋追加
-          </Button>
-          <AddModal
-            open={isAddmodalOpen}
-            handleClose={() => {
-              setisAddmodalOpen(false);
-            }}
+        </div>
+        <div className="flex gap-x-10 my-10">
+          <RecordCard
+            title="気温"
+            icon={<FaThermometerHalf />}
+            className="w-[500px]"
+          />
+          <RecordCard
+            title="エンリッチメント"
+            icon={<FaLeaf />}
+            className="w-full"
           />
         </div>
-        <div className=" flex flex-wrap justify-between gap-6">
+        <div className="flex gap-x-10">
           <RecordCard
-            heads={temperatureHead}
-            rows={temperatureRows}
-            title="気温"
+            title="食事"
+            icon={<FaUtensils />}
+            className="w-[500px]"
           />
-          <RecordCard heads={mealHead} rows={mealRows} title="食事" />
-          <EventCard title="エンリッチメント" content={enrichments} />
-          <EventCard title="イベント" content={events} />
+          <RecordCard
+            title="イベント"
+            icon={<FaCalendarDay />}
+            className="w-full"
+          />
         </div>
       </div>
     </div>

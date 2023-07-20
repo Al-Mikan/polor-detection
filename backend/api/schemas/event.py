@@ -4,9 +4,9 @@ from pydantic import BaseModel
 
 
 class EventBase(BaseModel):
-    event: str
     startTime: time
     endTime: time
+    event: str
 
 
 class EventCreate(EventBase):

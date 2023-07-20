@@ -1,9 +1,8 @@
-import Link from "next/link";
 import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -17,16 +16,22 @@ import { useContext } from "react";
 import { AppContext } from "@/pages/_app";
 import { useRouter } from "next/router";
 
-import { polors } from "@/data/sample";
 import { polorProps } from "./type";
+import { getPolors } from "../utils/polors";
 
 type DialogProps = {
   open: boolean;
   selectedValue: polorProps;
   onClose: (value: polorProps) => void;
+  polors: polorProps[];
 };
 
-export const MUIDialog = ({ open, selectedValue, onClose }: DialogProps) => {
+export const MUIDialog = ({
+  open,
+  selectedValue,
+  onClose,
+  polors,
+}: DialogProps) => {
   const handleClose = () => {
     onClose(selectedValue);
   };
@@ -57,8 +62,9 @@ export const MUIDialog = ({ open, selectedValue, onClose }: DialogProps) => {
 };
 
 const Header = () => {
-  const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(polors[0]);
+  const [open, setOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState({} as polorProps);
+  const [polors, setPolors] = useState([] as polorProps[]);
   const { id, setId } = useContext(AppContext);
   const router = useRouter();
   const { pathname } = router;
@@ -73,6 +79,19 @@ const Header = () => {
     setId(value.id);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getPolors();
+        setPolors(data);
+        setSelectedValue(data[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="h-fit p-4 w-full fixed top-0 flex justify-between bg-white z-50">
       <div className="ml-[80px] text-3xl font-bold">
@@ -82,6 +101,7 @@ const Header = () => {
         selectedValue={selectedValue}
         open={open}
         onClose={handleClose}
+        polors={polors}
       />
       <Button
         className=" rounded cursor-pointer bg-backGround  text-black  px-6 py-2 "

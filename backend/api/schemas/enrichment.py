@@ -4,9 +4,9 @@ from pydantic import BaseModel
 
 
 class EnrichmentBase(BaseModel):
-    enrichment: str
     startTime:time
     endTime:time
+    enrichment: str
 
 
 class EnrichmentCreate(EnrichmentBase):
