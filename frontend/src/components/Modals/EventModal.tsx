@@ -1,15 +1,10 @@
-import { EventProps } from "../type";
-import {
-  Modal,
-  Box,
-  Button,
-  FormControl,
-  OutlinedInput,
-  InputAdornment,
-  TextField,
-} from "@mui/material";
+import { EventProps, CreateEventProps, UpdateEventProps } from "../type";
+import { Modal, Box, Button, FormControl, OutlinedInput } from "@mui/material";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
 import dayjs from "dayjs";
+import { useContext, useState } from "react";
+import { AppContext } from "../../pages/_app";
+import { createEvent, updateEvent, deleteEvent } from "../../utils/event";
 
 type EventModalProps = {
   title: string;
@@ -17,6 +12,7 @@ type EventModalProps = {
   open: boolean;
   handleClose: () => void;
   isEdit: boolean;
+  fetchData: () => void;
 };
 
 const EventModal = ({
@@ -25,6 +21,7 @@ const EventModal = ({
   open,
   handleClose,
   isEdit,
+  fetchData,
 }: EventModalProps) => {
   const style = {
     position: "absolute" as "absolute",
@@ -36,6 +33,34 @@ const EventModal = ({
     borderRadius: "12px",
     border: 0,
     p: 4,
+  };
+  const { date, setDate } = useContext(AppContext);
+  const { id, setId } = useContext(AppContext);
+  const [startTime, setStartTime] = useState(content?.startTime);
+  const [endTime, setEndTime] = useState(content?.endTime);
+  const [event, setEvent] = useState(content?.event);
+
+  const createData = async (content: CreateEventProps): Promise<void> => {
+    await createEvent({
+      startTime: content.startTime,
+      endTime: content.endTime,
+      event: content.event,
+      date: date.format("YYYY-MM-DD"),
+      polorId: id,
+    });
+  };
+  const updateData = async (
+    id: number,
+    content: UpdateEventProps
+  ): Promise<void> => {
+    await updateEvent(id, {
+      startTime: content.startTime,
+      endTime: content.endTime,
+      event: content.event,
+    });
+  };
+  const deleteData = async (id: number): Promise<void> => {
+    await deleteEvent(id);
   };
 
   return (
@@ -51,6 +76,7 @@ const EventModal = ({
               ampm={false}
               sx={{ m: 1, width: "150px" }}
               defaultValue={dayjs(content?.startTime, "HH:mm")}
+              onChange={(e) => setStartTime(e?.format("HH:mm"))}
             />
           </div>
           <div className="flex items-center justify-center space-x-6">
@@ -59,12 +85,16 @@ const EventModal = ({
               ampm={false}
               sx={{ m: 1, width: "150px" }}
               defaultValue={dayjs(content?.endTime, "HH:mm")}
+              onChange={(e) => setEndTime(e?.format("HH:mm"))}
             />
           </div>
           <div className="flex items-center justify-center space-x-6">
             <p>内容</p>
             <FormControl sx={{ m: 1, width: "300px" }} variant="outlined">
-              <OutlinedInput defaultValue={content?.event} />
+              <OutlinedInput
+                defaultValue={content?.event}
+                onChange={(e) => setEvent(e.target.value)}
+              />
             </FormControl>
           </div>
         </div>
@@ -72,7 +102,13 @@ const EventModal = ({
         <div className={"mt-6  space-x-4 flex justify-between"}>
           <Button
             sx={{ color: "red" }}
-            onClick={() => alert("削除")}
+            onClick={async () => {
+              if (content?.id) {
+                await deleteData(content?.id);
+                fetchData();
+              }
+              handleClose();
+            }}
             style={isEdit ? { opacity: 1 } : { opacity: 0 }}
           >
             削除
@@ -83,7 +119,41 @@ const EventModal = ({
               キャンセル
             </Button>
             <Button
-              onClick={handleClose}
+              onClick={async () => {
+                if (
+                  startTime === undefined ||
+                  endTime === undefined ||
+                  event === undefined
+                ) {
+                  alert("入力してください");
+                  return;
+                }
+                try {
+                  if (isEdit && content?.id) {
+                    await updateData(content?.id, {
+                      startTime: startTime,
+                      endTime: endTime,
+                      event: event,
+                    });
+                  } else if (!isEdit) {
+                    await createData({
+                      startTime: startTime,
+                      endTime: endTime,
+                      event: event,
+                      date: date.format("YYYY-MM-DD"),
+                      polorId: id,
+                    });
+                  } else {
+                    alert("エラー");
+                    return;
+                  }
+
+                  fetchData();
+                  handleClose();
+                } catch (error) {
+                  console.error("エラーが発生しました", error);
+                }
+              }}
               variant="contained"
               style={{ backgroundColor: "#2B7BF4", width: "100px" }}
             >

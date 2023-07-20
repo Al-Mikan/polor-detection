@@ -14,18 +14,18 @@ export type MealProps = {
   weight: number;
 };
 
-export type EnrichmentProps = {
-  id: number;
-  startTime: string;
-  endTime: string;
-  enrichment: string;
+export type CreateMealProps = {
+  polorId: number;
+  date: string;
+  time: string;
+  meal: string;
+  weight: number;
 };
 
-export type EventProps = {
-  id: number;
-  startTime: string;
-  endTime: string;
-  event: string;
+export type UpdateMealProps = {
+  time: string;
+  meal: string;
+  weight: number;
 };
 
 export type TemperatureProps = {
@@ -44,4 +44,46 @@ export type CreateTemperatureProps = {
 export type UpdateTemperatureProps = {
   time: string;
   temperature: number;
+};
+
+export type EnrichmentProps = {
+  id: number;
+  startTime: string;
+  endTime: string;
+  enrichment: string;
+};
+
+export type CreateEnrichmentProps = {
+  polorId: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  enrichment: string;
+};
+
+export type UpdateEnrichmentProps = {
+  startTime: string;
+  endTime: string;
+  enrichment: string;
+};
+
+export type EventProps = {
+  id: number;
+  startTime: string;
+  endTime: string;
+  event: string;
+};
+
+export type CreateEventProps = {
+  polorId: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  event: string;
+};
+
+export type UpdateEventProps = {
+  startTime: string;
+  endTime: string;
+  event: string;
 };

@@ -24,17 +24,11 @@ const MealCardContent = ({ meals, fetchData }: MealCardContentProps) => {
       <Table aria-label="simple table">
         <TableHead>
           <TableRow sx={{ backgroundColor: "#F5F4F7" }}>
-            {mealHead.map((head, index) => {
-              return (
-                <TableCell
-                  align={index == 0 ? "left" : "right"}
-                  key={index}
-                  sx={{ width: "100px" }}
-                >
-                  {head}
-                </TableCell>
-              );
-            })}
+            <TableCell align="left" sx={{ width: "100px" }}>
+              {mealHead[0]}
+            </TableCell>
+            <TableCell align="right">{mealHead[1]}</TableCell>
+            <TableCell align="right">{mealHead[2]}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -50,13 +44,13 @@ const MealCardContent = ({ meals, fetchData }: MealCardContentProps) => {
                   setEditModalOpenIndex(index);
                 }}
               >
-                <TableCell component="th" scope="row" width={"200px"}>
+                <TableCell component="th" scope="row">
                   {content.time}
                 </TableCell>
-                <TableCell component="th" scope="row" width={"200px"}>
+                <TableCell component="th" scope="row" align="right">
                   {content.meal}
                 </TableCell>
-                <TableCell component="th" scope="row" width={"200px"}>
+                <TableCell component="th" scope="row" align="right">
                   {content.weight}
                 </TableCell>
               </TableRow>

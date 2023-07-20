@@ -1,7 +1,4 @@
-import {
-  CreateTemperatureProps,
-  UpdateTemperatureProps,
-} from "@/components/type";
+import { CreateMealProps, UpdateMealProps } from "@/components/type";
 
 const BASE_URL = "http://localhost:8000";
 
@@ -9,32 +6,29 @@ const BASE_URL = "http://localhost:8000";
 export const getMeals = async (date: string, polorId: number) => {
   const response = await fetch(`${BASE_URL}/meals/${polorId}?date=${date}`);
   if (!response.ok) {
-    throw new Error("Failed to fetch temperatures");
+    throw new Error("Failed to fetch meals");
   }
   return response.json();
 };
 
 // create
-export const createTemperature = async (tempCreate: CreateTemperatureProps) => {
-  const response = await fetch(`${BASE_URL}/temperatures`, {
+export const createMeal = async (mealCreate: CreateMealProps) => {
+  const response = await fetch(`${BASE_URL}/meals`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(tempCreate),
+    body: JSON.stringify(mealCreate),
   });
   if (!response.ok) {
-    throw new Error("Failed to create temperature");
+    throw new Error("Failed to create meal");
   }
   return response.json();
 };
 
 // update
-export const updateTemperature = async (
-  id: number,
-  newTemp: UpdateTemperatureProps
-) => {
-  const response = await fetch(`${BASE_URL}/temperatures/${id}`, {
+export const updateMeal = async (id: number, newTemp: UpdateMealProps) => {
+  const response = await fetch(`${BASE_URL}/meals/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -42,17 +36,17 @@ export const updateTemperature = async (
     body: JSON.stringify(newTemp),
   });
   if (!response.ok) {
-    throw new Error("Failed to update temperature");
+    throw new Error("Failed to update meal");
   }
   return response.json();
 };
 
 // delete
-export const deleteTemperature = async (id: number) => {
-  const response = await fetch(`${BASE_URL}/temperatures/${id}`, {
+export const deleteMeal = async (id: number) => {
+  const response = await fetch(`${BASE_URL}/meals/${id}`, {
     method: "DELETE",
   });
   if (!response.ok) {
-    throw new Error("Failed to delete temperature");
+    throw new Error("Failed to delete meal");
   }
 };

@@ -39,7 +39,6 @@ export const MUIDialog = ({
   const handleListItemClick = (value: polorProps) => {
     onClose(value);
   };
-
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>名前を選択してください</DialogTitle>
@@ -104,9 +103,9 @@ const Header = () => {
         polors={polors}
       />
       <Button
-        className=" rounded cursor-pointer bg-backGround  text-black  px-6 py-2 "
+        className=" rounded cursor-pointer bg-white  text-black  px-6 py-2 "
         onClick={handleClickOpen}
-        variant="text"
+        variant="outlined"
       >
         {selectedValue.name}
         <BiChevronDown />

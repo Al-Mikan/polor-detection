@@ -1,4 +1,4 @@
-import { MealProps } from "../type";
+import { MealProps, CreateMealProps, UpdateMealProps } from "../type";
 import {
   Modal,
   Box,
@@ -10,6 +10,9 @@ import {
 } from "@mui/material";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
 import dayjs from "dayjs";
+import { useContext, useState } from "react";
+import { AppContext } from "../../pages/_app";
+import { createMeal, updateMeal, deleteMeal } from "../../utils/meal";
 
 type MealModalProps = {
   title: string;
@@ -39,6 +42,34 @@ const MealModal = ({
     border: 0,
     p: 4,
   };
+  const { date, setDate } = useContext(AppContext);
+  const { id, setId } = useContext(AppContext);
+  const [time, setTime] = useState(content?.time);
+  const [meal, setMeal] = useState(content?.meal);
+  const [weight, setWeight] = useState(content?.weight);
+
+  const createData = async (content: CreateMealProps): Promise<void> => {
+    await createMeal({
+      time: content.time,
+      meal: content.meal,
+      weight: content.weight,
+      date: date.format("YYYY-MM-DD"),
+      polorId: id,
+    });
+  };
+  const updateData = async (
+    id: number,
+    content: UpdateMealProps
+  ): Promise<void> => {
+    await updateMeal(id, {
+      time: content.time,
+      meal: content.meal,
+      weight: content.weight,
+    });
+  };
+  const deleteData = async (id: number): Promise<void> => {
+    await deleteMeal(id);
+  };
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -52,6 +83,7 @@ const MealModal = ({
             <TimeField
               ampm={false}
               sx={{ m: 1, width: "150px" }}
+              onChange={(e) => setTime(e?.format("HH:mm"))}
               defaultValue={dayjs(content?.time, "HH:mm")}
             />
           </div>
@@ -60,6 +92,7 @@ const MealModal = ({
             <TextField
               sx={{ m: 1, width: "150px" }}
               variant="outlined"
+              onChange={(e) => setMeal(e.target.value)}
               defaultValue={content?.meal}
             ></TextField>
           </div>
@@ -71,6 +104,7 @@ const MealModal = ({
                 inputProps={{ step: "any" }}
                 endAdornment={<InputAdornment position="end">g</InputAdornment>}
                 defaultValue={content?.weight}
+                onChange={(e) => setWeight(Number(e.target.value))}
               />
             </FormControl>
           </div>
@@ -79,7 +113,13 @@ const MealModal = ({
         <div className="mt-6 flex space-x-4 justify-between">
           <Button
             sx={{ color: "red" }}
-            onClick={() => alert("削除")}
+            onClick={async () => {
+              if (content?.id) {
+                await deleteData(content?.id);
+                fetchData();
+              }
+              handleClose();
+            }}
             style={isEdit ? { opacity: 1 } : { opacity: 0 }}
           >
             削除
@@ -90,7 +130,41 @@ const MealModal = ({
               キャンセル
             </Button>
             <Button
-              onClick={handleClose}
+              onClick={async () => {
+                if (
+                  time === undefined ||
+                  meal === undefined ||
+                  weight === undefined
+                ) {
+                  alert("入力してください");
+                  return;
+                }
+                try {
+                  if (isEdit && content?.id) {
+                    await updateData(content?.id, {
+                      time: time,
+                      meal: meal,
+                      weight: weight,
+                    });
+                  } else if (!isEdit) {
+                    await createData({
+                      time: time,
+                      meal: meal,
+                      weight: weight,
+                      date: date.format("YYYY-MM-DD"),
+                      polorId: id,
+                    });
+                  } else {
+                    alert("エラー");
+                    return;
+                  }
+
+                  fetchData();
+                  handleClose();
+                } catch (error) {
+                  console.error("エラーが発生しました", error);
+                }
+              }}
               variant="contained"
               style={{ backgroundColor: "#2B7BF4", width: "100px" }}
             >

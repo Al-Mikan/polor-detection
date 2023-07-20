@@ -13,9 +13,13 @@ import EnrichmentModal from "../Modals/EnrichmentModal";
 
 type EnrichmentCardContentProps = {
   enrichments: EnrichmentProps[];
+  fetchData: () => void;
 };
 
-const EnrichmentCardContent = ({ enrichments }: EnrichmentCardContentProps) => {
+const EnrichmentCardContent = ({
+  enrichments,
+  fetchData,
+}: EnrichmentCardContentProps) => {
   const enrichmentHead = ["開始時刻", "終了時刻", "内容"];
   const [editModalOpenIndex, setEditModalOpenIndex] = useState(-1);
   return (
@@ -23,17 +27,13 @@ const EnrichmentCardContent = ({ enrichments }: EnrichmentCardContentProps) => {
       <Table aria-label="simple table">
         <TableHead>
           <TableRow sx={{ backgroundColor: "#F5F4F7" }}>
-            {enrichmentHead.map((head, index) => {
-              return (
-                <TableCell
-                  align={index == 0 ? "left" : "right"}
-                  key={index}
-                  sx={{ width: "100px" }}
-                >
-                  {head}
-                </TableCell>
-              );
-            })}
+            <TableCell align="left" sx={{ width: "150px" }}>
+              {enrichmentHead[0]}
+            </TableCell>
+            <TableCell align="left" sx={{ width: "150px" }}>
+              {enrichmentHead[1]}
+            </TableCell>
+            <TableCell align="right">{enrichmentHead[2]}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -49,13 +49,13 @@ const EnrichmentCardContent = ({ enrichments }: EnrichmentCardContentProps) => {
                   setEditModalOpenIndex(index);
                 }}
               >
-                <TableCell component="th" scope="row" width={"200px"}>
+                <TableCell component="th" scope="row">
                   {content.startTime}
                 </TableCell>
-                <TableCell component="th" scope="row" width={"200px"}>
+                <TableCell component="th" scope="row">
                   {content.endTime}
                 </TableCell>
-                <TableCell component="th" scope="row" width={"200px"}>
+                <TableCell component="th" scope="row" align="right">
                   {content.enrichment}
                 </TableCell>
               </TableRow>
@@ -67,6 +67,7 @@ const EnrichmentCardContent = ({ enrichments }: EnrichmentCardContentProps) => {
                   setEditModalOpenIndex(-1);
                 }}
                 isEdit={true}
+                fetchData={fetchData}
               />
             </React.Fragment>
           ))}

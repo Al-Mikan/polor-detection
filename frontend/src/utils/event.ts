@@ -1,7 +1,4 @@
-import {
-  CreateTemperatureProps,
-  UpdateTemperatureProps,
-} from "@/components/type";
+import { CreateEventProps, UpdateEventProps } from "@/components/type";
 
 const BASE_URL = "http://localhost:8000";
 
@@ -9,32 +6,29 @@ const BASE_URL = "http://localhost:8000";
 export const getEvents = async (date: string, polorId: number) => {
   const response = await fetch(`${BASE_URL}/events/${polorId}?date=${date}`);
   if (!response.ok) {
-    throw new Error("Failed to fetch temperatures");
+    throw new Error("Failed to fetch events");
   }
   return response.json();
 };
 
 // create
-export const createTemperature = async (tempCreate: CreateTemperatureProps) => {
-  const response = await fetch(`${BASE_URL}/temperatures`, {
+export const createEvent = async (eventCreate: CreateEventProps) => {
+  const response = await fetch(`${BASE_URL}/events`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(tempCreate),
+    body: JSON.stringify(eventCreate),
   });
   if (!response.ok) {
-    throw new Error("Failed to create temperature");
+    throw new Error("Failed to create event");
   }
   return response.json();
 };
 
 // update
-export const updateTemperature = async (
-  id: number,
-  newTemp: UpdateTemperatureProps
-) => {
-  const response = await fetch(`${BASE_URL}/temperatures/${id}`, {
+export const updateEvent = async (id: number, newTemp: UpdateEventProps) => {
+  const response = await fetch(`${BASE_URL}/events/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -42,17 +36,17 @@ export const updateTemperature = async (
     body: JSON.stringify(newTemp),
   });
   if (!response.ok) {
-    throw new Error("Failed to update temperature");
+    throw new Error("Failed to update event");
   }
   return response.json();
 };
 
 // delete
-export const deleteTemperature = async (id: number) => {
-  const response = await fetch(`${BASE_URL}/temperatures/${id}`, {
+export const deleteEvent = async (id: number) => {
+  const response = await fetch(`${BASE_URL}/events/${id}`, {
     method: "DELETE",
   });
   if (!response.ok) {
-    throw new Error("Failed to delete temperature");
+    throw new Error("Failed to delete event");
   }
 };

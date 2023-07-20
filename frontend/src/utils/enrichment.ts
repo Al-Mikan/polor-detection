@@ -1,6 +1,6 @@
 import {
-  CreateTemperatureProps,
-  UpdateTemperatureProps,
+  CreateEnrichmentProps,
+  UpdateEnrichmentProps,
 } from "@/components/type";
 
 const BASE_URL = "http://localhost:8000";
@@ -11,50 +11,52 @@ export const getEnrichments = async (date: string, polorId: number) => {
     `${BASE_URL}/enrichments/${polorId}?date=${date}`
   );
   if (!response.ok) {
-    throw new Error("Failed to fetch temperatures");
+    throw new Error("Failed to fetch Enrichment");
   }
   return response.json();
 };
 
 // create
-export const createTemperature = async (tempCreate: CreateTemperatureProps) => {
-  const response = await fetch(`${BASE_URL}/temperatures`, {
+export const createEnrichment = async (
+  enrichmentCreate: CreateEnrichmentProps
+) => {
+  const response = await fetch(`${BASE_URL}/enrichments`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(tempCreate),
+    body: JSON.stringify(enrichmentCreate),
   });
   if (!response.ok) {
-    throw new Error("Failed to create temperature");
+    throw new Error("Failed to create Enrichment");
   }
   return response.json();
 };
 
 // update
-export const updateTemperature = async (
+export const updateEnrichment = async (
   id: number,
-  newTemp: UpdateTemperatureProps
+  newEnrichment: UpdateEnrichmentProps
 ) => {
-  const response = await fetch(`${BASE_URL}/temperatures/${id}`, {
+  const response = await fetch(`${BASE_URL}/enrichments/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(newTemp),
+    body: JSON.stringify(newEnrichment),
   });
   if (!response.ok) {
-    throw new Error("Failed to update temperature");
+    throw new Error("Failed to update Enrichment");
   }
   return response.json();
 };
 
 // delete
-export const deleteTemperature = async (id: number) => {
-  const response = await fetch(`${BASE_URL}/temperatures/${id}`, {
+export const deleteEnrichment = async (id: number) => {
+  const response = await fetch(`${BASE_URL}/enrichments/${id}`, {
     method: "DELETE",
   });
   if (!response.ok) {
-    throw new Error("Failed to delete temperature");
+    throw new Error("Failed to delete Enrichment");
   }
 };

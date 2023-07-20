@@ -90,9 +90,12 @@ const RecordCard = ({ title, icon, className }: RecordCardProps) => {
           fetchData={fetchData}
         />
       ) : title === "イベント" ? (
-        <EventCardContent events={eventData} />
+        <EventCardContent events={eventData} fetchData={fetchData} />
       ) : title === "エンリッチメント" ? (
-        <EnrichmentCardContent enrichments={enrichmentData} />
+        <EnrichmentCardContent
+          enrichments={enrichmentData}
+          fetchData={fetchData}
+        />
       ) : (
         <MealCardContent meals={mealData} fetchData={fetchData} />
       )}
@@ -143,6 +146,7 @@ const AddModal = ({
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
+        fetchData={fetchData}
       />
     );
   } else if (title == "イベント") {
@@ -152,6 +156,7 @@ const AddModal = ({
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
+        fetchData={fetchData}
       />
     );
   } else {

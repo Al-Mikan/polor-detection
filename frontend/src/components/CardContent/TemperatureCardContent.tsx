@@ -22,22 +22,21 @@ const TemperatureCardContent = ({
 }: TemperatureCardContentProps) => {
   const temperatureHead = ["時刻", "気温(℃)"];
   const [editModalOpenIndex, setEditModalOpenIndex] = useState(-1);
+
+  const timeFormatted = (time: string) => {
+    const timeArray = time.split(":");
+    return `${timeArray[0]}:${timeArray[1]}`;
+  };
+
   return (
     <TableContainer component={Paper} variant="outlined">
       <Table aria-label="simple table">
         <TableHead>
           <TableRow sx={{ backgroundColor: "#F5F4F7" }}>
-            {temperatureHead.map((head, index) => {
-              return (
-                <TableCell
-                  align={index == 0 ? "left" : "right"}
-                  key={index}
-                  sx={{ width: "100px" }}
-                >
-                  {head}
-                </TableCell>
-              );
-            })}
+            <TableCell align="left" sx={{ width: "150px" }}>
+              {temperatureHead[0]}
+            </TableCell>
+            <TableCell align="right">{temperatureHead[1]}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -54,9 +53,14 @@ const TemperatureCardContent = ({
                 }}
               >
                 <TableCell component="th" scope="row" width={"200px"}>
-                  {content.time}
+                  {timeFormatted(content.time)}
                 </TableCell>
-                <TableCell component="th" scope="row" width={"200px"}>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  width={"200px"}
+                  align="right"
+                >
                   {content.temperature}
                 </TableCell>
               </TableRow>

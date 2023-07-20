@@ -13,9 +13,10 @@ import EventModal from "../Modals/EventModal";
 
 type EventCardContentProps = {
   events: EventProps[];
+  fetchData: () => void;
 };
 
-const EventCardContent = ({ events }: EventCardContentProps) => {
+const EventCardContent = ({ events, fetchData }: EventCardContentProps) => {
   const eventHead = ["開始時刻", "終了時刻", "内容"];
   const [editModalOpenIndex, setEditModalOpenIndex] = useState(-1);
   return (
@@ -23,17 +24,13 @@ const EventCardContent = ({ events }: EventCardContentProps) => {
       <Table aria-label="simple table">
         <TableHead>
           <TableRow sx={{ backgroundColor: "#F5F4F7" }}>
-            {eventHead.map((head, index) => {
-              return (
-                <TableCell
-                  align={index == 0 ? "left" : "right"}
-                  key={index}
-                  sx={{ width: "100px" }}
-                >
-                  {head}
-                </TableCell>
-              );
-            })}
+            <TableCell align="left" sx={{ width: "150px" }}>
+              {eventHead[0]}
+            </TableCell>
+            <TableCell align="left" sx={{ width: "150px" }}>
+              {eventHead[1]}
+            </TableCell>
+            <TableCell align="right">{eventHead[2]}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -49,13 +46,13 @@ const EventCardContent = ({ events }: EventCardContentProps) => {
                   setEditModalOpenIndex(index);
                 }}
               >
-                <TableCell component="th" scope="row" width={"200px"}>
+                <TableCell component="th" scope="row">
                   {content.startTime}
                 </TableCell>
-                <TableCell component="th" scope="row" width={"200px"}>
+                <TableCell component="th" scope="row">
                   {content.endTime}
                 </TableCell>
-                <TableCell component="th" scope="row" width={"200px"}>
+                <TableCell component="th" scope="row" align="right">
                   {content.event}
                 </TableCell>
               </TableRow>
@@ -67,6 +64,7 @@ const EventCardContent = ({ events }: EventCardContentProps) => {
                   setEditModalOpenIndex(-1);
                 }}
                 isEdit={true}
+                fetchData={fetchData}
               />
             </React.Fragment>
           ))}
