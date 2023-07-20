@@ -58,8 +58,8 @@ const RecordCard = ({ title, icon, className }: RecordCardProps) => {
 
   return (
     <div className={`bg-white px-8 py-8 rounded-lg h-fit ${className}`}>
-      <div className="flex justify-between">
-        <p className="text-xl  text-gray-700 font-bold mb-2 flex items-center">
+      <div className="flex justify-between mb-2">
+        <p className="text-xl  text-gray-700 font-bold  flex items-center">
           {icon}
           {title}
         </p>

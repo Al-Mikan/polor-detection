@@ -6,7 +6,11 @@ import {
 import { Modal, Box, Button, TextField } from "@mui/material";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
 import dayjs, { Dayjs } from "dayjs";
-import { createTemperature, updateTemperature } from "../../utils/temperature";
+import {
+  createTemperature,
+  updateTemperature,
+  deleteTemperature,
+} from "../../utils/temperature";
 import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
 
@@ -60,6 +64,9 @@ const TemperatureModal = ({
       temperature: content.temperature,
     });
   };
+  const deleteData = async (id: number): Promise<void> => {
+    await deleteTemperature(id);
+  };
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -94,7 +101,13 @@ const TemperatureModal = ({
         <div className="mt-6 flex space-x-4 justify-between">
           <Button
             sx={{ color: "red" }}
-            onClick={() => alert("削除")}
+            onClick={async () => {
+              if (content?.id) {
+                await deleteData(content?.id);
+                fetchData();
+              }
+              handleClose();
+            }}
             style={isEdit ? { opacity: 1 } : { opacity: 0 }}
           >
             削除
