@@ -2,11 +2,29 @@ export type polorProps = {
   id: number;
   name: string;
 };
-export type TimeDataProps = {
+
+export type DetectionTimeProps = {
   id: number;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
 };
+
+export type UpdateDetectionTimeProps = {
+  startTime: string;
+  endTime: string;
+};
+
+export type DetectionPolorProps = {
+  id: number;
+  polorId: number;
+  date: string;
+};
+
+export type CreateDetectionPolorProps = {
+  polorId: number;
+  date: string;
+};
+
 export type MealProps = {
   id: number;
   time: string;

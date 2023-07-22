@@ -2,13 +2,16 @@ import { Box } from "@mui/material";
 
 import * as React from "react";
 import { Tooltip } from "@mui/material";
-import { TimeDataProps } from "@/components/type";
+import { DeteciontTimeProps } from "@/components/type";
+import { useContext } from "react";
+import { AppContext } from "@/pages/_app";
 
 type DayGridProps = {
-  timeData: TimeDataProps[] | null;
+  timeData: DeteciontTimeProps[];
 };
 
 const DayGrid = ({ timeData }: DayGridProps) => {
+  const { id, setId } = useContext(AppContext);
   const commonStyles = {
     width: "100%",
     opacity: 0.2,
@@ -54,48 +57,52 @@ const DayGrid = ({ timeData }: DayGridProps) => {
           <Box sx={{ ...commonStyles, border: 1, borderLeft: 0 }}></Box>
           <Box sx={{ ...commonStyles, border: 1, borderLeft: 0 }}></Box>
           {timeData?.map((time, index) => {
-            const startTime = time.startTime.getHours();
-            const startMinutes = time.startTime.getMinutes();
-            const startSeconds = time.startTime.getSeconds();
-            const endTime = time.endTime.getHours();
-            const endMinutes = time.endTime.getMinutes();
-            const endSeconds = time.endTime.getSeconds();
-            const width =
-              (((endTime - startTime) * 60 + endMinutes - startMinutes) /
-                timeWidth) *
-              100;
-            const oneMinuteWidth = 100 / timeWidth;
-            const startPosition =
-              ((startTime - 5) * 60 + startMinutes) * oneMinuteWidth;
-            const timeStr =
-              startTime.toString().padStart(2, "0") +
-              ":" +
-              startMinutes.toString().padStart(2, "0") +
-              ":" +
-              startSeconds.toString().padStart(2, "0") +
-              " - " +
-              endTime.toString().padStart(2, "0") +
-              ":" +
-              endMinutes.toString().padStart(2, "0") +
-              ":" +
-              endSeconds.toString().padStart(2, "0");
-            return (
-              <>
-                <Tooltip title={timeStr}>
-                  <Box
-                    key={index}
-                    sx={{
-                      position: "absolute",
-                      backgroundColor: "#2B7BF4",
-                      width: `${width}%`,
-                      height: "120px",
-                      left: `${startPosition}%`,
-                      top: "0px",
-                    }}
-                  ></Box>
-                </Tooltip>
-              </>
-            );
+            if (time.polorId === id) {
+              const start = new Date("1970-01-01 " + time.startTime);
+              const end = new Date("1970-01-01 " + time.endTime);
+
+              const startTime = start.getHours();
+              const startMinutes = start.getMinutes();
+              const startSeconds = start.getSeconds();
+              const endTime = end.getHours();
+              const endMinutes = end.getMinutes();
+              const endSeconds = end.getSeconds();
+              const width =
+                (((endTime - startTime) * 60 + endMinutes - startMinutes) /
+                  timeWidth) *
+                100;
+              const oneMinuteWidth = 100 / timeWidth;
+              const startPosition =
+                ((startTime - 5) * 60 + startMinutes) * oneMinuteWidth;
+              const timeStr =
+                startTime.toString().padStart(2, "0") +
+                ":" +
+                startMinutes.toString().padStart(2, "0") +
+                ":" +
+                startSeconds.toString().padStart(2, "0") +
+                " - " +
+                endTime.toString().padStart(2, "0") +
+                ":" +
+                endMinutes.toString().padStart(2, "0") +
+                ":" +
+                endSeconds.toString().padStart(2, "0");
+              return (
+                <div key={index}>
+                  <Tooltip title={timeStr}>
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        backgroundColor: "#2B7BF4",
+                        width: `${width}%`,
+                        height: "120px",
+                        left: `${startPosition}%`,
+                        top: "0px",
+                      }}
+                    ></Box>
+                  </Tooltip>
+                </div>
+              );
+            }
           })}
         </div>
       </div>

@@ -16,13 +16,20 @@ class DetectionTime(Base):
     __tablename__ = "detection_time"
 
     id = Column(Integer, primary_key=True)
-    polorId = Column(Integer)
     date = Column(Date, nullable=False)
     startTime = Column(Time, nullable=False)
     endTime = Column(Time, nullable=False)
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
 
+class DetectionPolor(Base):
+    __tablename__ = "detection_polor"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    polorId = Column(Integer , nullable=True)
+    date = Column(Date, primary_key=True, nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    updatedAt = Column(DateTime, nullable=False)
 
 class Meal(Base):
     __tablename__ = "meal"

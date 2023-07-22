@@ -3,9 +3,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.models.model import DetectionTime
 from sqlalchemy import and_
+import api.schemas.detect_time as schema
 
 async def get_detect_time(date,db: AsyncSession):
-    stmt = select(DetectionTime.id, DetectionTime.polorId, DetectionTime.startTime, DetectionTime.endTime).where(
+    stmt = select(DetectionTime.id, DetectionTime.startTime, DetectionTime.endTime).where(
         and_(
             DetectionTime.date == date,
         )
@@ -19,7 +20,6 @@ async def get_detect_time(date,db: AsyncSession):
         formatted_detection_times.append(
             {
                 "id": detection_time.id,
-                "polorId": detection_time.polorId,
                 "startTime": detection_time.startTime,
                 "endTime": detection_time.endTime,
             }

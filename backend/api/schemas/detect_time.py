@@ -4,8 +4,12 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class DetectionTime(BaseModel):
-    id: int
-    polorId: Optional[int]
+class DetectionTimeBase(BaseModel):
     startTime: time
     endTime: time
+
+class DetectionTime(DetectionTimeBase):
+    id: int
+
+    class Config:
+        orm_mode = True

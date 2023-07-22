@@ -6,6 +6,7 @@ import Layout from "@/layout/Layout";
 
 import React, { Dispatch, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import { polorProps } from "@/components/type";
 
 export const AppContext = React.createContext(
   {} as {
@@ -13,15 +14,20 @@ export const AppContext = React.createContext(
     setId: Dispatch<React.SetStateAction<number>>;
     date: dayjs.Dayjs;
     setDate: Dispatch<React.SetStateAction<Dayjs>>;
+    polors: polorProps[];
+    setPolors: Dispatch<React.SetStateAction<polorProps[]>>;
   }
 );
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const [id, setId] = useState(1);
   const [date, setDate] = useState(dayjs());
+  const [polors, setPolors] = useState([] as polorProps[]);
   const getLayout = Component.getLayout ?? ((page) => page);
   return getLayout(
-    <AppContext.Provider value={{ id, setId, date, setDate }}>
+    <AppContext.Provider
+      value={{ id, setId, date, setDate, polors, setPolors }}
+    >
       <Layout>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Component {...pageProps} />

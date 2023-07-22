@@ -63,8 +63,8 @@ export const MUIDialog = ({
 const Header = () => {
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState({} as polorProps);
-  const [polors, setPolors] = useState([] as polorProps[]);
   const { id, setId } = useContext(AppContext);
+  const { polors, setPolors } = useContext(AppContext);
   const router = useRouter();
   const { pathname } = router;
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { useContext, useEffect, useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
 import { AppContext } from "@/pages/_app";
 
 import DayGrid from "./DayGrid";
@@ -14,21 +13,25 @@ import {
   FaLeaf,
   FaCalendarDay,
 } from "react-icons/fa";
-
-import { PickersDay, PickersDayProps } from "@mui/x-date-pickers/PickersDay";
-
-import { timeData } from "@/data/sample";
-import { TimeDataProps } from "./type";
+import { DetectionTimeProps, polorProps } from "./type";
+import { getDetectionTimes } from "@/utils/detectionTime";
+import { getDetectionPolors } from "@/utils/detectionPolor";
+import DetectionPolorModal from "./Modals/DetectionPolorModal";
 
 //合計値を計算
-const calculateTotalTime = (timeData: TimeDataProps[] | null): number[] => {
+const calculateTotalTime = (
+  timeData: DetectionTimeProps[] | null,
+  id: number,
+  detectionPolorId: number
+): number[] => {
   let totalMilliseconds = 0;
-  if (timeData === null) return [0, 0, 0];
+  if (timeData === null || id != detectionPolorId) return [0, 0, 0];
 
   // 各時間帯の差分を加算
   for (const time of timeData) {
-    const diffInMilliseconds =
-      time.endTime.getTime() - time.startTime.getTime();
+    const time1 = new Date("1970-01-01 " + time.endTime).getTime();
+    const time2 = new Date("1970-01-01 " + time.startTime).getTime();
+    const diffInMilliseconds = time1 - time2;
     totalMilliseconds += diffInMilliseconds;
   }
   // 総計を時分秒に変換
@@ -40,52 +43,45 @@ const calculateTotalTime = (timeData: TimeDataProps[] | null): number[] => {
 };
 
 const CalenderContent = () => {
+  const { id, setId } = useContext(AppContext);
   const { date, setDate } = useContext(AppContext);
+  const { polors, setPolors } = useContext(AppContext);
 
   const [totalTimeAry, setTotalTimeAry] = useState<number[]>([0, 0, 0]);
-  const [targetData, setTargetData] = useState<TimeDataProps[] | null>(null);
-  const [highlightedDays, setHighlightedDays] = useState([1, 2, 15]);
-  const [unRegisterdDays, setUnRegisterdDays] = useState([12, 13, 14]);
+  const [detectionData, setDetectionData] = useState<DetectionTimeProps[]>([]);
+  const [detectionPolor, setDetectionPolor] = useState<polorProps>(
+    {} as polorProps
+  );
+  const [userSelectedModalOpen, setUserSelectedModalOpen] = useState(false);
 
-  //もし、名前がdbになかったらmodalを出す
+  const fetchDetectionTime = async () => {
+    try {
+      const detectionData = await getDetectionTimes(date.format("YYYY-MM-DD"));
+      const detectionPolor = await getDetectionPolors(
+        date.format("YYYY-MM-DD")
+      );
+      setDetectionData(detectionData);
+      if (detectionPolor.length !== 0) {
+        const polorId = detectionPolor[0].polorId;
+        const polorObj = polors.find((item) => item.id === polorId);
+        setDetectionPolor(polorObj as polorProps);
+      } else {
+        setUserSelectedModalOpen(true);
+      }
+      const totalary = calculateTotalTime(
+        detectionData,
+        id,
+        detectionPolor[0].polorId
+      );
+      setTotalTimeAry(totalary);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    setTargetData(timeData);
-    setTotalTimeAry(calculateTotalTime(targetData));
-  }, []);
-
-  const ServerDay = (
-    props: PickersDayProps<Dayjs> & {
-      highlightedDays?: number[];
-      unRegisterdDays?: number[];
-    }
-  ) => {
-    const {
-      highlightedDays = [],
-      unRegisterdDays = [],
-      day,
-      outsideCurrentMonth,
-      ...other
-    } = props;
-
-    const isSelectedDay =
-      !props.outsideCurrentMonth &&
-      highlightedDays.indexOf(props.day.date()) >= 0;
-    const isUnRegisterdDay =
-      !props.outsideCurrentMonth &&
-      unRegisterdDays.indexOf(props.day.date()) >= 0;
-
-    return (
-      <PickersDay
-        {...other}
-        outsideCurrentMonth={outsideCurrentMonth}
-        day={day}
-        className={
-          isSelectedDay ? "bg-red-300" : isUnRegisterdDay ? " bg-gray-300" : ""
-        }
-      />
-    );
-  };
+    fetchDetectionTime();
+  }, [id, date]);
 
   return (
     <div className="p-8">
@@ -94,24 +90,20 @@ const CalenderContent = () => {
           <DateCalendar
             value={date}
             onChange={(day) => day && setDate(day)}
-            slots={{
-              day: ServerDay,
-            }}
-            slotProps={{
-              day: {
-                highlightedDays,
-                unRegisterdDays,
-              } as any,
-            }}
             className="scale-[0.8] origin-top-left bg-white rounded-md p-0 "
           />
         </div>
         <div className="ml-[40px] w-full">
           <div className="flex justify-between">
-            <p className="text-3xl">{date?.format("YYYY年MM月DD日")}</p>
+            <div className="flex">
+              <p className="text-3xl">{date?.format("YYYY年MM月DD日")}</p>
+              <div className="border-2 border-blue-400 p-1 text-xs leading-none mt-2">
+                {detectionPolor?.name}を検知しています
+              </div>
+            </div>
+
             <Button>動画を確認する</Button>
           </div>
-
           <div className="flex items-end justify-between mt-9 mb-3">
             <p>
               常同行動検知時間
@@ -121,7 +113,7 @@ const CalenderContent = () => {
             </p>
             <p>最終集計時刻 2023-6-8 12:00</p>
           </div>
-          <DayGrid timeData={targetData} />
+          <DayGrid timeData={detectionData} />
         </div>
       </div>
       <div className=" mt-10 rounded p-6">
@@ -153,6 +145,13 @@ const CalenderContent = () => {
           />
         </div>
       </div>
+      <DetectionPolorModal
+        open={userSelectedModalOpen}
+        handleClose={() => {
+          setUserSelectedModalOpen(false);
+        }}
+        fetchData={fetchDetectionTime}
+      />
     </div>
   );
 };

@@ -16,8 +16,8 @@ async def get_enrichments(polorId: int, date: str = Query(...), db: AsyncSession
         return await enrichment_crud.get_enrichments(requested_date,polorId,db)
 
 @router.post("/enrichments", response_model=schema.EnrichmentCreateResponse)
-async def create_enrichment(meal: schema.EnrichmentCreate,db: AsyncSession = Depends(get_db)):
-    return await enrichment_crud.create_enrichment(db,meal)
+async def create_enrichment(enrichment: schema.EnrichmentCreate,db: AsyncSession = Depends(get_db)):
+    return await enrichment_crud.create_enrichment(db,enrichment)
 
 @router.put("/enrichments/{id}", response_model=schema.EnrichmentCreateResponse)
 async def update_enrichment(id: int, new_enrichment: schema.EnrichmentBase ,db: AsyncSession = Depends(get_db)):

@@ -1,7 +1,6 @@
-from datetime import date, datetime, time
 from typing import List
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query,HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter()
@@ -13,3 +12,4 @@ from api.db import get_db
 @router.get("/detectionTime", response_model=List[schema.DetectionTime])
 async def get_detection_time(date: str = Query(...), db: AsyncSession = Depends(get_db)):
     return await get_detect_time(date,db)
+
