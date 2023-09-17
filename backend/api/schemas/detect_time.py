@@ -1,5 +1,4 @@
 from datetime import time
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -7,6 +6,7 @@ from pydantic import BaseModel
 class DetectionTimeBase(BaseModel):
     startTime: time
     endTime: time
+    cageId: int
 
 class DetectionTime(DetectionTimeBase):
     id: int

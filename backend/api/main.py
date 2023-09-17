@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from api.routers import detect_time, meal, polor, temperature,enrichment,event,detection_polor
+from api.routers import detect_time, meal, polor, temperature,enrichment,event,polor_cage_log,cage,polor_cage_log
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -14,8 +14,10 @@ app.add_middleware(
 )
 
 app.include_router(polor.router)
+app.include_router(cage.router)
+app.include_router(polor_cage_log.router)
 app.include_router(detect_time.router)
-app.include_router(detection_polor.router)
+app.include_router(polor_cage_log.router)
 app.include_router(meal.router)
 app.include_router(temperature.router)
 app.include_router(enrichment.router)

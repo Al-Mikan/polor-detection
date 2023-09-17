@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
 
-class Polor(BaseModel):
+class Cage(BaseModel):
     id: int
-    polorName: str
+    cageName: str

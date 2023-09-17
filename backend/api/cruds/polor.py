@@ -8,7 +8,7 @@ from api.models.model import Polor
 async def get_polors(db: AsyncSession):
     stmt = select(
         Polor.id,
-        Polor.name,
+        Polor.polorName,
     ).order_by(Polor.id)
 
     result = await db.execute(stmt)
@@ -16,6 +16,6 @@ async def get_polors(db: AsyncSession):
 
     formatted_polors = []
     for polor in polors:
-        formatted_polors.append({"id": polor.id, "name": polor.name})
+        formatted_polors.append({"id": polor.id, "polorName": polor.polorName})
 
     return formatted_polors

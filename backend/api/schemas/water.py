@@ -4,19 +4,20 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class DetectionPolorBase(BaseModel):
-    polorId: Optional[int]
+class WaterBase(BaseModel):
+    polorId: int
+    value: float
 
-class DetectionPolorCreate(DetectionPolorBase):
+class WaterCreate(WaterBase):
     date: date
 
-class DetectionPolorCreateResponse(DetectionPolorCreate):
+class WaterCreateResponse(WaterCreate):
     id: int
 
     class Config:
         orm_mode = True
 
-class DetectionPolor(DetectionPolorBase):
+class Water(WaterBase):
     id: int
 
     class Config:

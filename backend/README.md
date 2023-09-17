@@ -4,6 +4,28 @@
 
 - docker-compose
 
+### 初回起動
+
+- コンテナの作成
+
+```sh
+# コンテナを作成
+$ docker-compose build
+```
+
+- poetry の定義ファイルについての install
+
+```sh
+$ docker-compose run --entrypoint "poetry install --no-root" app
+```
+
+- sqlalchemy の install
+  docker-compose が立ち上がっている状態で
+
+```sh
+$ docker-compose exec app poetry add sqlalchemy aiomysql
+```
+
 #### Docker 起動
 
 ```sh
@@ -25,4 +47,10 @@ $ docker-compose exec app poetry run python -m api.migrate_db
 
 ```sh
 $ docker-compose exec db mysql polor
+```
+
+## 新しい Python パッケージを追加した場合
+
+```sh
+$ docker-compose build --no-cache
 ```

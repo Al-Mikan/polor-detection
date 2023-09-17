@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, DateTime, Float, Integer, String, Time
+from sqlalchemy import Column, Date, DateTime, Float, Integer, String, Time, Boolean
 
 from api.db import Base
 
@@ -7,30 +7,74 @@ class Polor(Base):
     __tablename__ = "polor"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(20), nullable=False)
+    polorName = Column(String(20), nullable=False)
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
 
-
-class DetectionTime(Base):
-    __tablename__ = "detection_time"
+class Cage(Base):
+    __tablename__ = "cage"
 
     id = Column(Integer, primary_key=True)
-    date = Column(Date, nullable=False)
-    startTime = Column(Time, nullable=False)
-    endTime = Column(Time, nullable=False)
+    cageName = Column(String(30), nullable=False)
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
 
-class DetectionPolor(Base):
-    __tablename__ = "detection_polor"
+class PolorCageLog(Base):
+    __tablename__ = "polor_cage_log"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    polorId = Column(Integer , nullable=True)
+    polorId = Column(Integer , nullable=False)
+    cageId = Column(Integer, nullable=False)
     date = Column(Date, primary_key=True, nullable=False)
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
 
+
+
+################################################################環境
+class Temperature(Base):
+    __tablename__ = "temperature"
+
+    id = Column(Integer, primary_key=True)
+    polorId = Column(Integer, nullable=False)
+    date = Column(Date, nullable=False)
+    time = Column(Time, nullable=False)
+    temperature = Column(Float, nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    updatedAt = Column(DateTime, nullable=False)
+
+class PoolCleaning(Base):
+    __tablename__ = "pool_cleaning"
+
+    id = Column(Integer, primary_key=True)
+    polorId = Column(Integer, nullable=False)
+    date = Column(Date, nullable=False)
+    poolCleaning = Column(Boolean, nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    updatedAt = Column(DateTime, nullable=False)
+
+##収用回数
+class Expropriation(Base):
+    __tablename__ = "expropriation"
+
+    id = Column(Integer, primary_key=True)
+    polorId = Column(Integer, nullable=False)
+    date = Column(Date, nullable=False)
+    expropriation = Column(Integer, nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    updatedAt = Column(DateTime, nullable=False)
+
+class Training(Base):
+    __tablename__ = "training"
+
+    id = Column(Integer, primary_key=True)
+    polorId = Column(Integer, nullable=False)
+    date = Column(Date, nullable=False)
+    training = Column(String(100), nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    updatedAt = Column(DateTime, nullable=False)
+
+#############################################################給餌
 class Meal(Base):
     __tablename__ = "meal"
 
@@ -43,18 +87,52 @@ class Meal(Base):
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
 
+class Water(Base):
+    __tablename__ = "water"
 
-class Temperature(Base):
-    __tablename__ = "temperature"
+    id = Column(Integer, primary_key=True)
+    polorId = Column(Integer, nullable=False)
+    date = Column(Date, nullable=False)
+    value = Column(Float, nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    updatedAt = Column(DateTime, nullable=False)
+
+########################################################排泄
+
+class Excretion(Base):
+    __tablename__ = "excretion"
+
+    id = Column(Integer, primary_key=True)
+    polorId = Column(Integer, nullable=False)
+    date = Column(Date, nullable=False)
+    number = Column(Integer, nullable=False)
+    status = Column(String(2), nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    updatedAt = Column(DateTime, nullable=False)
+
+########################################################行動
+class DetectionTime(Base):
+    __tablename__ = "detection_time"
+
+    id = Column(Integer, primary_key=True)
+    date = Column(Date, nullable=False)
+    cageId = Column(Integer, nullable=False)
+    startTime = Column(Time, nullable=False)
+    endTime = Column(Time, nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    updatedAt = Column(DateTime, nullable=False)
+
+class WakeUpTime(Base):
+    __tablename__ = "wake_up_time"
 
     id = Column(Integer, primary_key=True)
     polorId = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
     time = Column(Time, nullable=False)
-    temperature = Column(Float, nullable=False)
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
 
+##################################################エンリッチメント
 
 class Event(Base):
     __tablename__ = "event"
@@ -68,15 +146,24 @@ class Event(Base):
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
 
-
 class Enrichment(Base):
     __tablename__ = "enrichment"
 
     id = Column(Integer, primary_key=True)
     polorId = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
-    startTime = Column(Time, nullable=False)
-    endTime = Column(Time, nullable=False)
     enrichment = Column(String(100), nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    updatedAt = Column(DateTime, nullable=False)
+
+####################################################メモ
+
+class Memo(Base):
+    __tablename__ = "memo"
+
+    id = Column(Integer, primary_key=True)
+    polorId = Column(Integer, nullable=False)
+    date = Column(Date, nullable=False)
+    memo = Column(String(500), nullable=False)
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
