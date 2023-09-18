@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from api.routers import detect_time, meal, polor, temperature,enrichment,event,polor_cage_log,cage,polor_cage_log
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+app = FastAPI(docs_url="/api/docs", redoc_url=None,openapi_url="/api/openapi.json")
 
 app.add_middleware(
     CORSMiddleware,

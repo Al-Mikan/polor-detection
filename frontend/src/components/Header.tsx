@@ -16,14 +16,14 @@ import { useContext } from "react";
 import { AppContext } from "@/pages/_app";
 import { useRouter } from "next/router";
 
-import { polorProps } from "./type";
+import { PolorProps } from "./type";
 import { getPolors } from "../utils/polors";
 
 type DialogProps = {
   open: boolean;
-  selectedValue: polorProps;
-  onClose: (value: polorProps) => void;
-  polors: polorProps[];
+  selectedValue: PolorProps;
+  onClose: (value: PolorProps) => void;
+  polors: PolorProps[];
 };
 
 export const MUIDialog = ({
@@ -36,7 +36,7 @@ export const MUIDialog = ({
     onClose(selectedValue);
   };
 
-  const handleListItemClick = (value: polorProps) => {
+  const handleListItemClick = (value: PolorProps) => {
     onClose(value);
   };
   return (
@@ -51,7 +51,7 @@ export const MUIDialog = ({
                   <PersonIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={polor.name} />
+              <ListItemText primary={polor.polorName} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -62,7 +62,7 @@ export const MUIDialog = ({
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState({} as polorProps);
+  const [selectedValue, setSelectedValue] = useState({} as PolorProps);
   const { id, setId } = useContext(AppContext);
   const { polors, setPolors } = useContext(AppContext);
   const router = useRouter();
@@ -72,7 +72,7 @@ const Header = () => {
     setOpen(true);
   };
 
-  const handleClose = (value: polorProps) => {
+  const handleClose = (value: PolorProps) => {
     setOpen(false);
     setSelectedValue(value);
     setId(value.id);
@@ -82,6 +82,7 @@ const Header = () => {
     const fetchData = async () => {
       try {
         const data = await getPolors();
+        console.log(data);
         setPolors(data);
         setSelectedValue(data[0]);
       } catch (error) {
@@ -107,7 +108,7 @@ const Header = () => {
         onClick={handleClickOpen}
         variant="outlined"
       >
-        {selectedValue.name}
+        {selectedValue.polorName}
         <BiChevronDown />
       </Button>
     </div>

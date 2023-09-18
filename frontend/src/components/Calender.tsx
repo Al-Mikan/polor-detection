@@ -13,7 +13,7 @@ import {
   FaLeaf,
   FaCalendarDay,
 } from "react-icons/fa";
-import { DetectionTimeProps, polorProps } from "./type";
+import { DetectionTimeProps, PolorProps, PolorCageLogProps } from "./type";
 import { getDetectionTimes } from "@/utils/detectionTime";
 import { getDetectionPolors } from "@/utils/detectionPolor";
 import DetectionPolorModal from "./Modals/DetectionPolorModal";
@@ -49,10 +49,8 @@ const CalenderContent = () => {
 
   const [totalTimeAry, setTotalTimeAry] = useState<number[]>([0, 0, 0]);
   const [detectionData, setDetectionData] = useState<DetectionTimeProps[]>([]);
-  const [detectionPolor, setDetectionPolor] = useState<polorProps>(
-    {} as polorProps
-  );
   const [userSelectedModalOpen, setUserSelectedModalOpen] = useState(false);
+  const [polorCageLog, setPolorCageLog] = useState<PolorCageLogProps[]>([]);
 
   const fetchDetectionTime = async () => {
     try {
@@ -64,7 +62,6 @@ const CalenderContent = () => {
       if (detectionPolor.length !== 0) {
         const polorId = detectionPolor[0].polorId;
         const polorObj = polors.find((item) => item.id === polorId);
-        setDetectionPolor(polorObj as polorProps);
       } else {
         setUserSelectedModalOpen(true);
       }
@@ -84,9 +81,9 @@ const CalenderContent = () => {
   }, [id, date]);
 
   return (
-    <div className="p-8">
+    <div className="p-8 bg-slate-600">
       <div className="flex items-start justify-start bg-white p-6 rounded">
-        <div className=" w-[256px] h-[256px]">
+        <div className=" w-[256px] h-[256px] ">
           <DateCalendar
             value={date}
             onChange={(day) => day && setDate(day)}
@@ -97,9 +94,6 @@ const CalenderContent = () => {
           <div className="flex justify-between">
             <div className="flex">
               <p className="text-3xl">{date?.format("YYYY年MM月DD日")}</p>
-              <div className="border-2 border-blue-400 p-1 text-xs leading-none mt-2">
-                {detectionPolor?.name}を検知しています
-              </div>
             </div>
 
             <Button>動画を確認する</Button>

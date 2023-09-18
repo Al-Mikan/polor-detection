@@ -1,5 +1,5 @@
-const BASE_URL = "http://localhost:8000";
-import { UpdateDeteciontTimeProps } from "@/components/type";
+const BASE_URL = "/api";
+import { UpdateDetectionTimeProps } from "@/components/type";
 //get
 export const getDetectionTimes = async (date: string) => {
   console.log(date);
@@ -12,7 +12,7 @@ export const getDetectionTimes = async (date: string) => {
 // update
 export const updateDetectionTime = async (
   id: number,
-  newDetectionTime: UpdateDeteciontTimeProps
+  newDetectionTime: UpdateDetectionTimeProps
 ) => {
   const response = await fetch(`${BASE_URL}/detectionTime/${id}`, {
     method: "PUT",

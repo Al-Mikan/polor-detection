@@ -1,6 +1,6 @@
 FROM node:18.12-alpine
 
-WORKDIR /app/
+WORKDIR /src/
 
-COPY ./package.json ./
+COPY ./frontend/package.json ./
 RUN npm install

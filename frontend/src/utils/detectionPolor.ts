@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "/api";
 import { CreateDetectionPolorProps } from "@/components/type";
 //get
 export const getDetectionPolors = async (date: string) => {

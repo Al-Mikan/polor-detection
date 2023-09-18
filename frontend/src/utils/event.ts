@@ -1,6 +1,6 @@
 import { CreateEventProps, UpdateEventProps } from "@/components/type";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "/api";
 
 // get
 export const getEvents = async (date: string, polorId: number) => {

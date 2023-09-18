@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     ports:
-      - 8080:8080
+      - 8000:8000
   db:
     image: mysql:8.0
     platform: linux/x86_64 # M1 Macの場合必要
@@ -28,7 +28,7 @@ services:
       dockerfile: frontend/Dockerfile
     volumes:
       - ./frontend:/src
-    command: sh -c "cd frontend && npm run dev"
+    command: sh -c "npm run dev"
     ports:
       - "3000:3000"
 
@@ -38,3 +38,6 @@ services:
       - "80:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+volumes:
+  mysql_data:

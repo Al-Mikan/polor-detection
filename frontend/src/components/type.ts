@@ -1,6 +1,29 @@
-export type polorProps = {
+export type PolorProps = {
   id: number;
-  name: string;
+  polorName: string;
+};
+
+export type CageProps = {
+  id: number;
+  cageName: string;
+};
+
+export type PolorCageLogProps = {
+  id: number;
+  polorId: number;
+  cageId: number;
+};
+
+export type CreatePolorCageLogProps = {
+  id: number;
+  polorId: number;
+  cageId: number;
+};
+
+export type UpdatePolorCageLogProps = {
+  polorId: number;
+  cageId: number;
+  date: string;
 };
 
 export type DetectionTimeProps = {
@@ -12,12 +35,6 @@ export type DetectionTimeProps = {
 export type UpdateDetectionTimeProps = {
   startTime: string;
   endTime: string;
-};
-
-export type DetectionPolorProps = {
-  id: number;
-  polorId: number;
-  date: string;
 };
 
 export type CreateDetectionPolorProps = {

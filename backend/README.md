@@ -40,7 +40,7 @@ http://localhost:8000/docs
 #### migrate
 
 ```sh
-$ docker-compose exec app poetry run python -m api.migrate_db
+$ docker-compose exec backend poetry run python -m api.migrate_db
 ```
 
 #### db クライアントの立ち上げ

@@ -10,6 +10,6 @@ from api.cruds.cage import get_cages
 from api.db import get_db
 
 
-@router.get("/cages", response_model=List[schema.Cage])
+@router.get("/api/cages", response_model=List[schema.Cage])
 async def cages(db: AsyncSession = Depends(get_db)):
     return await get_cages(db)

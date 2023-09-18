@@ -1,6 +1,5 @@
 import { CreateMealProps, UpdateMealProps } from "@/components/type";
-
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "/api";
 
 // get
 export const getMeals = async (date: string, polorId: number) => {
