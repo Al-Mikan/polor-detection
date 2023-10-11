@@ -2,12 +2,12 @@ import { Box } from "@mui/material";
 
 import * as React from "react";
 import { Tooltip } from "@mui/material";
-import { DeteciontTimeProps } from "@/components/type";
+import { DetectionTimeProps } from "@/components/type";
 import { useContext } from "react";
 import { AppContext } from "@/pages/_app";
 
 type DayGridProps = {
-  timeData: DeteciontTimeProps[];
+  timeData: DetectionTimeProps[];
 };
 
 const DayGrid = ({ timeData }: DayGridProps) => {
@@ -57,7 +57,7 @@ const DayGrid = ({ timeData }: DayGridProps) => {
           <Box sx={{ ...commonStyles, border: 1, borderLeft: 0 }}></Box>
           <Box sx={{ ...commonStyles, border: 1, borderLeft: 0 }}></Box>
           {timeData?.map((time, index) => {
-            if (time.polorId === id) {
+            if (time.cageId === id) {
               const start = new Date("1970-01-01 " + time.startTime);
               const end = new Date("1970-01-01 " + time.endTime);
 
@@ -92,7 +92,7 @@ const DayGrid = ({ timeData }: DayGridProps) => {
                     <Box
                       sx={{
                         position: "absolute",
-                        backgroundColor: "#2B7BF4",
+                        backgroundColor: "#F09783",
                         width: `${width}%`,
                         height: "120px",
                         left: `${startPosition}%`,

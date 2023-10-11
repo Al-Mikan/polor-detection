@@ -57,7 +57,7 @@ const DetectionPolorModal = ({
                   <PersonIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={polor.name} />
+              <ListItemText primary={polor.polorName} />
             </ListItemButton>
           </ListItem>
         ))}

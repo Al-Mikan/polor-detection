@@ -57,7 +57,7 @@ const RecordCard = ({ title, icon, className }: RecordCardProps) => {
   }, [date, id]);
 
   return (
-    <div className={`bg-white px-8 py-8 rounded-lg h-fit ${className}`}>
+    <div className={`bg-white px-8 py-8 rounded-3xl h-fit ${className}`}>
       <div className="flex justify-between mb-2">
         <p className="text-xl  text-gray-700 font-bold  flex items-center">
           {icon}
@@ -68,8 +68,8 @@ const RecordCard = ({ title, icon, className }: RecordCardProps) => {
           onClick={() => {
             setAddmodalOpen(true);
           }}
-          className="px-4 font-bold text-lg"
-          style={{ backgroundColor: "#2B7BF4" }}
+          className="px-4 text-lg  rounded-full"
+          style={{ backgroundColor: "#F19784" }}
         >
           ＋追加
         </Button>

@@ -30,6 +30,7 @@ export type DetectionTimeProps = {
   id: number;
   startTime: string;
   endTime: string;
+  cageId: number;
 };
 
 export type UpdateDetectionTimeProps = {

@@ -71,17 +71,17 @@ const MonthlyChart = () => {
       {
         type: "line" as const,
         label: "最高気温",
-        data: labels.map(() => faker.number.int({ min: 15, max: 24 })),
-        backgroundColor: "rgba(255, 49, 48, 1)",
-        borderColor: "rgba(255, 49, 48, 1)",
-        borderWidth: 1,
+        data: labels.map(() => faker.number.int({ min: 10, max: 20 })),
+        borderColor: "#A40035",
+        backgroundColor: "#A40035",
+        borderWidth: 2,
         yAxisID: "y2",
       },
       {
         type: "bar" as const,
         label: "常同行動合計時間",
         data: labels.map(() => faker.number.int({ min: 0, max: 24 })),
-        backgroundColor: "#007AFF",
+        backgroundColor: "#F19784",
         yAxisID: "y1",
       },
     ],
@@ -197,7 +197,7 @@ const YearlyChart = () => {
       {
         label: "常同行動合計時間",
         data: labels.map(() => faker.number.int({ min: 0, max: 100 })),
-        backgroundColor: "#007AFF",
+        backgroundColor: "#F19784",
       },
     ],
   };
@@ -230,25 +230,31 @@ const BarChart = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg p-10 m-16">
-      <Box sx={{ width: "100%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
-            <Tab label="月次" />
-            <Tab label="年次" />
-          </Tabs>
+    <div className="p-8">
+      <p className=" text-3xl font-bold">グラフ</p>
+      <div className="bg-white rounded-lg mt-4 shadow">
+        <Box sx={{ width: "100%" }}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              TabIndicatorProps={{
+                style: { backgroundColor: "black", color: "black" },
+              }}
+              textColor="inherit"
+            >
+              <Tab label="月次" />
+              <Tab label="年次" />
+            </Tabs>
+          </Box>
+          <TabPanel value={value} index={0}>
+            <MonthlyChart />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <YearlyChart />
+          </TabPanel>
         </Box>
-        <TabPanel value={value} index={0}>
-          <MonthlyChart />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <YearlyChart />
-        </TabPanel>
-      </Box>
+      </div>
     </div>
   );
 };
