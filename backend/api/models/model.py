@@ -106,7 +106,7 @@ class Excretion(Base):
     polorId = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
     number = Column(Integer, nullable=False)
-    status = Column(String(2), nullable=False)
+    status = Column(String(20), nullable=False)
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
 

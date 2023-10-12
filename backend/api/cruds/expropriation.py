@@ -15,15 +15,14 @@ async def get_expropriation(date,polorId,db: AsyncSession):
     ).order_by(Expropriation.id)
 
     result = await db.execute(stmt)
-    meals = result.fetchall()
+    els = result.fetchall()
 
     formatted_meals = []
-    for meal in meals:
+    for el in els:
         formatted_meals.append(
             {
-                "id": meal.id,
-                "date": meal.date,
-                "expropriation": meal.expropriation,
+                "id": el.id,
+                "expropriation": el.expropriation,
             }
         )
     return formatted_meals
@@ -50,9 +49,9 @@ async def get_expropriation_by_id(id: int,db: AsyncSession):
     return meal
 
 # update 
-async def update_expropriation(db: AsyncSession, meal_update: schema.ExpropriationBase, original: Expropriation):
+async def update_expropriation(db: AsyncSession, update: schema.ExpropriationBase, original: Expropriation):
 
-    original.expropriation = meal_update.expropriation
+    original.expropriation = update.expropriation
     original.updatedAt = datetime.now()
 
     db.add(original)

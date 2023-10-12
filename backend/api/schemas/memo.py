@@ -5,11 +5,11 @@ from pydantic import BaseModel
 
 
 class MemoBase(BaseModel):
-    polorId: int
     memo: str
 
 class MemoCreate(MemoBase):
     date: date
+    polorId: int
 
 class MemoCreateResponse(MemoCreate):
     id: int
@@ -17,7 +17,7 @@ class MemoCreateResponse(MemoCreate):
     class Config:
         orm_mode = True
 
-class MemoTime(MemoBase):
+class Memo(MemoBase):
     id: int
 
     class Config:

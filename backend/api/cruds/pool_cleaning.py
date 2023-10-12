@@ -23,7 +23,6 @@ async def get_pool_cleaning(date,polorId,db: AsyncSession):
         formatted_elm.append(
             {
                 "id": elm.id,
-                "polorId": elm.polorId,
                 "poolCleaning": elm.poolCleaning,
             }
         )
@@ -51,9 +50,8 @@ async def get_pool_cleaning_by_id(id: int,db: AsyncSession):
     return elm
 
 # update 
-async def update_pool_cleaning_log(db: AsyncSession, update_elm: schema.PoolCleaningBase, original:PoolCleaning):
+async def update_pool_cleaning(db: AsyncSession, update_elm: schema.PoolCleaningBase, original:PoolCleaning):
 
-    original.polorId = update_elm.polorId
     original.poolCleaning = update_elm.poolCleaning
     original.updatedAt = datetime.now()
 

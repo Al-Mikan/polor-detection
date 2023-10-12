@@ -22,7 +22,6 @@ async def get_training(date,polorId,db: AsyncSession):
         formatted_elms.append(
             {
                 "id": elm.id,
-                "date": elm.date,
                 "training": elm.training,
             }
         )
@@ -50,9 +49,9 @@ async def get_training_by_id(id: int,db: AsyncSession):
     return meal
 
 # update 
-async def update_training(db: AsyncSession, meal_update: schema.TrainingBase, original: Training):
+async def update_training(db: AsyncSession, update: schema.TrainingBase, original: Training):
 
-    original.expropriation = meal_update.expropriation
+    original.training = update.training
     original.updatedAt = datetime.now()
 
     db.add(original)

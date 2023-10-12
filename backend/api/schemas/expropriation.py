@@ -2,9 +2,9 @@ from datetime import date, time
 
 from pydantic import BaseModel
 
-
+# 収用
 class ExpropriationBase(BaseModel):
-    poolCleaning: bool
+    expropriation: int
 
 
 class ExpropriationCreate(ExpropriationBase):
@@ -12,7 +12,7 @@ class ExpropriationCreate(ExpropriationBase):
     polorId: int
 
 
-class ExpropriationResponse(ExpropriationCreate):
+class ExpropriationCreateResponse(ExpropriationCreate):
     id: int
 
     class Config:

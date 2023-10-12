@@ -6,7 +6,7 @@ import api.schemas.water as schema
 from sqlalchemy import and_
 from datetime import datetime
 
-async def get_training(date,polorId,db: AsyncSession):
+async def get_water(date,polorId,db: AsyncSession):
     stmt = select(Water.id, Water.value).where(
         and_(
             Water.date == date,
@@ -22,14 +22,13 @@ async def get_training(date,polorId,db: AsyncSession):
         formatted_elms.append(
             {
                 "id": elm.id,
-                "date": elm.date,
                 "value": elm.value,
             }
         )
     return formatted_elms
 
 # create meal
-async def create_training(db: AsyncSession,create_elm: schema.WaterCreate):
+async def create_water(db: AsyncSession,create_elm: schema.WaterCreate):
     new_elm = Water(
         polorId=create_elm.polorId,
         date=create_elm.date,
@@ -43,14 +42,14 @@ async def create_training(db: AsyncSession,create_elm: schema.WaterCreate):
     return new_elm
 
 # get by id
-async def get_training_by_id(id: int,db: AsyncSession):
+async def get_water_by_id(id: int,db: AsyncSession):
     stmt = select(Water).where(Water.id == id)
     result = await db.execute(stmt)
     meal = result.scalar_one_or_none()
     return meal
 
 # update 
-async def update_training(db: AsyncSession, update_elm: schema.WaterBase, original: Water):
+async def update_water(db: AsyncSession, update_elm: schema.WaterBase, original: Water):
 
     original.value = update_elm.value
     original.updatedAt = datetime.now()
@@ -62,7 +61,7 @@ async def update_training(db: AsyncSession, update_elm: schema.WaterBase, origin
 
 
 # delete meal
-async def delete_training(id: int,db: AsyncSession):
+async def delete_water(id: int,db: AsyncSession):
     stmt = select(Water).where(Water.id == id)
     result = await db.execute(stmt)
     elm = result.scalars().first()

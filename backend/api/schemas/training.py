@@ -5,11 +5,11 @@ from pydantic import BaseModel
 
 
 class TrainingBase(BaseModel):
-    polorId: int
     training: str
 
 class TrainingCreate(TrainingBase):
     date: date
+    polorId: int
 
 class TrainingCreateResponse(TrainingCreate):
     id: int

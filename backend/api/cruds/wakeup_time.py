@@ -6,7 +6,7 @@ import api.schemas.wakeup_time as schema
 from sqlalchemy import and_
 from datetime import datetime
 
-async def get_WakeUpTime(date,polorId,db: AsyncSession):
+async def get_wakeup_time(date,polorId,db: AsyncSession):
     stmt = select(WakeUpTime.id, WakeUpTime.time).where(
         and_(
             WakeUpTime.date == date,
@@ -22,14 +22,13 @@ async def get_WakeUpTime(date,polorId,db: AsyncSession):
         formatted_elms.append(
             {
                 "id": elm.id,
-                "date": elm.date,
                 "time": elm.time,
             }
         )
     return formatted_elms
 
 # create meal
-async def create_WakeUpTime(db: AsyncSession,create_elm: schema.WakeUpTimeCreate):
+async def create_wakeup_time(db: AsyncSession,create_elm: schema.WakeUpTimeCreate):
     new_elm = WakeUpTime(
         polorId=create_elm.polorId,
         date=create_elm.date,
@@ -43,14 +42,14 @@ async def create_WakeUpTime(db: AsyncSession,create_elm: schema.WakeUpTimeCreate
     return new_elm
 
 # get by id
-async def get_WakeUpTime_by_id(id: int,db: AsyncSession):
+async def get_wakeup_time_by_id(id: int,db: AsyncSession):
     stmt = select(WakeUpTime).where(WakeUpTime.id == id)
     result = await db.execute(stmt)
     elm = result.scalar_one_or_none()
     return elm
 
 # update 
-async def update_WakeUpTime(db: AsyncSession, update_elm: schema.WakeUpTimeBase, original: WakeUpTime):
+async def update_wakeup_time(db: AsyncSession, update_elm: schema.WakeUpTimeBase, original: WakeUpTime):
 
     original.time = update_elm.time
     original.updatedAt = datetime.now()
@@ -62,7 +61,7 @@ async def update_WakeUpTime(db: AsyncSession, update_elm: schema.WakeUpTimeBase,
 
 
 # delete meal
-async def delete_WakeUpTime(id: int,db: AsyncSession):
+async def delete_wakeup_time(id: int,db: AsyncSession):
     stmt = select(WakeUpTime).where(WakeUpTime.id == id)
     result = await db.execute(stmt)
     elm = result.scalars().first()

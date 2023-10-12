@@ -22,7 +22,6 @@ async def get_excretion(date,polorId,db: AsyncSession):
         formatted_elms.append(
             {
                 "id": elm.id,
-                "date": elm.date,
                 "number": elm.number,
                 "status": elm.status,
             }

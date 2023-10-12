@@ -6,7 +6,7 @@ import api.schemas.memo as schema
 from sqlalchemy import and_
 from datetime import datetime
 
-async def get_Memo(date,polorId,db: AsyncSession):
+async def get_memo(date,polorId,db: AsyncSession):
     stmt = select(Memo.id, Memo.memo).where(
         and_(
             Memo.date == date,
@@ -22,14 +22,13 @@ async def get_Memo(date,polorId,db: AsyncSession):
         formatted_elms.append(
             {
                 "id": elm.id,
-                "date": elm.date,
                 "memo": elm.memo,
             }
         )
     return formatted_elms
 
 # create meal
-async def create_Memo(db: AsyncSession,create_elm: schema.MemoCreate):
+async def create_memo(db: AsyncSession,create_elm: schema.MemoCreate):
     new_elm = Memo(
         polorId=create_elm.polorId,
         date=create_elm.date,
@@ -43,14 +42,14 @@ async def create_Memo(db: AsyncSession,create_elm: schema.MemoCreate):
     return new_elm
 
 # get by id
-async def get_Memo_by_id(id: int,db: AsyncSession):
+async def get_memo_by_id(id: int,db: AsyncSession):
     stmt = select(Memo).where(Memo.id == id)
     result = await db.execute(stmt)
     elm = result.scalar_one_or_none()
     return elm
 
 # update 
-async def update_Memo(db: AsyncSession, update_elm: schema.MemoBase, original: Memo):
+async def update_memo(db: AsyncSession, update_elm: schema.MemoBase, original: Memo):
 
     original.memo = update_elm.memo
     original.updatedAt = datetime.now()
@@ -62,7 +61,7 @@ async def update_Memo(db: AsyncSession, update_elm: schema.MemoBase, original: M
 
 
 # delete meal
-async def delete_Memo(id: int,db: AsyncSession):
+async def delete_memo(id: int,db: AsyncSession):
     stmt = select(Memo).where(Memo.id == id)
     result = await db.execute(stmt)
     elm = result.scalars().first()

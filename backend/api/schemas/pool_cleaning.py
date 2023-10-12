@@ -12,7 +12,7 @@ class PoolCleaningCreate(PoolCleaningBase):
     polorId: int
 
 
-class PoolCleaningResponse(PoolCleaningCreate):
+class PoolCleaningCreateResponse(PoolCleaningCreate):
     id: int
 
     class Config:

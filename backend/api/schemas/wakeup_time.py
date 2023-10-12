@@ -5,11 +5,11 @@ from pydantic import BaseModel
 
 
 class WakeUpTimeBase(BaseModel):
-    polorId: int
     time: time
 
 class WakeUpTimeCreate(WakeUpTimeBase):
     date: date
+    polorId: int
 
 class WakeUpTimeCreateResponse(WakeUpTimeCreate):
     id: int

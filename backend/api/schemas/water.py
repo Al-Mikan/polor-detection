@@ -5,11 +5,11 @@ from pydantic import BaseModel
 
 
 class WaterBase(BaseModel):
-    polorId: int
     value: float
 
 class WaterCreate(WaterBase):
     date: date
+    polorId: int
 
 class WaterCreateResponse(WaterCreate):
     id: int

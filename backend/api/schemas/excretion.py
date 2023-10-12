@@ -3,14 +3,15 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-
+# 排泄
 class ExcretionBase(BaseModel):
-    polorId: int
     number: int
     status: str
 
 class ExcretionCreate(ExcretionBase):
     date: date
+    polorId: int
+
 
 class ExcretionCreateResponse(ExcretionCreate):
     id: int
