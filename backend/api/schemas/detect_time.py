@@ -8,6 +8,7 @@ class DetectionTimeBase(BaseModel):
     endTime: time
     cageId: int
 
+
 class DetectionTime(DetectionTimeBase):
     id: int
 

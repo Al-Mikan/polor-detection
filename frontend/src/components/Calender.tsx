@@ -153,7 +153,7 @@ const CalenderContent = () => {
     },
     {
       field: "uploadtime",
-      headerName: "更新時間",
+      headerName: "アップロード時間",
       align: "center",
       width: 220,
       headerAlign: "center",
@@ -366,6 +366,19 @@ const CalenderContent = () => {
             className="w-full shadow-md"
           />
         </div>
+        <p>排泄</p>
+        <p>収用回数</p>
+        <p>飲水量</p>
+        <p>プール掃除</p>
+        <p>トレーニング</p>
+        <p>起床時刻</p>
+        <p>メモ</p>
+        <br />
+        <p>api: 検知時間合計値を返す</p>
+        <p>api: 動画を受け取って保存</p>
+        <br />
+
+        <p>modelを動かす</p>
       </div>
       <UploadVideo
         video_path="./1.mp4"
