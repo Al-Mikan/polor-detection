@@ -50,7 +50,7 @@ const WakeUpTimeModal = ({
     await createWakeUpTime({
       time: content.time,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -117,7 +117,7 @@ const WakeUpTimeModal = ({
                       await createData({
                         time: wakeUpTime,
                         date: date.format("YYYY-MM-DD"),
-                        polorId: id,
+                        polarId: id,
                     });
                   } else {
                     alert("エラー");

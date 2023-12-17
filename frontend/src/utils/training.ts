@@ -2,8 +2,8 @@ import { CreateTrainingProps, UpdateTrainingProps } from "@/components/type";
 const BASE_URL = "/api";
 
 // get
-export const getTraining = async (date: string, polorId: number) => {
-  const response = await fetch(`${BASE_URL}/training/${polorId}?date=${date}`);
+export const getTraining = async (date: string, polarId: number) => {
+  const response = await fetch(`${BASE_URL}/training/${polarId}?date=${date}`);
   if (!response.ok) {
     throw new Error("Failed to fetch training");
   }

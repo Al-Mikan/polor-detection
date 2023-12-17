@@ -14,31 +14,31 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
 
-import { PolorProps } from "../type";
-import { createDetectionPolors } from "../../utils/detectionPolor";
+import { PolarProps } from "../type";
+import { createDetectionPolars } from "../../utils/detectionPolar";
 type EnrichmentModalProps = {
   open: boolean;
   handleClose: () => void;
   fetchData: () => void;
 };
 
-const DetectionPolorModal = ({
+const DetectionPolarModal = ({
   open,
   handleClose,
   fetchData,
 }: EnrichmentModalProps) => {
   const { date, setDate } = useContext(AppContext);
   const { id, setId } = useContext(AppContext);
-  const { polors, setPolors } = useContext(AppContext);
+  const { polars, setPolars } = useContext(AppContext);
 
-  const createData = async (polor: PolorProps) => {
-    await createDetectionPolors({
-      polorId: polor.id,
+  const createData = async (polar: PolarProps) => {
+    await createDetectionPolars({
+      polarId: polar.id,
       date: date.format("YYYY-MM-DD"),
     });
   };
-  const handleListItemClick = async (polor: PolorProps) => {
-    await createData(polor);
+  const handleListItemClick = async (polar: PolarProps) => {
+    await createData(polar);
     fetchData();
     handleClose();
   };
@@ -49,15 +49,15 @@ const DetectionPolorModal = ({
         {date?.format("YYYY年MM月DD日")}に検知しているシロクマを選択してください
       </DialogTitle>
       <List sx={{ pt: 0 }}>
-        {polors.map((polor, i) => (
+        {polars.map((polar, i) => (
           <ListItem disableGutters key={i}>
-            <ListItemButton onClick={() => handleListItemClick(polor)}>
+            <ListItemButton onClick={() => handleListItemClick(polar)}>
               <ListItemAvatar>
                 <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
                   <PersonIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={polor.polorName} />
+              <ListItemText primary={polar.polarName} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -65,4 +65,4 @@ const DetectionPolorModal = ({
     </Dialog>
   );
 };
-export default DetectionPolorModal;
+export default DetectionPolarModal;

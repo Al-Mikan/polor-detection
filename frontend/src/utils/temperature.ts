@@ -6,9 +6,9 @@ import {
 const BASE_URL = "/api";
 
 // get temperature
-export const getTemperatures = async (date: string, polorId: number) => {
+export const getTemperatures = async (date: string, polarId: number) => {
   const response = await fetch(
-    `${BASE_URL}/temperatures/${polorId}?date=${date}`
+    `${BASE_URL}/temperatures/${polarId}?date=${date}`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch temperatures");

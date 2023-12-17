@@ -48,7 +48,7 @@ const PoolCleaningModal = ({
     await createPoolCleaning({
       poolCleaning: content.poolCleaning,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -117,7 +117,7 @@ const PoolCleaningModal = ({
                       await createData({
                         poolCleaning: poolCleaning,
                         date: date.format("YYYY-MM-DD"),
-                        polorId: id,
+                        polarId: id,
                     });
                   } else {
                     alert("エラー");

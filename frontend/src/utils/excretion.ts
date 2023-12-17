@@ -6,9 +6,9 @@ import {
 const BASE_URL = "/api";
 
 // get excretion
-export const getExcretion = async (date: string, polorId: number) => {
+export const getExcretion = async (date: string, polarId: number) => {
   const response = await fetch(
-    `${BASE_URL}/excretion/${polorId}?date=${date}`
+    `${BASE_URL}/excretion/${polarId}?date=${date}`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch excretion");

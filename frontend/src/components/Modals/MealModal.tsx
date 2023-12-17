@@ -54,7 +54,7 @@ const MealModal = ({
       meal: content.meal,
       weight: content.weight,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -152,7 +152,7 @@ const MealModal = ({
                       meal: meal,
                       weight: weight,
                       date: date.format("YYYY-MM-DD"),
-                      polorId: id,
+                      polarId: id,
                     });
                   } else {
                     alert("エラー");

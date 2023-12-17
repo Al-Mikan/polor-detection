@@ -1,7 +1,7 @@
 //シロクマ
-export type PolorProps = {
+export type PolarProps = {
   id: number;
-  polorName: string;
+  polarName: string;
 };
 
 //ケージ
@@ -11,18 +11,18 @@ export type CageProps = {
 };
 
 //シロクマケージ
-export type PolorCageLogProps = {
+export type PolarCageLogProps = {
   id: number;
-  polorId: number;
+  polarId: number;
   cageId: number;
 };
-export type CreatePolorCageLogProps = {
+export type CreatePolarCageLogProps = {
   id: number;
-  polorId: number;
+  polarId: number;
   cageId: number;
 };
-export type UpdatePolorCageLogProps = {
-  polorId: number;
+export type UpdatePolarCageLogProps = {
+  polarId: number;
   cageId: number;
   date: string;
 };
@@ -36,7 +36,7 @@ export type MealProps = {
 };
 
 export type CreateMealProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   time: string;
   meal: string;
@@ -57,7 +57,7 @@ export type TemperatureProps = {
 };
 
 export type CreateTemperatureProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   time: string;
   temperature: number;
@@ -75,7 +75,7 @@ export type EnrichmentProps = {
 };
 
 export type CreateEnrichmentProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   enrichment: string;
 };
@@ -91,7 +91,7 @@ export type EventProps = {
 };
 
 export type CreateEventProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   event: string;
 };
@@ -106,7 +106,7 @@ export type WaterProps = {
   value: number;
 }
 export type CreateWaterProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   value: number;
 };
@@ -122,7 +122,7 @@ export type ExcretionProps = {
   status: string;
 }
 export type CreateExcretionProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   number: number;
   status: string;
@@ -138,7 +138,7 @@ export type ExpropriationProps = {
   expropriation: number;
 }
 export type CreateExpropriationProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   expropriation: number;
 }
@@ -152,7 +152,7 @@ export type MemoProps = {
   memo: string;
 }
 export type CreateMemoProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   memo: string;
 }
@@ -166,7 +166,7 @@ export type PoolCleaningProps = {
   poolCleaning: boolean;
 }
 export type CreatePoolCleaningProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   poolCleaning: boolean;
 }
@@ -180,7 +180,7 @@ export type TrainingProps = {
   training: string;
 }
 export type CreateTrainingProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   training: string;
 }
@@ -194,7 +194,7 @@ export type WakeUpTimeProps = {
   time: string;
 }
 export type CreateWakeUpTimeProps = {
-  polorId: number;
+  polarId: number;
   date: string;
   time: string;
 }
@@ -216,7 +216,7 @@ export type VideoProps = {
   file: File;
 }
 export type CreateVideoProps = {
-  polorId: number;
+  polarId: number;
   file: File;
   cageId: number;
 }

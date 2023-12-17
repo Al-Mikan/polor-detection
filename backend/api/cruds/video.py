@@ -6,13 +6,13 @@ import api.schemas.video as schema
 from sqlalchemy import and_
 from datetime import datetime
 import os
-from fastapi import APIRouter, Depends, Query, HTTPException, UploadFile, Form
+from fastapi import UploadFile
 
 
-async def get_video(date, polorId, db: AsyncSession):
+async def get_video(date, db: AsyncSession):
     stmt = (
-        select(Video.id, Video.video_path)
-        .where(and_(Video.date == date, Video.polorId == polorId))
+        select(Video.id, Video.videoPath, Video.videoStartTime, Video.cageId)
+        .where(and_(Video.date == date))
         .order_by(Video.id)
     )
 
@@ -24,7 +24,9 @@ async def get_video(date, polorId, db: AsyncSession):
         formatted_elms.append(
             {
                 "id": elm.id,
-                "video_path": elm.video_path,
+                "cageId": elm.cageId,
+                "videoPath": elm.videoPath,
+                "videoStartTime": elm.videoStartTime,
             }
         )
     return formatted_elms
@@ -34,22 +36,27 @@ async def get_video(date, polorId, db: AsyncSession):
 async def create_video(
     db: AsyncSession,
     date: str,
-    polorId: int,
+    cageId: int,
+    videoStartTime: int,
     video: UploadFile,
 ):
-    # 動画をmediaフォルダに保存
+    content = await video.read()
     print(video.filename)
-    exit()
-    video_dir = "./media/video"
-    if not os.path.exists(video_dir):
-        os.makedirs(video_dir)
-    with open(f"{video_dir}/{create_elm.UploadFile.filename}", "wb") as buffer:
-        buffer.write(create_elm.UploadFile.file.read())
+    if video.filename is None:
+        pass
+    # 動画をmediaフォルダに保存
+    save_path = "./api/media/videos"
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
+    video_path = save_path + "/" + video.filename
+    with open(video_path, "wb") as f:
+        f.write(content)
 
     new_video = Video(
-        polorId=create_elm.polorId,
-        date=create_elm.date,
-        video_path=create_elm.video_path,
+        cageId=cageId,
+        date=date,
+        videoStartTime=videoStartTime,
+        videoPath=video_path,
         createdAt=datetime.now(),
         updatedAt=datetime.now(),
     )
@@ -60,11 +67,11 @@ async def create_video(
 
 
 # get by id
-async def get_training_by_id(id: int, db: AsyncSession):
-    stmt = select(Video).where(Video.id == id)
-    result = await db.execute(stmt)
-    video = result.scalar_one_or_none()
-    return video
+# async def get_training_by_id(id: int, db: AsyncSession):
+#     stmt = select(Video).where(Video.id == id)
+#     result = await db.execute(stmt)
+#     video = result.scalar_one_or_none()
+#     return video
 
 
 # # update

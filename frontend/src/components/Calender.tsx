@@ -26,17 +26,17 @@ import {
   jaJP,
 } from "@mui/x-data-grid";
 
-import { DetectionTimeProps, PolorProps, PolorCageLogProps } from "./type";
+import { DetectionTimeProps, PolarProps, PolarCageLogProps } from "./type";
 import { getDetectionTimes } from "@/utils/detectionTime";
 
 //合計値を計算
 const calculateTotalTime = (
   timeData: DetectionTimeProps[] | null,
   id: number,
-  detectionPolorId: number
+  detectionPolarId: number
 ): number[] => {
   let totalMilliseconds = 0;
-  if (timeData === null || id != detectionPolorId) return [0, 0, 0];
+  if (timeData === null || id != detectionPolarId) return [0, 0, 0];
 
   // 各時間帯の差分を加算
   for (const time of timeData) {
@@ -56,30 +56,30 @@ const calculateTotalTime = (
 const CalenderContent = () => {
   const { id, setId } = useContext(AppContext);
   const { date, setDate } = useContext(AppContext);
-  const { polors, setPolors } = useContext(AppContext);
+  const { polars, setPolars } = useContext(AppContext);
 
   const [totalTimeAry, setTotalTimeAry] = useState<number[]>([0, 0, 0]);
   const [detectionData, setDetectionData] = useState<DetectionTimeProps[]>([]);
   const [userSelectedModalOpen, setUserSelectedModalOpen] = useState(false);
-  const [polorCageLog, setPolorCageLog] = useState<PolorCageLogProps[]>([]);
+  const [polarCageLog, setPolarCageLog] = useState<PolarCageLogProps[]>([]);
 
   const fetchDetectionTime = async () => {
     try {
       const detectionData = await getDetectionTimes(date.format("YYYY-MM-DD"));
-      const detectionPolor = [{
-        polorId:1,
+      const detectionPolar = [{
+        polarId:1,
       }]
       setDetectionData(detectionData);
-      if (detectionPolor.length !== 0) {
-        const polorId = detectionPolor[0].polorId;
-        const polorObj = polors.find((item) => item.id === polorId);
+      if (detectionPolar.length !== 0) {
+        const polarId = detectionPolar[0].polarId;
+        const polarObj = polars.find((item) => item.id === polarId);
       } else {
         setUserSelectedModalOpen(true);
       }
       const totalary = calculateTotalTime(
         detectionData,
         id,
-        detectionPolor[0].polorId
+        detectionPolar[0].polarId
       );
       setTotalTimeAry(totalary);
     } catch (error) {

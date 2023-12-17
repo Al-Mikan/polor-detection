@@ -7,15 +7,18 @@ from pydantic import BaseModel
 class TrainingBase(BaseModel):
     training: str
 
+
 class TrainingCreate(TrainingBase):
     date: date
-    polorId: int
+    polarId: int
+
 
 class TrainingCreateResponse(TrainingCreate):
     id: int
 
     class Config:
         orm_mode = True
+
 
 class Training(TrainingBase):
     id: int

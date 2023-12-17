@@ -6,14 +6,14 @@ import api.schemas.temperature as schema
 from sqlalchemy import and_
 from datetime import datetime
 
+
 # get
-async def get_temperatures(date,polorId,db: AsyncSession):
-    stmt = select(Temperature.id,  Temperature.time, Temperature.temperature).where(
-        and_(
-            Temperature.date == date,
-            Temperature.polorId == polorId
-        )
-    ).order_by(Temperature.id)
+async def get_temperatures(date, polarId, db: AsyncSession):
+    stmt = (
+        select(Temperature.id, Temperature.time, Temperature.temperature)
+        .where(and_(Temperature.date == date, Temperature.polarId == polarId))
+        .order_by(Temperature.id)
+    )
 
     result = await db.execute(stmt)
     temperatures = result.fetchall()
@@ -29,10 +29,11 @@ async def get_temperatures(date,polorId,db: AsyncSession):
         )
     return formatted_temperatures
 
-# create 
+
+# create
 async def create_temperature(db: AsyncSession, temp_create: schema.TemperatureCreate):
     new_temp = Temperature(
-        polorId=temp_create.polorId,
+        polarId=temp_create.polarId,
         date=temp_create.date,
         time=temp_create.time,
         temperature=temp_create.temperature,
@@ -44,16 +45,19 @@ async def create_temperature(db: AsyncSession, temp_create: schema.TemperatureCr
     await db.refresh(new_temp)
     return new_temp
 
+
 # get by id
-async def get_temperature_by_id(id: int,db: AsyncSession):
+async def get_temperature_by_id(id: int, db: AsyncSession):
     stmt = select(Temperature).where(Temperature.id == id)
     result = await db.execute(stmt)
     enrichment = result.scalar_one_or_none()
     return enrichment
 
-# update 
-async def update_temperature(db: AsyncSession, temperature_update: schema.TemperatureBase, original: Temperature):
 
+# update
+async def update_temperature(
+    db: AsyncSession, temperature_update: schema.TemperatureBase, original: Temperature
+):
     original.time = temperature_update.time
     original.temperature = temperature_update.temperature
     original.updatedAt = datetime.now()
@@ -63,8 +67,9 @@ async def update_temperature(db: AsyncSession, temperature_update: schema.Temper
     await db.refresh(original)
     return original
 
-# delete 
-async def delete_temperature(id: int,db: AsyncSession):
+
+# delete
+async def delete_temperature(id: int, db: AsyncSession):
     stmt = select(Temperature).where(Temperature.id == id)
     result = await db.execute(stmt)
     temp = result.scalars().first()
@@ -75,5 +80,3 @@ async def delete_temperature(id: int,db: AsyncSession):
     await db.delete(temp)
     await db.commit()
     return temp
-    
-

@@ -52,7 +52,7 @@ const TemperatureModal = ({
       time: content.time,
       temperature: content.temperature,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -134,7 +134,7 @@ const TemperatureModal = ({
                       time: time,
                       temperature: temperature,
                       date: date.format("YYYY-MM-DD"),
-                      polorId: id,
+                      polarId: id,
                     });
                   } else {
                     alert("エラー");

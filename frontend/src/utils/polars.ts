@@ -1,11 +1,11 @@
 const BASE_URL = "/api";
 
 //get
-export const getPolors = () => {
-  return fetch(`${BASE_URL}/polors`)
+export const getPolars = () => {
+  return fetch(`${BASE_URL}/polars`)
     .then((res) => {
       if (!res.ok) {
-        throw new Error("Failed to fetch polors");
+        throw new Error("Failed to fetch polars");
       }
       return res.json();
     })

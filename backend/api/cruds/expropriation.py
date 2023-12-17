@@ -6,13 +6,13 @@ import api.schemas.expropriation as schema
 from sqlalchemy import and_
 from datetime import datetime
 
-async def get_expropriation(date,polorId,db: AsyncSession):
-    stmt = select(Expropriation.id, Expropriation.expropriation).where(
-        and_(
-            Expropriation.date == date,
-            Expropriation.polorId == polorId
-        )
-    ).order_by(Expropriation.id)
+
+async def get_expropriation(date, polarId, db: AsyncSession):
+    stmt = (
+        select(Expropriation.id, Expropriation.expropriation)
+        .where(and_(Expropriation.date == date, Expropriation.polarId == polarId))
+        .order_by(Expropriation.id)
+    )
 
     result = await db.execute(stmt)
     els = result.fetchall()
@@ -27,10 +27,13 @@ async def get_expropriation(date,polorId,db: AsyncSession):
         )
     return formatted_meals
 
+
 # create meal
-async def create_expropriation(db: AsyncSession,create_elm: schema.ExpropriationCreate):
+async def create_expropriation(
+    db: AsyncSession, create_elm: schema.ExpropriationCreate
+):
     new_meal = Expropriation(
-        polorId=create_elm.polorId,
+        polarId=create_elm.polarId,
         date=create_elm.date,
         expropriation=create_elm.expropriation,
         createdAt=datetime.now(),
@@ -41,16 +44,19 @@ async def create_expropriation(db: AsyncSession,create_elm: schema.Expropriation
     await db.refresh(new_meal)
     return new_meal
 
+
 # get by id
-async def get_expropriation_by_id(id: int,db: AsyncSession):
+async def get_expropriation_by_id(id: int, db: AsyncSession):
     stmt = select(Expropriation).where(Expropriation.id == id)
     result = await db.execute(stmt)
     meal = result.scalar_one_or_none()
     return meal
 
-# update 
-async def update_expropriation(db: AsyncSession, update: schema.ExpropriationBase, original: Expropriation):
 
+# update
+async def update_expropriation(
+    db: AsyncSession, update: schema.ExpropriationBase, original: Expropriation
+):
     original.expropriation = update.expropriation
     original.updatedAt = datetime.now()
 
@@ -61,7 +67,7 @@ async def update_expropriation(db: AsyncSession, update: schema.ExpropriationBas
 
 
 # delete meal
-async def delete_expropriation(id: int,db: AsyncSession):
+async def delete_expropriation(id: int, db: AsyncSession):
     stmt = select(Expropriation).where(Expropriation.id == id)
     result = await db.execute(stmt)
     meal = result.scalars().first()
@@ -72,5 +78,3 @@ async def delete_expropriation(id: int,db: AsyncSession):
     await db.delete(meal)
     await db.commit()
     return meal
-    
-

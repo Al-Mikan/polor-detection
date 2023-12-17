@@ -8,13 +8,13 @@ from datetime import datetime
 
 
 # get
-async def get_enrichments(date, polorId, db: AsyncSession):
+async def get_enrichments(date, polarId, db: AsyncSession):
     stmt = (
         select(
             Enrichment.id,
             Enrichment.enrichment,
         )
-        .where(and_(Enrichment.date == date, Enrichment.polorId == polorId))
+        .where(and_(Enrichment.date == date, Enrichment.polarId == polarId))
         .order_by(Enrichment.id)
     )
 
@@ -37,7 +37,7 @@ async def create_enrichment(
     db: AsyncSession, enrichment_create: schema.EnrichmentCreate
 ):
     new_enrichment = Enrichment(
-        polorId=enrichment_create.polorId,
+        polarId=enrichment_create.polarId,
         date=enrichment_create.date,
         enrichment=enrichment_create.enrichment,
         createdAt=datetime.now(),

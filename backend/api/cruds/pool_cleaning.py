@@ -6,17 +6,18 @@ import api.schemas.pool_cleaning as schema
 from sqlalchemy import and_
 from datetime import datetime
 
+
 # get
-async def get_pool_cleaning(date,polorId,db: AsyncSession):
-    stmt = select(PoolCleaning.id, PoolCleaning.poolCleaning).where(
-        and_(
-            PoolCleaning.date == date,
-            PoolCleaning.polorId == polorId
-        )
-    ).order_by(PoolCleaning.id)
+async def get_pool_cleaning(date, polarId, db: AsyncSession):
+    stmt = (
+        select(PoolCleaning.id, PoolCleaning.poolCleaning)
+        .where(and_(PoolCleaning.date == date, PoolCleaning.polarId == polarId))
+        .order_by(PoolCleaning.id)
+    )
 
     result = await db.execute(stmt)
     elms = result.fetchall()
+    print(elms)
 
     formatted_elm = []
     for elm in elms:
@@ -28,10 +29,11 @@ async def get_pool_cleaning(date,polorId,db: AsyncSession):
         )
     return formatted_elm
 
-# create 
+
+# create
 async def create_pool_cleaning(db: AsyncSession, create_elm: schema.PoolCleaningCreate):
     new_temp = PoolCleaning(
-        polorId=create_elm.polorId,
+        polarId=create_elm.polarId,
         poolCleaning=create_elm.poolCleaning,
         date=create_elm.date,
         createdAt=datetime.now(),
@@ -42,16 +44,19 @@ async def create_pool_cleaning(db: AsyncSession, create_elm: schema.PoolCleaning
     await db.refresh(new_temp)
     return new_temp
 
+
 # get by id
-async def get_pool_cleaning_by_id(id: int,db: AsyncSession):
+async def get_pool_cleaning_by_id(id: int, db: AsyncSession):
     stmt = select(PoolCleaning).where(PoolCleaning.id == id)
     result = await db.execute(stmt)
     elm = result.scalar_one_or_none()
     return elm
 
-# update 
-async def update_pool_cleaning(db: AsyncSession, update_elm: schema.PoolCleaningBase, original:PoolCleaning):
 
+# update
+async def update_pool_cleaning(
+    db: AsyncSession, update_elm: schema.PoolCleaningBase, original: PoolCleaning
+):
     original.poolCleaning = update_elm.poolCleaning
     original.updatedAt = datetime.now()
 
@@ -60,8 +65,9 @@ async def update_pool_cleaning(db: AsyncSession, update_elm: schema.PoolCleaning
     await db.refresh(original)
     return original
 
-# delete 
-async def delete_pool_cleaning(id: int,db: AsyncSession):
+
+# delete
+async def delete_pool_cleaning(id: int, db: AsyncSession):
     stmt = select(PoolCleaning).where(PoolCleaning.id == id)
     result = await db.execute(stmt)
     elm = result.scalars().first()
@@ -72,5 +78,3 @@ async def delete_pool_cleaning(id: int,db: AsyncSession):
     await db.delete(elm)
     await db.commit()
     return elm
-    
-

@@ -6,13 +6,13 @@ import api.schemas.water as schema
 from sqlalchemy import and_
 from datetime import datetime
 
-async def get_water(date,polorId,db: AsyncSession):
-    stmt = select(Water.id, Water.value).where(
-        and_(
-            Water.date == date,
-            Water.polorId == polorId
-        )
-    ).order_by(Water.id)
+
+async def get_water(date, polarId, db: AsyncSession):
+    stmt = (
+        select(Water.id, Water.value)
+        .where(and_(Water.date == date, Water.polarId == polarId))
+        .order_by(Water.id)
+    )
 
     result = await db.execute(stmt)
     elms = result.fetchall()
@@ -27,10 +27,11 @@ async def get_water(date,polorId,db: AsyncSession):
         )
     return formatted_elms
 
+
 # create meal
-async def create_water(db: AsyncSession,create_elm: schema.WaterCreate):
+async def create_water(db: AsyncSession, create_elm: schema.WaterCreate):
     new_elm = Water(
-        polorId=create_elm.polorId,
+        polarId=create_elm.polarId,
         date=create_elm.date,
         value=create_elm.value,
         createdAt=datetime.now(),
@@ -41,16 +42,17 @@ async def create_water(db: AsyncSession,create_elm: schema.WaterCreate):
     await db.refresh(new_elm)
     return new_elm
 
+
 # get by id
-async def get_water_by_id(id: int,db: AsyncSession):
+async def get_water_by_id(id: int, db: AsyncSession):
     stmt = select(Water).where(Water.id == id)
     result = await db.execute(stmt)
     meal = result.scalar_one_or_none()
     return meal
 
-# update 
-async def update_water(db: AsyncSession, update_elm: schema.WaterBase, original: Water):
 
+# update
+async def update_water(db: AsyncSession, update_elm: schema.WaterBase, original: Water):
     original.value = update_elm.value
     original.updatedAt = datetime.now()
 
@@ -61,7 +63,7 @@ async def update_water(db: AsyncSession, update_elm: schema.WaterBase, original:
 
 
 # delete meal
-async def delete_water(id: int,db: AsyncSession):
+async def delete_water(id: int, db: AsyncSession):
     stmt = select(Water).where(Water.id == id)
     result = await db.execute(stmt)
     elm = result.scalars().first()
@@ -72,5 +74,3 @@ async def delete_water(id: int,db: AsyncSession):
     await db.delete(elm)
     await db.commit()
     return elm
-    
-

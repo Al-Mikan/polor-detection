@@ -2,8 +2,8 @@ import { CreateMemoProps, UpdateMemoProps } from "@/components/type";
 const BASE_URL = "/api";
 
 // get
-export const getMemo = async (date: string, polorId: number) => {
-  const response = await fetch(`${BASE_URL}/memo/${polorId}?date=${date}`);
+export const getMemo = async (date: string, polarId: number) => {
+  const response = await fetch(`${BASE_URL}/memo/${polarId}?date=${date}`);
   if (!response.ok) {
     throw new Error("Failed to fetch memo");
   }

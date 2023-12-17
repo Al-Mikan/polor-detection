@@ -1,4 +1,4 @@
-from datetime import date,time
+from datetime import date, time
 
 from pydantic import BaseModel
 
@@ -10,7 +10,7 @@ class EventBase(BaseModel):
 
 
 class EventCreate(EventBase):
-    polorId: int
+    polarId: int
     date: date
 
 

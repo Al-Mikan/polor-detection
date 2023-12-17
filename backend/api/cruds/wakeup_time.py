@@ -6,13 +6,13 @@ import api.schemas.wakeup_time as schema
 from sqlalchemy import and_
 from datetime import datetime
 
-async def get_wakeup_time(date,polorId,db: AsyncSession):
-    stmt = select(WakeUpTime.id, WakeUpTime.time).where(
-        and_(
-            WakeUpTime.date == date,
-            WakeUpTime.polorId == polorId
-        )
-    ).order_by(WakeUpTime.id)
+
+async def get_wakeup_time(date, polarId, db: AsyncSession):
+    stmt = (
+        select(WakeUpTime.id, WakeUpTime.time)
+        .where(and_(WakeUpTime.date == date, WakeUpTime.polarId == polarId))
+        .order_by(WakeUpTime.id)
+    )
 
     result = await db.execute(stmt)
     elms = result.fetchall()
@@ -27,10 +27,11 @@ async def get_wakeup_time(date,polorId,db: AsyncSession):
         )
     return formatted_elms
 
+
 # create meal
-async def create_wakeup_time(db: AsyncSession,create_elm: schema.WakeUpTimeCreate):
+async def create_wakeup_time(db: AsyncSession, create_elm: schema.WakeUpTimeCreate):
     new_elm = WakeUpTime(
-        polorId=create_elm.polorId,
+        polarId=create_elm.polarId,
         date=create_elm.date,
         time=create_elm.time,
         createdAt=datetime.now(),
@@ -41,16 +42,19 @@ async def create_wakeup_time(db: AsyncSession,create_elm: schema.WakeUpTimeCreat
     await db.refresh(new_elm)
     return new_elm
 
+
 # get by id
-async def get_wakeup_time_by_id(id: int,db: AsyncSession):
+async def get_wakeup_time_by_id(id: int, db: AsyncSession):
     stmt = select(WakeUpTime).where(WakeUpTime.id == id)
     result = await db.execute(stmt)
     elm = result.scalar_one_or_none()
     return elm
 
-# update 
-async def update_wakeup_time(db: AsyncSession, update_elm: schema.WakeUpTimeBase, original: WakeUpTime):
 
+# update
+async def update_wakeup_time(
+    db: AsyncSession, update_elm: schema.WakeUpTimeBase, original: WakeUpTime
+):
     original.time = update_elm.time
     original.updatedAt = datetime.now()
 
@@ -61,7 +65,7 @@ async def update_wakeup_time(db: AsyncSession, update_elm: schema.WakeUpTimeBase
 
 
 # delete meal
-async def delete_wakeup_time(id: int,db: AsyncSession):
+async def delete_wakeup_time(id: int, db: AsyncSession):
     stmt = select(WakeUpTime).where(WakeUpTime.id == id)
     result = await db.execute(stmt)
     elm = result.scalars().first()
@@ -72,5 +76,3 @@ async def delete_wakeup_time(id: int,db: AsyncSession):
     await db.delete(elm)
     await db.commit()
     return elm
-    
-

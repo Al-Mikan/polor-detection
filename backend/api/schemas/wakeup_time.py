@@ -1,4 +1,4 @@
-from datetime import date,time
+from datetime import date, time
 from typing import Optional
 
 from pydantic import BaseModel
@@ -7,15 +7,18 @@ from pydantic import BaseModel
 class WakeUpTimeBase(BaseModel):
     time: time
 
+
 class WakeUpTimeCreate(WakeUpTimeBase):
     date: date
-    polorId: int
+    polarId: int
+
 
 class WakeUpTimeCreateResponse(WakeUpTimeCreate):
     id: int
 
     class Config:
         orm_mode = True
+
 
 class WakeUpTime(WakeUpTimeBase):
     id: int

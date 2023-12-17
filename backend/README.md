@@ -46,7 +46,7 @@ $ docker-compose exec backend poetry run python -m api.migrate_db
 #### db クライアントの立ち上げ
 
 ```sh
-$ docker-compose exec db mysql polor
+$ docker-compose exec db mysql polar
 ```
 
 ## 新しい Python パッケージを追加した場合
@@ -57,5 +57,5 @@ $ docker-compose build --no-cache
 
 ## コンテナに入る
 ```sh
-$ docker exec -it polor-detection-backend-1 /bin/bash
+$ docker exec -it polar-detection-backend-1 /bin/bash
 ```

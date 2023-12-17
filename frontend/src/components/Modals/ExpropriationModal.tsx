@@ -42,7 +42,7 @@ const ExpropriationModal = ({
     await createExpropriation({
       expropriation: content.expropriation,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -112,7 +112,7 @@ const ExpropriationModal = ({
                     await createData({
                       expropriation: expropriation,
                       date: date.format("YYYY-MM-DD"),
-                      polorId: id,
+                      polarId: id,
                     });
                   } else {
                     alert("エラー");

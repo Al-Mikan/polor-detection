@@ -6,13 +6,13 @@ import api.schemas.meal as schema
 from sqlalchemy import and_
 from datetime import datetime
 
-async def get_meals(date,polorId,db: AsyncSession):
-    stmt = select(Meal.id,  Meal.time, Meal.meal, Meal.weight).where(
-        and_(
-            Meal.date == date,
-            Meal.polorId == polorId
-        )
-    ).order_by(Meal.id)
+
+async def get_meals(date, polarId, db: AsyncSession):
+    stmt = (
+        select(Meal.id, Meal.time, Meal.meal, Meal.weight)
+        .where(and_(Meal.date == date, Meal.polarId == polarId))
+        .order_by(Meal.id)
+    )
 
     result = await db.execute(stmt)
     meals = result.fetchall()
@@ -29,10 +29,11 @@ async def get_meals(date,polorId,db: AsyncSession):
         )
     return formatted_meals
 
+
 # create meal
 async def create_meal(db: AsyncSession, meal_create: schema.MealCreate):
     new_meal = Meal(
-        polorId=meal_create.polorId,
+        polarId=meal_create.polarId,
         date=meal_create.date,
         time=meal_create.time,
         meal=meal_create.meal,
@@ -45,16 +46,17 @@ async def create_meal(db: AsyncSession, meal_create: schema.MealCreate):
     await db.refresh(new_meal)
     return new_meal
 
+
 # get by id
-async def get_meal_by_id(id: int,db: AsyncSession):
+async def get_meal_by_id(id: int, db: AsyncSession):
     stmt = select(Meal).where(Meal.id == id)
     result = await db.execute(stmt)
     meal = result.scalar_one_or_none()
     return meal
 
-# update 
-async def update_meal(db: AsyncSession, meal_update: schema.MealBase, original: Meal):
 
+# update
+async def update_meal(db: AsyncSession, meal_update: schema.MealBase, original: Meal):
     original.time = meal_update.time
     original.meal = meal_update.meal
     original.weight = meal_update.weight
@@ -67,7 +69,7 @@ async def update_meal(db: AsyncSession, meal_update: schema.MealBase, original: 
 
 
 # delete meal
-async def delete_meal(id: int,db: AsyncSession):
+async def delete_meal(id: int, db: AsyncSession):
     stmt = select(Meal).where(Meal.id == id)
     result = await db.execute(stmt)
     meal = result.scalars().first()
@@ -78,5 +80,3 @@ async def delete_meal(id: int,db: AsyncSession):
     await db.delete(meal)
     await db.commit()
     return meal
-    
-

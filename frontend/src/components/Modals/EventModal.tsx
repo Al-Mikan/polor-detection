@@ -46,7 +46,7 @@ const EventModal = ({
       endTime: content.endTime,
       event: content.event,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -141,7 +141,7 @@ const EventModal = ({
                       endTime: endTime,
                       event: event,
                       date: date.format("YYYY-MM-DD"),
-                      polorId: id,
+                      polarId: id,
                     });
                   } else {
                     alert("エラー");

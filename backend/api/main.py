@@ -3,13 +3,13 @@ from fastapi import FastAPI
 from api.routers import (
     detect_time,
     meal,
-    polor,
+    polar,
     temperature,
     enrichment,
     event,
-    polor_cage_log,
+    polar_cage_log,
     cage,
-    polor_cage_log,
+    polar_cage_log,
     excretion,
     expropriation,
     memo,
@@ -31,9 +31,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(polor.router)
+app.include_router(polar.router)
 app.include_router(cage.router)
-app.include_router(polor_cage_log.router)
+app.include_router(polar_cage_log.router)
 app.include_router(detect_time.router)
 app.include_router(meal.router)
 app.include_router(temperature.router)

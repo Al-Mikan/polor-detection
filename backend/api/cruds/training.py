@@ -6,13 +6,13 @@ import api.schemas.training as schema
 from sqlalchemy import and_
 from datetime import datetime
 
-async def get_training(date,polorId,db: AsyncSession):
-    stmt = select(Training.id, Training.training).where(
-        and_(
-            Training.date == date,
-            Training.polorId == polorId
-        )
-    ).order_by(Training.id)
+
+async def get_training(date, polarId, db: AsyncSession):
+    stmt = (
+        select(Training.id, Training.training)
+        .where(and_(Training.date == date, Training.polarId == polarId))
+        .order_by(Training.id)
+    )
 
     result = await db.execute(stmt)
     elms = result.fetchall()
@@ -27,10 +27,11 @@ async def get_training(date,polorId,db: AsyncSession):
         )
     return formatted_elms
 
+
 # create meal
-async def create_training(db: AsyncSession,create_elm: schema.TrainingCreate):
+async def create_training(db: AsyncSession, create_elm: schema.TrainingCreate):
     new_meal = Training(
-        polorId=create_elm.polorId,
+        polarId=create_elm.polarId,
         date=create_elm.date,
         training=create_elm.training,
         createdAt=datetime.now(),
@@ -41,16 +42,19 @@ async def create_training(db: AsyncSession,create_elm: schema.TrainingCreate):
     await db.refresh(new_meal)
     return new_meal
 
+
 # get by id
-async def get_training_by_id(id: int,db: AsyncSession):
+async def get_training_by_id(id: int, db: AsyncSession):
     stmt = select(Training).where(Training.id == id)
     result = await db.execute(stmt)
     meal = result.scalar_one_or_none()
     return meal
 
-# update 
-async def update_training(db: AsyncSession, update: schema.TrainingBase, original: Training):
 
+# update
+async def update_training(
+    db: AsyncSession, update: schema.TrainingBase, original: Training
+):
     original.training = update.training
     original.updatedAt = datetime.now()
 
@@ -61,7 +65,7 @@ async def update_training(db: AsyncSession, update: schema.TrainingBase, origina
 
 
 # delete meal
-async def delete_training(id: int,db: AsyncSession):
+async def delete_training(id: int, db: AsyncSession):
     stmt = select(Training).where(Training.id == id)
     result = await db.execute(stmt)
     elm = result.scalars().first()
@@ -72,5 +76,3 @@ async def delete_training(id: int,db: AsyncSession):
     await db.delete(elm)
     await db.commit()
     return elm
-    
-

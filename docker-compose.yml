@@ -5,6 +5,8 @@ services:
     volumes:
       - ./backend/.dockervenv:/src/.venv
       - ./backend:/src
+      - media:/src/api/media
+
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -13,9 +15,10 @@ services:
   db:
     image: mysql:8.0
     platform: linux/x86_64 # M1 Macの場合必要
+    restart: always
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: "polor"
+      MYSQL_DATABASE: "polar"
       TZ: "Asia/Tokyo"
     volumes:
       - mysql_data:/var/lib/mysql
@@ -41,3 +44,4 @@ services:
 
 volumes:
   mysql_data:
+  media:

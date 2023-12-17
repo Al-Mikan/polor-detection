@@ -45,7 +45,7 @@ const ExcretionModal = ({
       number: content.number,
       status: content.status,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -129,7 +129,7 @@ const ExcretionModal = ({
                       number: number,
                       status: status,
                       date: date.format("YYYY-MM-DD"),
-                      polorId: id,
+                      polarId: id,
                     });
                   } else {
                     alert("エラー");

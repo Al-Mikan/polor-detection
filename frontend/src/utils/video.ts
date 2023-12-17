@@ -2,8 +2,8 @@ import { CreateVideoProps } from "@/components/type";
 const BASE_URL = "/api";
 
 // get
-export const getVideo = async (date: string, polorId: number) => {
-  const response = await fetch(`${BASE_URL}/video/${polorId}?date=${date}`);
+export const getVideo = async (date: string, polarId: number) => {
+  const response = await fetch(`${BASE_URL}/video/${polarId}?date=${date}`);
   if (!response.ok) {
     throw new Error("Failed to fetch video");
   }

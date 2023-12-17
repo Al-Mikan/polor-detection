@@ -42,7 +42,7 @@ const TrainingModal = ({
     await createTraining({
       training: content.training,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -111,7 +111,7 @@ const TrainingModal = ({
                     await createData({
                       training: training,
                       date: date.format("YYYY-MM-DD"),
-                      polorId: id,
+                      polarId: id,
                     });
                   } else {
                     alert("エラー");

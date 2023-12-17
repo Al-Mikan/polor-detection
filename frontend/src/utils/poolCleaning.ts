@@ -2,8 +2,8 @@ import { CreatePoolCleaningProps, UpdatePoolCleaningProps } from "@/components/t
 const BASE_URL = "/api";
 
 // get
-export const getPoolCleaning = async (date: string, polorId: number) => {
-  const response = await fetch(`${BASE_URL}/poolCleaning/${polorId}?date=${date}`);
+export const getPoolCleaning = async (date: string, polarId: number) => {
+  const response = await fetch(`${BASE_URL}/poolCleaning/${polarId}?date=${date}`);
   if (!response.ok) {
     throw new Error("Failed to fetch poolCleaning");
   }

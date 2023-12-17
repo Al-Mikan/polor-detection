@@ -8,10 +8,10 @@ from datetime import datetime, time
 
 
 # get
-async def get_events(date, polorId, db: AsyncSession):
+async def get_events(date, polarId, db: AsyncSession):
     stmt = (
         select(Event.id, Event.event)
-        .where(and_(Event.date == date, Event.polorId == polorId))
+        .where(and_(Event.date == date, Event.polarId == polarId))
         .order_by(Event.id)
     )
 
@@ -32,7 +32,7 @@ async def get_events(date, polorId, db: AsyncSession):
 # create
 async def create_event(db: AsyncSession, event_create: schema.EventCreate):
     new_event = Event(
-        polorId=event_create.polorId,
+        polarId=event_create.polarId,
         date=event_create.date,
         event=event_create.event,
         createdAt=datetime.now(),

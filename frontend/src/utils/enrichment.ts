@@ -6,9 +6,9 @@ import {
 const BASE_URL = "/api";
 
 // get
-export const getEnrichments = async (date: string, polorId: number) => {
+export const getEnrichments = async (date: string, polarId: number) => {
   const response = await fetch(
-    `${BASE_URL}/enrichments/${polorId}?date=${date}`
+    `${BASE_URL}/enrichments/${polarId}?date=${date}`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch Enrichment");

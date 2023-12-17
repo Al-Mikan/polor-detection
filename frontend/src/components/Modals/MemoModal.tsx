@@ -48,7 +48,7 @@ const MemoModal = ({
     await createMemo({
       memo: content.memo,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -116,7 +116,7 @@ const MemoModal = ({
                       await createData({
                         memo: memo,
                         date: date.format("YYYY-MM-DD"),
-                        polorId: id,
+                        polarId: id,
                     });
                   } else {
                     alert("エラー");

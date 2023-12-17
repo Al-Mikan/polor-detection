@@ -54,7 +54,7 @@ const EnrichmentModal = ({
       endTime: content.endTime,
       enrichment: content.enrichment,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -149,7 +149,7 @@ const EnrichmentModal = ({
                       endTime: endTime,
                       enrichment: enrichment,
                       date: date.format("YYYY-MM-DD"),
-                      polorId: id,
+                      polarId: id,
                     });
                   } else {
                     alert("エラー");

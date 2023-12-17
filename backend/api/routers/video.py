@@ -11,23 +11,24 @@ import api.schemas.video as schema
 import api.cruds.video as crud
 
 
-@router.get("/api/video/{polorId}", response_model=List[schema.Video])
+@router.get("/api/video", response_model=List[schema.Video])
 async def get_video(
-    polorId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    date: str = Query(...),
+    db: AsyncSession = Depends(get_db),
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await crud.get_video(requested_date, polorId, db)
+    return await crud.get_video(requested_date, db)
 
 
 @router.post("/api/video", response_model=None)
 async def create_video(
-    temp: schema.VideoCreate,
     date: str = Form(...),
-    polorId: int = Form(...),
-    video: UploadFile = Form(min_length=1),
+    cageId: int = Form(...),
+    videoStartTime: int = Form(...),
+    video: UploadFile = Form(...),
     db: AsyncSession = Depends(get_db),
 ):
-    return await crud.create_video(db, date, polorId, video)
+    return await crud.create_video(db, date, cageId, videoStartTime, video)
 
 
 # @router.put("/api/video/{id}", response_model=None)

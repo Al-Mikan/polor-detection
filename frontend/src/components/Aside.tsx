@@ -20,43 +20,43 @@ import { BiChevronDown } from "react-icons/bi";
 import { useContext } from "react";
 import { AppContext } from "@/pages/_app";
 
-import { PolorProps } from "./type";
-import { getPolors } from "../utils/polors";
+import { PolarProps } from "./type";
+import { getPolars } from "../utils/polars";
 import Image from "next/image";
 
 type DialogProps = {
   open: boolean;
-  selectedValue: PolorProps;
-  onClose: (value: PolorProps) => void;
-  polors: PolorProps[];
+  selectedValue: PolarProps;
+  onClose: (value: PolarProps) => void;
+  polars: PolarProps[];
 };
 
 export const MUIDialog = ({
   open,
   selectedValue,
   onClose,
-  polors,
+  polars,
 }: DialogProps) => {
   const handleClose = () => {
     onClose(selectedValue);
   };
 
-  const handleListItemClick = (value: PolorProps) => {
+  const handleListItemClick = (value: PolarProps) => {
     onClose(value);
   };
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>名前を選択してください</DialogTitle>
       <List sx={{ pt: 0 }}>
-        {polors.map((polor, i) => (
+        {polars.map((polar, i) => (
           <ListItem disableGutters key={i}>
-            <ListItemButton onClick={() => handleListItemClick(polor)}>
+            <ListItemButton onClick={() => handleListItemClick(polar)}>
               <ListItemAvatar>
                 <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
                   <PersonIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={polor.polorName} />
+              <ListItemText primary={polar.polarName} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -65,11 +65,11 @@ export const MUIDialog = ({
   );
 };
 
-const PolorSelect = () => {
+const PolarSelect = () => {
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState({} as PolorProps);
+  const [selectedValue, setSelectedValue] = useState({} as PolarProps);
   const { id, setId } = useContext(AppContext);
-  const { polors, setPolors } = useContext(AppContext);
+  const { polars, setPolars } = useContext(AppContext);
   const router = useRouter();
   const { pathname } = router;
 
@@ -77,7 +77,7 @@ const PolorSelect = () => {
     setOpen(true);
   };
 
-  const handleClose = (value: PolorProps) => {
+  const handleClose = (value: PolarProps) => {
     setOpen(false);
     setSelectedValue(value);
     setId(value.id);
@@ -86,9 +86,9 @@ const PolorSelect = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getPolors();
+        const data = await getPolars();
         console.log(data);
-        setPolors(data);
+        setPolars(data);
         setSelectedValue(data[0]);
       } catch (error) {
         console.error(error);
@@ -103,14 +103,14 @@ const PolorSelect = () => {
         selectedValue={selectedValue}
         open={open}
         onClose={handleClose}
-        polors={polors}
+        polars={polars}
       />
       <Button
         className="rounded-md cursor-pointer bg-[#EAE9E9] w-[160px] h-[50px] text-black  px-6 py-2 shadow-none hover:bg-[#EAE9E9] hover:shadow-md"
         onClick={handleClickOpen}
         variant="contained"
       >
-        {selectedValue.polorName}
+        {selectedValue.polarName}
         <BiChevronDown />
       </Button>
     </div>
@@ -124,7 +124,7 @@ const Aside = () => {
     <div className=" bg-[#FFFFFF] w-[220px]  h-full fixed top-0  z-50">
       <div className="flex flex-col items-center gap-4 ">
         <div className="py-10">
-          <Image src="./polorIcon.svg" width={120} height={120} alt="" />
+          <Image src="./polarIcon.svg" width={120} height={120} alt="" />
         </div>
         <Link href="/">
           <Button
@@ -156,7 +156,7 @@ const Aside = () => {
         </Link>
       </div>
       <div className="absolute bottom-7  left-1/2  -translate-x-1/2">
-        <PolorSelect />
+        <PolarSelect />
       </div>
     </div>
   );

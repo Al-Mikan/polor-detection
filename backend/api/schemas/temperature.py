@@ -10,7 +10,7 @@ class TemperatureBase(BaseModel):
 
 class TemperatureCreate(TemperatureBase):
     date: date
-    polorId: int
+    polarId: int
 
 
 class TemperatureCreateResponse(TemperatureCreate):

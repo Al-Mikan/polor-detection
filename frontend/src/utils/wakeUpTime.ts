@@ -2,8 +2,8 @@ import { CreateWakeUpTimeProps, UpdateWakeUpTimeProps } from "@/components/type"
 const BASE_URL = "/api";
 
 // get
-export const getWakeUpTime = async (date: string, polorId: number) => {
-  const response = await fetch(`${BASE_URL}/wakeupTime/${polorId}?date=${date}`);
+export const getWakeUpTime = async (date: string, polarId: number) => {
+  const response = await fetch(`${BASE_URL}/wakeupTime/${polarId}?date=${date}`);
   if (!response.ok) {
     throw new Error("Failed to fetch wakeUpTime");
   }

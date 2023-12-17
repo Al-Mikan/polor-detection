@@ -6,9 +6,9 @@ import {
 const BASE_URL = "/api";
 
 // get expropriation
-export const getExpropriation = async (date: string, polorId: number) => {
+export const getExpropriation = async (date: string, polarId: number) => {
   const response = await fetch(
-    `${BASE_URL}/expropriation/${polorId}?date=${date}`
+    `${BASE_URL}/expropriation/${polarId}?date=${date}`
   );
   
   if (!response.ok) {

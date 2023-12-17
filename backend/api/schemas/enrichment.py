@@ -8,7 +8,7 @@ class EnrichmentBase(BaseModel):
 
 
 class EnrichmentCreate(EnrichmentBase):
-    polorId: int
+    polarId: int
     date: date
 
 

@@ -2,6 +2,7 @@ from datetime import date, time
 
 from pydantic import BaseModel
 
+
 # 収用
 class ExpropriationBase(BaseModel):
     expropriation: int
@@ -9,7 +10,7 @@ class ExpropriationBase(BaseModel):
 
 class ExpropriationCreate(ExpropriationBase):
     date: date
-    polorId: int
+    polarId: int
 
 
 class ExpropriationCreateResponse(ExpropriationCreate):

@@ -6,13 +6,13 @@ import api.schemas.excretion as schema
 from sqlalchemy import and_
 from datetime import datetime
 
-async def get_excretion(date,polorId,db: AsyncSession):
-    stmt = select(Excretion.id, Excretion.number,Excretion.status).where(
-        and_(
-            Excretion.date == date,
-            Excretion.polorId == polorId
-        )
-    ).order_by(Excretion.id)
+
+async def get_excretion(date, polarId, db: AsyncSession):
+    stmt = (
+        select(Excretion.id, Excretion.number, Excretion.status)
+        .where(and_(Excretion.date == date, Excretion.polarId == polarId))
+        .order_by(Excretion.id)
+    )
 
     result = await db.execute(stmt)
     elms = result.fetchall()
@@ -28,10 +28,11 @@ async def get_excretion(date,polorId,db: AsyncSession):
         )
     return formatted_elms
 
+
 # create meal
-async def create_excretion(db: AsyncSession,create_elm: schema.ExcretionCreate):
+async def create_excretion(db: AsyncSession, create_elm: schema.ExcretionCreate):
     new_elm = Excretion(
-        polorId=create_elm.polorId,
+        polarId=create_elm.polarId,
         date=create_elm.date,
         number=create_elm.number,
         status=create_elm.status,
@@ -43,16 +44,19 @@ async def create_excretion(db: AsyncSession,create_elm: schema.ExcretionCreate):
     await db.refresh(new_elm)
     return new_elm
 
+
 # get by id
-async def get_excretion_by_id(id: int,db: AsyncSession):
+async def get_excretion_by_id(id: int, db: AsyncSession):
     stmt = select(Excretion).where(Excretion.id == id)
     result = await db.execute(stmt)
     elm = result.scalar_one_or_none()
     return elm
 
-# update 
-async def update_excretion(db: AsyncSession, update_elm: schema.ExcretionBase, original: Excretion):
 
+# update
+async def update_excretion(
+    db: AsyncSession, update_elm: schema.ExcretionBase, original: Excretion
+):
     original.number = update_elm.number
     original.status = update_elm.status
     original.updatedAt = datetime.now()
@@ -64,7 +68,7 @@ async def update_excretion(db: AsyncSession, update_elm: schema.ExcretionBase, o
 
 
 # delete meal
-async def delete_excretion(id: int,db: AsyncSession):
+async def delete_excretion(id: int, db: AsyncSession):
     stmt = select(Excretion).where(Excretion.id == id)
     result = await db.execute(stmt)
     elm = result.scalars().first()
@@ -75,5 +79,3 @@ async def delete_excretion(id: int,db: AsyncSession):
     await db.delete(elm)
     await db.commit()
     return elm
-    
-

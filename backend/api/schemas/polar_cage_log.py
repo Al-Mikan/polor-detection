@@ -4,20 +4,23 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class PolorCageLogBase(BaseModel):
-    polorId: int
+class PolarCageLogBase(BaseModel):
+    polarId: int
     cageId: int
 
-class PolorCageLogCreate(PolorCageLogBase):
+
+class PolarCageLogCreate(PolarCageLogBase):
     date: date
 
-class PolorCageLogCreateResponse(PolorCageLogCreate):
+
+class PolarCageLogCreateResponse(PolarCageLogCreate):
     id: int
 
     class Config:
         orm_mode = True
 
-class PolorCageLog(PolorCageLogBase):
+
+class PolarCageLog(PolarCageLogBase):
     id: int
 
     class Config:

@@ -15,7 +15,7 @@ services:
     platform: linux/x86_64 # M1 Macの場合必要
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes" # rootアカウントをパスワードなしで作成
-      MYSQL_DATABASE: "polor"
+      MYSQL_DATABASE: "polar"
       TZ: "Asia/Tokyo" # タイムゾーンを日本時間に設定
     volumes:
       - mysql_data:/var/lib/mysql

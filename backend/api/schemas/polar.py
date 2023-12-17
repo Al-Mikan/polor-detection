@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
 
-class Polor(BaseModel):
+class Polar(BaseModel):
     id: int
-    polorName: str
+    polarName: str

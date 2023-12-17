@@ -6,9 +6,9 @@ import {
 const BASE_URL = "/api";
 
 // get water
-export const getWater = async (date: string, polorId: number) => {
+export const getWater = async (date: string, polarId: number) => {
   const response = await fetch(
-    `${BASE_URL}/water/${polorId}?date=${date}`
+    `${BASE_URL}/water/${polarId}?date=${date}`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch water");

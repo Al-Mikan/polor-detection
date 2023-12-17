@@ -6,13 +6,13 @@ import api.schemas.memo as schema
 from sqlalchemy import and_
 from datetime import datetime
 
-async def get_memo(date,polorId,db: AsyncSession):
-    stmt = select(Memo.id, Memo.memo).where(
-        and_(
-            Memo.date == date,
-            Memo.polorId == polorId
-        )
-    ).order_by(Memo.id)
+
+async def get_memo(date, polarId, db: AsyncSession):
+    stmt = (
+        select(Memo.id, Memo.memo)
+        .where(and_(Memo.date == date, Memo.polarId == polarId))
+        .order_by(Memo.id)
+    )
 
     result = await db.execute(stmt)
     elms = result.fetchall()
@@ -27,10 +27,11 @@ async def get_memo(date,polorId,db: AsyncSession):
         )
     return formatted_elms
 
+
 # create meal
-async def create_memo(db: AsyncSession,create_elm: schema.MemoCreate):
+async def create_memo(db: AsyncSession, create_elm: schema.MemoCreate):
     new_elm = Memo(
-        polorId=create_elm.polorId,
+        polarId=create_elm.polarId,
         date=create_elm.date,
         memo=create_elm.memo,
         createdAt=datetime.now(),
@@ -41,16 +42,17 @@ async def create_memo(db: AsyncSession,create_elm: schema.MemoCreate):
     await db.refresh(new_elm)
     return new_elm
 
+
 # get by id
-async def get_memo_by_id(id: int,db: AsyncSession):
+async def get_memo_by_id(id: int, db: AsyncSession):
     stmt = select(Memo).where(Memo.id == id)
     result = await db.execute(stmt)
     elm = result.scalar_one_or_none()
     return elm
 
-# update 
-async def update_memo(db: AsyncSession, update_elm: schema.MemoBase, original: Memo):
 
+# update
+async def update_memo(db: AsyncSession, update_elm: schema.MemoBase, original: Memo):
     original.memo = update_elm.memo
     original.updatedAt = datetime.now()
 
@@ -61,7 +63,7 @@ async def update_memo(db: AsyncSession, update_elm: schema.MemoBase, original: M
 
 
 # delete meal
-async def delete_memo(id: int,db: AsyncSession):
+async def delete_memo(id: int, db: AsyncSession):
     stmt = select(Memo).where(Memo.id == id)
     result = await db.execute(stmt)
     elm = result.scalars().first()
@@ -72,5 +74,3 @@ async def delete_memo(id: int,db: AsyncSession):
     await db.delete(elm)
     await db.commit()
     return elm
-    
-

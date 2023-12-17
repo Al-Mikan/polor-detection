@@ -2,8 +2,8 @@ import { CreateMealProps, UpdateMealProps } from "@/components/type";
 const BASE_URL = "/api";
 
 // get
-export const getMeals = async (date: string, polorId: number) => {
-  const response = await fetch(`${BASE_URL}/meals/${polorId}?date=${date}`);
+export const getMeals = async (date: string, polarId: number) => {
+  const response = await fetch(`${BASE_URL}/meals/${polarId}?date=${date}`);
   if (!response.ok) {
     throw new Error("Failed to fetch meals");
   }

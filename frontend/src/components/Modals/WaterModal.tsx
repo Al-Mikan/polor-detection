@@ -48,7 +48,7 @@ const WaterModal = ({
     await createWater({
       value: content.value,
       date: date.format("YYYY-MM-DD"),
-      polorId: id,
+      polarId: id,
     });
   };
   const updateData = async (
@@ -116,7 +116,7 @@ const WaterModal = ({
                       await createData({
                         value: water,
                         date: date.format("YYYY-MM-DD"),
-                        polorId: id,
+                        polarId: id,
                     });
                   } else {
                     alert("エラー");
