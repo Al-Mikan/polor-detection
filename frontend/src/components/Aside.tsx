@@ -126,7 +126,6 @@ const Aside = () => {
         <div className="py-10">
           <Image src="./polorIcon.svg" width={120} height={120} alt="" />
         </div>
-
         <Link href="/">
           <Button
             className={` rounded-full hover:bg-[#EAE9E9] w-[180px] hover:shadow-md  ${

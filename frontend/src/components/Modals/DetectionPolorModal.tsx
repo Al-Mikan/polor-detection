@@ -14,7 +14,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
 
-import { polorProps } from "../type";
+import { PolorProps } from "../type";
 import { createDetectionPolors } from "../../utils/detectionPolor";
 type EnrichmentModalProps = {
   open: boolean;
@@ -31,13 +31,13 @@ const DetectionPolorModal = ({
   const { id, setId } = useContext(AppContext);
   const { polors, setPolors } = useContext(AppContext);
 
-  const createData = async (polor: polorProps) => {
+  const createData = async (polor: PolorProps) => {
     await createDetectionPolors({
       polorId: polor.id,
       date: date.format("YYYY-MM-DD"),
     });
   };
-  const handleListItemClick = async (polor: polorProps) => {
+  const handleListItemClick = async (polor: PolorProps) => {
     await createData(polor);
     fetchData();
     handleClose();

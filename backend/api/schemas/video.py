@@ -2,11 +2,11 @@ from datetime import date
 from typing import Optional
 
 from pydantic import BaseModel
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, File, UploadFile
 
 
-class VideoBase(BaseModel):
-    UploadFile: UploadFile = File()
+# class VideoBase(BaseModel):
+#     UploadFile: UploadFile
 
 
 class VideoCreate(BaseModel):
@@ -21,7 +21,7 @@ class VideoCreateResponse(VideoCreate):
         orm_mode = True
 
 
-class Video(VideoBase):
+class Video(BaseModel):
     id: int
 
     class Config:

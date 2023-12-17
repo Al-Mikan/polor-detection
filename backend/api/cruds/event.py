@@ -4,16 +4,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.models.model import Event
 import api.schemas.event as schema
 from sqlalchemy import and_
-from datetime import datetime,time
+from datetime import datetime, time
+
 
 # get
-async def get_events(date,polorId,db: AsyncSession):
-    stmt = select(Event.id,  Event.startTime, Event.endTime, Event.event).where(
-        and_(
-            Event.date == date,
-            Event.polorId == polorId
-        )
-    ).order_by(Event.id)
+async def get_events(date, polorId, db: AsyncSession):
+    stmt = (
+        select(Event.id, Event.event)
+        .where(and_(Event.date == date, Event.polorId == polorId))
+        .order_by(Event.id)
+    )
 
     result = await db.execute(stmt)
     events = result.fetchall()
@@ -23,20 +23,17 @@ async def get_events(date,polorId,db: AsyncSession):
         formatted_events.append(
             {
                 "id": event.id,
-                "startTime": event.startTime,
-                "endTime": event.endTime,
                 "event": event.event,
             }
         )
     return formatted_events
 
-# create 
+
+# create
 async def create_event(db: AsyncSession, event_create: schema.EventCreate):
     new_event = Event(
         polorId=event_create.polorId,
         date=event_create.date,
-        startTime=event_create.startTime,
-        endTime=event_create.endTime,
         event=event_create.event,
         createdAt=datetime.now(),
         updatedAt=datetime.now(),
@@ -48,16 +45,17 @@ async def create_event(db: AsyncSession, event_create: schema.EventCreate):
 
 
 # get by id
-async def get_event_by_id(id: int,db: AsyncSession):
+async def get_event_by_id(id: int, db: AsyncSession):
     stmt = select(Event).where(Event.id == id)
     result = await db.execute(stmt)
     event = result.scalar_one_or_none()
     return event
 
-# update 
-async def update_event(db: AsyncSession, event_update: schema.EventBase, original: Event):
-    original.startTime = event_update.startTime
-    original.endTime = event_update.endTime
+
+# update
+async def update_event(
+    db: AsyncSession, event_update: schema.EventBase, original: Event
+):
     original.event = event_update.event
     original.updatedAt = datetime.now()
     db.add(original)
@@ -65,8 +63,9 @@ async def update_event(db: AsyncSession, event_update: schema.EventBase, origina
     await db.refresh(original)
     return original
 
-# delete 
-async def delete_event(id: int,db: AsyncSession):
+
+# delete
+async def delete_event(id: int, db: AsyncSession):
     stmt = select(Event).where(Event.id == id)
     result = await db.execute(stmt)
     event = result.scalars().first()
@@ -77,5 +76,3 @@ async def delete_event(id: int,db: AsyncSession):
     await db.delete(event)
     await db.commit()
     return event
-    
-

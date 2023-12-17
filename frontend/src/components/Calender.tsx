@@ -28,7 +28,6 @@ import {
 
 import { DetectionTimeProps, PolorProps, PolorCageLogProps } from "./type";
 import { getDetectionTimes } from "@/utils/detectionTime";
-import { getDetectionPolors } from "@/utils/detectionPolor";
 
 //合計値を計算
 const calculateTotalTime = (
@@ -67,9 +66,9 @@ const CalenderContent = () => {
   const fetchDetectionTime = async () => {
     try {
       const detectionData = await getDetectionTimes(date.format("YYYY-MM-DD"));
-      const detectionPolor = await getDetectionPolors(
-        date.format("YYYY-MM-DD")
-      );
+      const detectionPolor = [{
+        polorId:1,
+      }]
       setDetectionData(detectionData);
       if (detectionPolor.length !== 0) {
         const polorId = detectionPolor[0].polorId;
@@ -331,7 +330,7 @@ const CalenderContent = () => {
               columns={columns}
               localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
               hideFooter
-              className="h-[300px]"
+              className="h-[300px] w-[700px]"
               sx={styles.grid}
               onRowDoubleClick={(params) => {
                 setVideoModalOpen(true), setSelectedVideo(params.row.time);
@@ -341,44 +340,81 @@ const CalenderContent = () => {
         </div>
       </div>
 
-      <div className=" rounded ">
-        <div className="flex gap-x-10 my-10">
-          <RecordCard
+      <div className=" rounded mt-16">
+        <p className="text-2xl font-bold mt-4 pl-2">環境</p>
+        <Divider sx={{ borderBottomWidth: 2 }} className=" mb-4 "/>
+          <div className="flex gap-x-10  gap-y-10 flex-wrap mb-12">
+            <RecordCard
             title="気温"
             icon={<FaThermometerHalf />}
+            className="w-[300px] shadow-md "
+            />
+            <RecordCard
+            title="プール掃除"
+            icon={<FaCalendarDay />}
+            className="w-[300px] shadow-md h-[150px]"
+            />
+            <RecordCard
+            title="収用回数"
+            icon={<FaCalendarDay />}
+            className="w-[300px]  h-[150px] shadow-md"
+            />
+            <RecordCard
+            title="エンリッチメント"
+            icon={<FaCalendarDay />}
+            className="w-[500px] shadow-md"
+            />
+            <RecordCard
+            title="イベント"
+            icon={<FaUtensils />}
             className="w-[500px] shadow-md"
           />
-          <RecordCard
-            title="エンリッチメント"
-            icon={<FaLeaf />}
-            className="w-full shadow-md"
-          />
         </div>
-        <div className="flex gap-x-10">
-          <RecordCard
+        <p className="text-2xl font-bold mt-4 pl-2">給餌</p>
+        <Divider sx={{ borderBottomWidth: 3 }} className="mb-4"/>
+
+        <div className="flex gap-x-10  gap-y-10 flex-wrap mb-12">
+            <RecordCard
             title="食事"
             icon={<FaUtensils />}
             className="w-[500px] shadow-md"
           />
+            <RecordCard
+            title="飲水量"
+            icon={<FaLeaf />}
+            className="w-[300px] shadow-md h-[150px] "
+          />
+        </div>
+        <p className="text-2xl font-bold mt-4 pl-2">行動</p>
+        <Divider sx={{ borderBottomWidth: 3 }} className="mb-4"/>
+
+        <div className="flex gap-x-10  gap-y-10 flex-wrap mb-10">
           <RecordCard
-            title="イベント"
+            title="起床時間"
+            icon={<FaLeaf />}
+            className="w-[300px] shadow-md h-[150px]"
+          />
+          <RecordCard
+            title="排泄"
+            icon={<FaUtensils />}
+            className="w-[300px] shadow-md h-[150px]"
+          />
+          <RecordCard
+            title="トレーニング"
+            icon={<FaUtensils />}
+            className="w-[300px] shadow-md h-[150px]"
+          />
+        </div>
+        <p className="text-2xl font-bold mt-4 pl-2">その他</p>
+        <Divider sx={{ borderBottomWidth: 3 }} className="mb-4"/>
+
+        <div className="flex gap-x-10  gap-y-10 flex-wrap mb-10">
+          <RecordCard
+            title="メモ"
             icon={<FaCalendarDay />}
             className="w-full shadow-md"
           />
-        </div>
-        <p>排泄</p>
-        <p>収用回数</p>
-        <p>飲水量</p>
-        <p>プール掃除</p>
-        <p>トレーニング</p>
-        <p>起床時刻</p>
-        <p>メモ</p>
-        <br />
-        <p>api: 検知時間合計値を返す</p>
-        <p>api: 動画を受け取って保存</p>
-        <br />
-
-        <p>modelを動かす</p>
+          </div>
       </div>
       <UploadVideo
         video_path="./1.mp4"
@@ -388,13 +424,6 @@ const CalenderContent = () => {
         }}
         title={selectedVideo}
       />
-      {/* <DetectionPolorModal
-        open={userSelectedModalOpen}
-        handleClose={() => {
-          setUserSelectedModalOpen(false);
-        }}
-        fetchData={fetchDetectionTime}
-      /> */}
     </div>
   );
 };

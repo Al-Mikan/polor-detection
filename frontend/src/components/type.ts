@@ -1,48 +1,33 @@
+//シロクマ
 export type PolorProps = {
   id: number;
   polorName: string;
 };
 
+//ケージ
 export type CageProps = {
   id: number;
   cageName: string;
 };
 
+//シロクマケージ
 export type PolorCageLogProps = {
   id: number;
   polorId: number;
   cageId: number;
 };
-
 export type CreatePolorCageLogProps = {
   id: number;
   polorId: number;
   cageId: number;
 };
-
 export type UpdatePolorCageLogProps = {
   polorId: number;
   cageId: number;
   date: string;
 };
 
-export type DetectionTimeProps = {
-  id: number;
-  startTime: string;
-  endTime: string;
-  cageId: number;
-};
-
-export type UpdateDetectionTimeProps = {
-  startTime: string;
-  endTime: string;
-};
-
-export type CreateDetectionPolorProps = {
-  polorId: number;
-  date: string;
-};
-
+//食事
 export type MealProps = {
   id: number;
   time: string;
@@ -64,6 +49,7 @@ export type UpdateMealProps = {
   weight: number;
 };
 
+//気温
 export type TemperatureProps = {
   id: number;
   time: string;
@@ -82,44 +68,155 @@ export type UpdateTemperatureProps = {
   temperature: number;
 };
 
+//エンリッチメント
 export type EnrichmentProps = {
   id: number;
-  startTime: string;
-  endTime: string;
   enrichment: string;
 };
 
 export type CreateEnrichmentProps = {
   polorId: number;
   date: string;
-  startTime: string;
-  endTime: string;
   enrichment: string;
 };
 
 export type UpdateEnrichmentProps = {
-  startTime: string;
-  endTime: string;
   enrichment: string;
 };
 
+//イベント
 export type EventProps = {
   id: number;
-  startTime: string;
-  endTime: string;
   event: string;
 };
 
 export type CreateEventProps = {
   polorId: number;
   date: string;
-  startTime: string;
-  endTime: string;
   event: string;
 };
 
 export type UpdateEventProps = {
-  startTime: string;
-  endTime: string;
   event: string;
 };
+
+//飲水
+export type WaterProps = {
+  id: number;
+  value: number;
+}
+export type CreateWaterProps = {
+  polorId: number;
+  date: string;
+  value: number;
+};
+
+export type UpdateWaterProps = {
+  value: number;
+};
+
+//排泄
+export type ExcretionProps = {
+  id: number;
+  number: number;
+  status: string;
+}
+export type CreateExcretionProps = {
+  polorId: number;
+  date: string;
+  number: number;
+  status: string;
+}
+export type UpdateExcretionProps = {
+  number: number;
+  status: string;
+}
+
+//収用回数
+export type ExpropriationProps = {
+  id: number;
+  expropriation: number;
+}
+export type CreateExpropriationProps = {
+  polorId: number;
+  date: string;
+  expropriation: number;
+}
+export type UpdateExpropriationProps = {
+  expropriation: number;
+}
+
+//メモ
+export type MemoProps = {
+  id: number;
+  memo: string;
+}
+export type CreateMemoProps = {
+  polorId: number;
+  date: string;
+  memo: string;
+}
+export type UpdateMemoProps = {
+  memo: string;
+}
+
+//プール掃除
+export type PoolCleaningProps = {
+  id: number;
+  poolCleaning: boolean;
+}
+export type CreatePoolCleaningProps = {
+  polorId: number;
+  date: string;
+  poolCleaning: boolean;
+}
+export type UpdatePoolCleaningProps = {
+  poolCleaning: boolean;
+}
+
+//トレーニング
+export type TrainingProps = {
+  id: number;
+  training: string;
+}
+export type CreateTrainingProps = {
+  polorId: number;
+  date: string;
+  training: string;
+}
+export type UpdateTrainingProps = {
+  training: string;
+}
+
+//起床時間
+export type WakeUpTimeProps = {
+  id: number;
+  time: string;
+}
+export type CreateWakeUpTimeProps = {
+  polorId: number;
+  date: string;
+  time: string;
+}
+export type UpdateWakeUpTimeProps = {
+  time: string;
+}
+
+//検知
+export type DetectTimeProps = {
+  id: number;
+  startTime: string;
+  endTime: string;
+  cageId: number;
+}
+
+//ビデオ
+export type VideoProps = {
+  id: number;
+  file: File;
+}
+export type CreateVideoProps = {
+  polorId: number;
+  file: File;
+  cageId: number;
+}

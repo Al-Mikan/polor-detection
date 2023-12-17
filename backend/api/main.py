@@ -1,16 +1,34 @@
 from fastapi import FastAPI
 
-from api.routers import detect_time, meal, polor, temperature,enrichment,event,polor_cage_log,cage,polor_cage_log,excretion,expropriation,memo,pool_cleaning,training,wakeup_time,water
+from api.routers import (
+    detect_time,
+    meal,
+    polor,
+    temperature,
+    enrichment,
+    event,
+    polor_cage_log,
+    cage,
+    polor_cage_log,
+    excretion,
+    expropriation,
+    memo,
+    pool_cleaning,
+    training,
+    wakeup_time,
+    water,
+    video,
+)
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(docs_url="/api/docs", redoc_url=None,openapi_url="/api/openapi.json")
+app = FastAPI(docs_url="/api/docs", redoc_url=None, openapi_url="/api/openapi.json")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3001","http://localhost:3000"],  # 許可するオリジンを指定
+    allow_origins=["http://localhost:3001", "http://localhost:3000"],  # 許可するオリジンを指定
     allow_credentials=True,  # クレデンシャル（Cookieなど）の送信を許可
     allow_methods=["GET", "POST", "PUT", "DELETE"],  # 許可するHTTPメソッドを指定
-    allow_headers=["*"], 
+    allow_headers=["*"],
 )
 
 app.include_router(polor.router)
@@ -28,4 +46,4 @@ app.include_router(pool_cleaning.router)
 app.include_router(training.router)
 app.include_router(wakeup_time.router)
 app.include_router(water.router)
-
+app.include_router(video.router)

@@ -6,7 +6,8 @@ from api.models.model import DetectionTime
 from sqlalchemy import and_
 import api.schemas.detect_time as schema
 from fastapi import UploadFile
-from app.settings import SYSTEM_MEDIA_IMAGE_ANONYMOUS_POST_PATH
+
+SAVE_PATH = "../media/videos"
 
 
 async def get_detect_time(date, db: AsyncSession):
@@ -46,10 +47,10 @@ async def create_detect_time(video: UploadFile, db: AsyncSession):
     filename = os.path.splitext(content.filename)[1]
 
     # ディレクトリが存在しない場合、作成する
-    if not os.path.exists(SYSTEM_MEDIA_IMAGE_ANONYMOUS_POST_PATH):
-        os.makedirs(SYSTEM_MEDIA_IMAGE_ANONYMOUS_POST_PATH)
+    if not os.path.exists(SAVE_PATH):
+        os.makedirs(SAVE_PATH)
 
-    save_path = os.path.join(SYSTEM_MEDIA_IMAGE_ANONYMOUS_POST_PATH, filename)
+    save_path = os.path.join(SAVE_PATH, filename)
     with open(save_path, "wb") as f:
         f.write(content)
 

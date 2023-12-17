@@ -1,17 +1,19 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.models.model import Training
-import api.schemas.training as schema
+from api.models.model import Video
+import api.schemas.video as schema
 from sqlalchemy import and_
 from datetime import datetime
+import os
+from fastapi import APIRouter, Depends, Query, HTTPException, UploadFile, Form
 
 
 async def get_video(date, polorId, db: AsyncSession):
     stmt = (
-        select(Training.id, Training.training)
-        .where(and_(Training.date == date, Training.polorId == polorId))
-        .order_by(Training.id)
+        select(Video.id, Video.video_path)
+        .where(and_(Video.date == date, Video.polorId == polorId))
+        .order_by(Video.id)
     )
 
     result = await db.execute(stmt)
@@ -22,61 +24,69 @@ async def get_video(date, polorId, db: AsyncSession):
         formatted_elms.append(
             {
                 "id": elm.id,
-                "training": elm.training,
+                "video_path": elm.video_path,
             }
         )
     return formatted_elms
 
 
 # create meal
-async def create_video(db: AsyncSession, create_elm: schema.TrainingCreate):
+async def create_video(
+    db: AsyncSession,
+    date: str,
+    polorId: int,
+    video: UploadFile,
+):
     # 動画をmediaフォルダに保存
+    print(video.filename)
+    exit()
+    video_dir = "./media/video"
+    if not os.path.exists(video_dir):
+        os.makedirs(video_dir)
+    with open(f"{video_dir}/{create_elm.UploadFile.filename}", "wb") as buffer:
+        buffer.write(create_elm.UploadFile.file.read())
 
-    # 動画のパスをDBに保存
-
-    new_meal = Training(
+    new_video = Video(
         polorId=create_elm.polorId,
         date=create_elm.date,
-        training=create_elm.training,
+        video_path=create_elm.video_path,
         createdAt=datetime.now(),
         updatedAt=datetime.now(),
     )
-    db.add(new_meal)
+    db.add(new_video)
     await db.commit()
-    await db.refresh(new_meal)
-    return new_meal
+    await db.refresh(new_video)
+    return new_video
 
 
 # get by id
 async def get_training_by_id(id: int, db: AsyncSession):
-    stmt = select(Training).where(Training.id == id)
+    stmt = select(Video).where(Video.id == id)
     result = await db.execute(stmt)
-    meal = result.scalar_one_or_none()
-    return meal
+    video = result.scalar_one_or_none()
+    return video
 
 
-# update
-async def update_training(
-    db: AsyncSession, update: schema.TrainingBase, original: Training
-):
-    original.training = update.training
-    original.updatedAt = datetime.now()
+# # update
+# async def update_video(db: AsyncSession, update: schema.VideoBase, original: Video):
+#     original.video_path = update.video_path
+#     original.updatedAt = datetime.now()
 
-    db.add(original)
-    await db.commit()
-    await db.refresh(original)
-    return original
+#     db.add(original)
+#     await db.commit()
+#     await db.refresh(original)
+#     return original
 
 
-# delete meal
-async def delete_training(id: int, db: AsyncSession):
-    stmt = select(Training).where(Training.id == id)
-    result = await db.execute(stmt)
-    elm = result.scalars().first()
+# # delete
+# async def delete_video(id: int, db: AsyncSession):
+#     stmt = select(Video).where(Video.id == id)
+#     result = await db.execute(stmt)
+#     elm = result.scalars().first()
 
-    if elm is None:
-        return None
+#     if elm is None:
+#         return None
 
-    await db.delete(elm)
-    await db.commit()
-    return elm
+#     await db.delete(elm)
+#     await db.commit()
+#     return elm

@@ -23,6 +23,8 @@ services:
     ports:
       - 33306:3306 # ホストマシンのポート33306を、docker内のポート3306に接続する
   frontend:
+    environment:
+      TZ: "Asia/Tokyo"
     build:
       context: .
       dockerfile: frontend/Dockerfile

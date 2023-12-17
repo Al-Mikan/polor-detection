@@ -54,3 +54,8 @@ $ docker-compose exec db mysql polor
 ```sh
 $ docker-compose build --no-cache
 ```
+
+## コンテナに入る
+```sh
+$ docker exec -it polor-detection-backend-1 /bin/bash
+```
