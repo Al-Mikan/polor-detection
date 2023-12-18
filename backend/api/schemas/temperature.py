@@ -17,11 +17,11 @@ class TemperatureCreateResponse(TemperatureCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Temperature(TemperatureBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True

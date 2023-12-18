@@ -28,7 +28,9 @@ async def create_video(
     video: UploadFile = Form(...),
     db: AsyncSession = Depends(get_db),
 ):
-    return await crud.create_video(db, date, cageId, videoStartTime, video)
+    new_video = await crud.create_video(db, date, cageId, videoStartTime, video)
+    # await crud.classification_video(db,)
+    return None
 
 
 # @router.put("/api/video/{id}", response_model=None)

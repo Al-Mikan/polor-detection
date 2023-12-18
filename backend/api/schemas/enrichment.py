@@ -16,11 +16,11 @@ class EnrichmentCreateResponse(EnrichmentCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Enrichment(EnrichmentBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True

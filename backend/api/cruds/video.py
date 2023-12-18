@@ -8,6 +8,10 @@ from datetime import datetime
 import os
 from fastapi import UploadFile
 
+import sys
+
+from api.detect.yolo_script import run_yolov8_on_video
+
 
 async def get_video(date, db: AsyncSession):
     stmt = (
@@ -32,7 +36,7 @@ async def get_video(date, db: AsyncSession):
     return formatted_elms
 
 
-# create meal
+# create
 async def create_video(
     db: AsyncSession,
     date: str,
@@ -45,10 +49,16 @@ async def create_video(
     if video.filename is None:
         pass
     # 動画をmediaフォルダに保存
-    save_path = "./api/media/videos"
+    ROOT_DIR = os.path.abspath(os.curdir)
+    SYSTEM_MEDIA_PATH = os.path.join(ROOT_DIR, "api/media/videos")
+    save_path = SYSTEM_MEDIA_PATH
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     video_path = save_path + "/" + video.filename
+
+    # すでに同じ名前のファイルがある場合、error
+    if os.path.exists(video_path):
+        raise Exception("同じ名前のファイルがすでに存在します")
     with open(video_path, "wb") as f:
         f.write(content)
 
@@ -64,6 +74,13 @@ async def create_video(
     await db.commit()
     await db.refresh(new_video)
     return new_video
+
+
+async def classification_video(
+    db: AsyncSession,
+    video_path: str,
+):
+    await run_yolov8_on_video(video_path)
 
 
 # get by id

@@ -5,8 +5,7 @@ services:
     volumes:
       - ./backend/.dockervenv:/src/.venv
       - ./backend:/src
-      - media:/src/api/media
-
+      # - media:/src/api/media
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -31,7 +30,7 @@ services:
       dockerfile: frontend/Dockerfile
     volumes:
       - ./frontend:/src
-    command: sh -c "npm run dev"
+    command: sh -c "npm install && npm run dev"
     ports:
       - "3000:3000"
 
@@ -44,4 +43,5 @@ services:
 
 volumes:
   mysql_data:
-  media:
+  # media:
+  

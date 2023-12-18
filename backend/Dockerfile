@@ -19,8 +19,6 @@ COPY ["./backend/pyproject.toml", "./backend/poetry.lock", "/src/"]
 RUN poetry config virtualenvs.in-project false
 RUN poetry install --no-root
 
-RUN pip install --upgrade ultralytics
-
 
 # uvicornのサーバーを立ち上げる
 ENTRYPOINT ["poetry", "run", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--reload"]

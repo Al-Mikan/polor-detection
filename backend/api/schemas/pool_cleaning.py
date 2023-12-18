@@ -16,11 +16,11 @@ class PoolCleaningCreateResponse(PoolCleaningCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class PoolCleaning(PoolCleaningBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True

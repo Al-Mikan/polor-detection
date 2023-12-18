@@ -17,11 +17,11 @@ class TrainingCreateResponse(TrainingCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Training(TrainingBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True

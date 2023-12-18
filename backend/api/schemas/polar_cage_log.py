@@ -17,11 +17,11 @@ class PolarCageLogCreateResponse(PolarCageLogCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class PolarCageLog(PolarCageLogBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True

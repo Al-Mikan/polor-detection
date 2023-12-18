@@ -17,11 +17,11 @@ class MemoCreateResponse(MemoCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Memo(MemoBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True

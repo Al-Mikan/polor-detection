@@ -18,11 +18,11 @@ class MealCreateResponse(MealCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Meal(MealBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -3,6 +3,8 @@ import torch
 
 
 def run_yolov8_on_video(video_path):
+    print("#############################")
+    return "aaa"
     # YOLOv8の初期化
     model = YOLO(model="./best.pt")
 

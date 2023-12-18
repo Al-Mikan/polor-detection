@@ -196,7 +196,7 @@ def MakeDataset(n_data, n_class, h_size=256, w_size=256):
 
 
 def main(video_name):
-    frame_count = video_to_image("../../media/videos/91_2020_09_26_10.mp4", "frames/")
+    frame_count = video_to_image("../media/videos/91_2020_09_26_10.mp4", "frames/")
     merge_all_files_in_directory(
         "../runs/detect/polars/labels", "labels.txt", frame_count
     )
