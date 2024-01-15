@@ -14,6 +14,12 @@ import {
   FaCalendarDay,
   FaTrash,
   FaPen,
+  FaWater,
+  FaClock,
+  FaPoop,
+  FaWarehouse,
+  FaBroom,
+  FaRunning
 } from "react-icons/fa";
 
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
@@ -301,7 +307,7 @@ const CalenderContent = () => {
             </div>
           </div>
         </div>
-        <div className=" flex items-center justify-center py-4">
+        {/* <div className=" flex items-center justify-center py-4">
           <Button
             onClick={handleClick}
             variant="contained"
@@ -321,7 +327,7 @@ const CalenderContent = () => {
           <p className="flex justify-center text-sm text-gray-500">
             mp4ファイルをアップロードすることで、常同行動検知システムが動作します。
           </p>
-        </div>
+        </div> */}
 
         <div className="flex items-center justify-center p-4 w-full py-6">
           <div className="w-fit ">
@@ -351,22 +357,22 @@ const CalenderContent = () => {
             />
             <RecordCard
             title="プール掃除"
-            icon={<FaCalendarDay />}
+            icon={<FaBroom />}
             className="w-[300px] shadow-md h-[150px]"
             />
             <RecordCard
             title="収用回数"
-            icon={<FaCalendarDay />}
+            icon={<FaWarehouse />}
             className="w-[300px]  h-[150px] shadow-md"
             />
             <RecordCard
             title="エンリッチメント"
-            icon={<FaCalendarDay />}
+            icon={<FaLeaf />}
             className="w-[500px] shadow-md"
             />
             <RecordCard
             title="イベント"
-            icon={<FaUtensils />}
+            icon={<FaCalendarDay />}
             className="w-[500px] shadow-md"
           />
         </div>
@@ -381,7 +387,7 @@ const CalenderContent = () => {
           />
             <RecordCard
             title="飲水量"
-            icon={<FaLeaf />}
+            icon={<FaWater />}
             className="w-[300px] shadow-md h-[150px] "
           />
         </div>
@@ -391,17 +397,17 @@ const CalenderContent = () => {
         <div className="flex gap-x-10  gap-y-10 flex-wrap mb-10">
           <RecordCard
             title="起床時間"
-            icon={<FaLeaf />}
+            icon={<FaClock />}
             className="w-[300px] shadow-md h-[150px]"
           />
           <RecordCard
             title="排泄"
-            icon={<FaUtensils />}
+            icon={<FaPoop />}
             className="w-[300px] shadow-md h-[150px]"
           />
           <RecordCard
             title="トレーニング"
-            icon={<FaUtensils />}
+            icon={<FaRunning />}
             className="w-[300px] shadow-md h-[150px]"
           />
         </div>
@@ -411,7 +417,7 @@ const CalenderContent = () => {
         <div className="flex gap-x-10  gap-y-10 flex-wrap mb-10">
           <RecordCard
             title="メモ"
-            icon={<FaCalendarDay />}
+            icon={<FaPen />}
             className="w-full shadow-md"
           />
           </div>

@@ -12,6 +12,7 @@ BORDER_SIZE = 2
 
 
 def video_to_image(video_path, output_dir):
+    print(f"Converting {video_path} to images...")
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -116,6 +117,7 @@ def clip_image():
 
 
 def calc_speed(frames=3194, video_name="91_2020_09_26_10"):
+    print("calc speed")
     result = []
     x = video_name.split("_")[-1]
 
@@ -154,6 +156,7 @@ def calc_speed(frames=3194, video_name="91_2020_09_26_10"):
 
 
 def MakeDataset(n_data, n_class, h_size=256, w_size=256):
+    print("make dataset")
     input_file = open("./speed.txt", "r")
     input_data = input_file.read()
     input_lines = input_data.split("\n")
@@ -195,8 +198,9 @@ def MakeDataset(n_data, n_class, h_size=256, w_size=256):
     return ret_data
 
 
-def main(video_name):
-    frame_count = video_to_image("../media/videos/91_2020_09_26_10.mp4", "frames/")
+def classification(video_name):
+    print("start")
+    frame_count = video_to_image("../../media/videos/91_2020_09_28_18.mp4", "frames/")
     merge_all_files_in_directory(
         "../runs/detect/polars/labels", "labels.txt", frame_count
     )
@@ -228,5 +232,5 @@ def main(video_name):
     # 0:いない 1:常同　2:泳ぐ 3:歩く 4:食べる 5:休む 6:座る
 
 
-if __name__ == "__main__":
-    main("91_2020_09_26_10")
+# if __name__ == "__main__":
+#     main("91_2020_09_28_18")

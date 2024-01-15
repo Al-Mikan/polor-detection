@@ -13,6 +13,11 @@ sqlalchemy = "^2.0.20"
 aiomysql = "^0.2.0"
 python-multipart = "^0.0.6"
 ultralytics = "^8.0.227"
+torch = "^2.1.2"
+numpy = "^1.26.3"
+matplotlib = "^3.8.2"
+opencv-python = "^4.9.0.80"
+pillow = "^10.2.0"
 
 
 [build-system]

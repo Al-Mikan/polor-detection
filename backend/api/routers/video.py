@@ -3,6 +3,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends, Query, UploadFile, Form
 from sqlalchemy.ext.asyncio import AsyncSession
+from api.detect.yolo_script import run_yolov8_on_video
 
 router = APIRouter()
 
@@ -29,7 +30,7 @@ async def create_video(
     db: AsyncSession = Depends(get_db),
 ):
     new_video = await crud.create_video(db, date, cageId, videoStartTime, video)
-    # await crud.classification_video(db,)
+    await run_yolov8_on_video(new_video.videoPath)
     return None
 
 

@@ -153,7 +153,7 @@ useEffect(() => {
   return (
     <div className={`bg-white px-6 py-6 rounded-3xl   ${className}`}>
       <div className="flex justify-between mb-2">
-        <p className="text-xl  text-gray-700 font-bold  flex items-center">
+        <p className="text-xl  text-gray-700 font-bold  flex items-center gap-2">
           {icon}
           {title}
         </p>

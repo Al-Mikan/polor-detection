@@ -16,7 +16,7 @@ $ docker-compose build
 - poetry の定義ファイルについての install
 
 ```sh
-$ docker-compose run --entrypoint "poetry install --no-root" app
+$ docker-compose run --entrypoint "poetry install --no-root" backend
 ```
 
 - sqlalchemy の install

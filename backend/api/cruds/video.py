@@ -57,8 +57,8 @@ async def create_video(
     video_path = save_path + "/" + video.filename
 
     # すでに同じ名前のファイルがある場合、error
-    if os.path.exists(video_path):
-        raise Exception("同じ名前のファイルがすでに存在します")
+    # if os.path.exists(video_path):
+    #     raise Exception("同じ名前のファイルがすでに存在します")
     with open(video_path, "wb") as f:
         f.write(content)
 
@@ -74,13 +74,6 @@ async def create_video(
     await db.commit()
     await db.refresh(new_video)
     return new_video
-
-
-async def classification_video(
-    db: AsyncSession,
-    video_path: str,
-):
-    await run_yolov8_on_video(video_path)
 
 
 # get by id
