@@ -9,6 +9,14 @@ RUN apt-get clean && \
     apt-get -y update && \
     apt-get install -y wget build-essential libgl1-mesa-dev
 
+# YoloV5のリポジトリをクローン
+RUN git clone https://github.com/ultralytics/yolov5.git /yolov5
+WORKDIR /yolov5
+
+# YoloV5の依存関係のインストール
+RUN pip install -r requirements.txt
+
+
 WORKDIR /src
 
 RUN pip install --upgrade pip

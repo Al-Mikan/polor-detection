@@ -30,7 +30,7 @@ async def create_video(
     db: AsyncSession = Depends(get_db),
 ):
     new_video = await crud.create_video(db, date, cageId, videoStartTime, video)
-    await run_yolov8_on_video(new_video.videoPath)
+    # await run_yolov8_on_video(new_video.videoPath)
     return None
 
 

@@ -122,12 +122,13 @@ class Excretion(Base):
 
 
 ########################################################行動
-class DetectionTime(Base):
-    __tablename__ = "detection_time"
+class Classification(Base):
+    __tablename__ = "classification"
 
     id = Column(Integer, primary_key=True)
     date = Column(Date, nullable=False)
     cageId = Column(Integer, nullable=False)
+    classification = Column(Integer, nullable=False)
     startTime = Column(Time, nullable=False)
     endTime = Column(Time, nullable=False)
     createdAt = Column(DateTime, nullable=False)

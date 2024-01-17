@@ -3,5 +3,5 @@
 /labels
 /original
 ./DatasetSplit
-/classification/frames
-/classification/images
+/frames
+/images

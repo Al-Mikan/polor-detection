@@ -1,29 +1,31 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 import os
+import datetime
 
-from api.models.model import DetectionTime
+from api.models.model import Classification
 from sqlalchemy import and_
-import api.schemas.detect_time as schema
+import api.schemas.classification as schema
 from fastapi import UploadFile
 
 SAVE_PATH = "../media/videos"
 
 
-async def get_detect_time(date, db: AsyncSession):
+async def get_classification(date, db: AsyncSession):
     stmt = (
         select(
-            DetectionTime.id,
-            DetectionTime.startTime,
-            DetectionTime.endTime,
-            DetectionTime.cageId,
+            Classification.id,
+            Classification.classification,
+            Classification.startTime,
+            Classification.endTime,
+            Classification.cageId,
         )
         .where(
             and_(
-                DetectionTime.date == date,
+                Classification.date == date,
             )
         )
-        .order_by(DetectionTime.id)
+        .order_by(Classification.id)
     )
 
     result = await db.execute(stmt)
@@ -35,6 +37,7 @@ async def get_detect_time(date, db: AsyncSession):
             {
                 "id": detection_time.id,
                 "cageId": detection_time.cageId,
+                "classification": detection_time.classification,
                 "startTime": detection_time.startTime,
                 "endTime": detection_time.endTime,
             }

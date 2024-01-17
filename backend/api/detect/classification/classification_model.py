@@ -4,7 +4,10 @@ import matplotlib.pyplot as plt
 import os
 import cv2
 from PIL import Image
-from model import Model
+import time
+import psutil
+
+# from model import Model
 
 
 SIZE = 62
@@ -12,7 +15,6 @@ BORDER_SIZE = 2
 
 
 def video_to_image(video_path, output_dir):
-    print(f"Converting {video_path} to images...")
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -37,10 +39,16 @@ def video_to_image(video_path, output_dir):
     return frame_count - 1
 
 
-def merge_all_files_in_directory(directory, output_file, count=3194):
+def merge_all_files_in_directory(directory, output_file, count=3194, file_path=""):
+    file_name = file_path.split("/")[-1].split(".")[0]
+    # エラー処理
+    if file_name == "":
+        print("Error: file name is empty.")
+        exit()
+
     with open(output_file, "w") as merged_file:
         for i in range(1, count + 1):
-            file_path = os.path.join(directory, f"91_2020_09_26_10_{i}.txt")
+            file_path = os.path.join(directory, f"{file_name}_{i}.txt")
             if os.path.exists(file_path):
                 with open(file_path, "r") as file:
                     content = file.readline().rstrip("\n")
@@ -50,7 +58,6 @@ def merge_all_files_in_directory(directory, output_file, count=3194):
             else:
                 merged_file.write("0 0 0 0 0 0")
             merged_file.write("\n")
-    print(f"Merged files in {directory} into {output_file}")
     return count
 
 
@@ -63,17 +70,16 @@ def read_image(image_path):
 ##「物体の種類」「中心のX座標」「中心のY座標」「幅」「高さ」
 
 
-def clip_image():
-    if not os.path.exists("./images"):
-        os.makedirs("./images")
+def clip_image(frame_path="./frames/", image_path="./images/"):
+    if not os.path.exists(image_path):
+        os.makedirs(image_path)
     file_path = os.path.join("./labels.txt")
     if os.path.exists(file_path):
         with open(file_path, "r") as f:
             lines = f.readlines()  # ファイル全体の行を読み取る
             for index, line in enumerate(lines, start=1):
                 _, x_ratio, y_ratio, *_ = [float(num) for num in line.split()]
-                print(index, x_ratio, y_ratio)
-                img_path = os.path.join("./frames/", f"{index}.jpg")
+                img_path = os.path.join(frame_path, f"{index}.jpg")
                 if os.path.exists(img_path):
                     # 検知されていない場合
                     if x_ratio == 0 and y_ratio == 0:
@@ -82,7 +88,7 @@ def clip_image():
                             (SIZE + BORDER_SIZE * 2, SIZE + BORDER_SIZE * 2),
                             (0, 0, 0),
                         )
-                        new_img_path = os.path.join("./images/", f"{index}.jpg")
+                        new_img_path = os.path.join(image_path, f"{index}.jpg")
                         new_img.save(new_img_path)
                     else:
                         with Image.open(img_path) as img:
@@ -104,7 +110,7 @@ def clip_image():
                             )
                             paste_area = (BORDER_SIZE, BORDER_SIZE)
                             new_img.paste(crop_img.resize((SIZE, SIZE)), paste_area)
-                            new_img_path = os.path.join("./images/", f"{index}.jpg")
+                            new_img_path = os.path.join(image_path, f"{index}.jpg")
                             new_img.save(new_img_path)
                 else:
                     new_img = Image.new(
@@ -112,28 +118,28 @@ def clip_image():
                         (SIZE + BORDER_SIZE * 2, SIZE + BORDER_SIZE * 2),
                         (0, 0, 0),
                     )
-                    new_img_path = os.path.join("./images/", f"{index}.jpg")
+                    new_img_path = os.path.join(image_path, f"{index}.jpg")
                     new_img.save(new_img_path)
 
 
-def calc_speed(frames=3194, video_name="91_2020_09_26_10"):
-    print("calc speed")
+def calc_speed(frames=3194, video_path="", result_yolo_path=""):
     result = []
+    video_name = video_path.split("/")[-1].split(".")[0]
     x = video_name.split("_")[-1]
 
     for frame in range(1, frames + 1):
-        file_path = f"../runs/detect/polars/labels/{video_name}_{frame}.txt"
+        file_path = f"{result_yolo_path}/{video_name}_{frame}.txt"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 data = f.readline().split()
                 center = (int(float(data[1]) * 36), int(float(data[2]) * 36))
                 speed = 0.0
                 count = 0
-                for i in range(-15, 16):
+                for i in range(-5, 6):
                     if i == 0:
                         continue
                     neighbor_file_path = (
-                        f"../runs/detect/polars/labels/{video_name}_{frame+i}.txt"
+                        f"{result_yolo_path}/{video_name}_{frame+i}.txt"
                     )
                     if os.path.exists(neighbor_file_path):
                         with open(neighbor_file_path, "r") as nf:
@@ -156,7 +162,6 @@ def calc_speed(frames=3194, video_name="91_2020_09_26_10"):
 
 
 def MakeDataset(n_data, n_class, h_size=256, w_size=256):
-    print("make dataset")
     input_file = open("./speed.txt", "r")
     input_data = input_file.read()
     input_lines = input_data.split("\n")
@@ -168,7 +173,7 @@ def MakeDataset(n_data, n_class, h_size=256, w_size=256):
             (int(tmp[0]), int(tmp[1]), int(tmp[2]), int(tmp[3]), float(tmp[4]))
         )
 
-    label_file = open("labels.txt", "r")
+    label_file = open("./labels.txt", "r")
     label_data = label_file.read()
     label_lines = label_data.split("\n")
     label_lines = label_lines[:-1]
@@ -198,39 +203,8 @@ def MakeDataset(n_data, n_class, h_size=256, w_size=256):
     return ret_data
 
 
-def classification(video_name):
-    print("start")
-    frame_count = video_to_image("../../media/videos/91_2020_09_28_18.mp4", "frames/")
-    merge_all_files_in_directory(
-        "../runs/detect/polars/labels", "labels.txt", frame_count
-    )
-    clip_image()
-    calc_speed(frame_count, video_name)
-
-    image_data, coordinates_data, speed_data = MakeDataset(frame_count, 8)["data"]
-
-    print(image_data.size())
-    print(coordinates_data.size())
-    print(speed_data.size())
-
-    model = Model()
-    model.load_state_dict(torch.load("./model-100epoch.pth"))
-    model.eval()
-
-    predict = model(coordinates_data, speed_data, image_data)
-    print(predict.size())
-
-    output_file_path = "predict_output.txt"
-
-    # predictの内容をテキストファイルに書き込む
-    with open(output_file_path, "w") as output_file:
-        predicted_classes = torch.argmax(predict, dim=1)
-        predicted_classes = predicted_classes.tolist()  # リストに変換
-        for item in predicted_classes:
-            output_file.write(str(item) + "\n")
-
-    # 0:いない 1:常同　2:泳ぐ 3:歩く 4:食べる 5:休む 6:座る
+# 0:いない 1:常同　2:泳ぐ 3:歩く 4:食べる 5:休む 6:座る
 
 
 # if __name__ == "__main__":
-#     main("91_2020_09_28_18")
+#     classification("91_2020_09_28_18")

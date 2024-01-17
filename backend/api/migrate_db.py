@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from api.models.model import Base, Polar, DetectionTime, Cage
+from api.models.model import Base, Polar, Classification, Cage
 
 DB_URL = "mysql+pymysql://root@db:3306/polar?charset=utf8"
 engine = create_engine(DB_URL, echo=True)
