@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { TrainingProps } from "../type";
 import Modal from "../Modals/TrainingModal";
 import {
-  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
 } from "@mui/material";
 type TrainingCardContentProps = {
@@ -38,7 +36,6 @@ const TrainingCardContent = ({ trainings, fetchData }: TrainingCardContentProps)
                         </TableCell>
                       </TableRow>
                       <Modal
-                        title={"トレーニング"}
                         content={content}
                         open={editModalOpenIndex === index}
                         handleClose={() => {

@@ -3,7 +3,7 @@ import {
   UpdateTemperatureProps,
 } from "@/components/type";
 
-const BASE_URL = "/api";
+const BASE_URL = "http://0.0.0.0:8000/api";
 
 // get temperature
 export const getTemperatures = async (date: string, polarId: number) => {

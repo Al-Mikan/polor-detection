@@ -65,7 +65,6 @@ const TemperatureCardContent = ({
                 </TableCell>
               </TableRow>
               <TemperatureModal
-                title={"気温"}
                 content={content}
                 open={editModalOpenIndex === index}
                 handleClose={() => {

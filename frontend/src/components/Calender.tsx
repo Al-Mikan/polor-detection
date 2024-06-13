@@ -5,21 +5,12 @@ import DayGrid from "./DayGrid";
 import RecordCard from "./RecordCard";
 import UploadVideo from "./UploadVideo";
 import { DateCalendar } from "@mui/x-date-pickers";
-import { Button, Divider } from "@mui/material";
+import { Button, Popover } from "@mui/material";
 
+import { cardData } from "@/data/cardData";
 import {
-  FaThermometerHalf,
-  FaUtensils,
-  FaLeaf,
-  FaCalendarDay,
   FaTrash,
-  FaPen,
-  FaWater,
-  FaClock,
-  FaPoop,
-  FaWarehouse,
-  FaBroom,
-  FaRunning
+  FaCalendar
 } from "react-icons/fa";
 
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
@@ -32,12 +23,12 @@ import {
   jaJP,
 } from "@mui/x-data-grid";
 
-import { DetectionTimeProps, PolarProps, PolarCageLogProps } from "./type";
+import { DetectTimeProps, PolarProps, PolarCageLogProps } from "./type";
 import { getDetectionTimes } from "@/utils/detectionTime";
 
 //合計値を計算
 const calculateTotalTime = (
-  timeData: DetectionTimeProps[] | null,
+  timeData: DetectTimeProps[] | null,
   id: number,
   detectionPolarId: number
 ): number[] => {
@@ -65,7 +56,7 @@ const CalenderContent = () => {
   const { polars, setPolars } = useContext(AppContext);
 
   const [totalTimeAry, setTotalTimeAry] = useState<number[]>([0, 0, 0]);
-  const [detectionData, setDetectionData] = useState<DetectionTimeProps[]>([]);
+  const [detectionData, setDetectionData] = useState<DetectTimeProps[]>([]);
   const [userSelectedModalOpen, setUserSelectedModalOpen] = useState(false);
   const [polarCageLog, setPolarCageLog] = useState<PolarCageLogProps[]>([]);
 
@@ -209,7 +200,10 @@ const CalenderContent = () => {
     },
   };
 
-  const timeData: DetectionTimeProps[] = [
+    // カレンダーの表示状態を管理するための状態
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  const timeData: DetectTimeProps[] = [
     {
       id: 1,
       cageId: 1,
@@ -247,31 +241,59 @@ const CalenderContent = () => {
       endTime: "18:40:00",
     },
   ];
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const open = Boolean(anchorEl);
+  const pop_id = open ? "simple-popover" : undefined;
+
+  const handlePopOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopClose = () => {
+    setAnchorEl(null);
+  };
+
 
   return (
     <div className="p-8">
       <p className=" text-3xl font-bold mb-4">行動記録</p>
 
       <div className=" bg-white p-6 rounded-3xl shadow-md">
-        <div className=" mb-12 flex h-[300px] ">
-          <div className="flex flex-col justify-between items-center">
-            <p className="text-3xl font-bold mt-4">
+        <div className=" mb-12 h-[300px] ">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-2">
+            <p className="text-3xl font-bold " >
               {date?.format("YYYY年MM月DD日")}
             </p>
-            <div className=" w-[256px] h-[220px] ">
-              <DateCalendar
-                value={date}
-                onChange={(day) => day && setDate(day)}
-                className="scale-[0.8] origin-top-left  rounded-md p-0 text-[#362B44] "
-              />
+            <Button
+              onClick={handlePopOpen}
+              variant="contained"
+              className="p-4 bg-[#342B43] hover:bg-[#000000]  hover:shadow-xl text-xl rounded-full"
+            ><FaCalendar/></Button>
+                <Popover
+                  id={pop_id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handlePopClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+              >
+              <div className="w-[256px] h-[270px]">
+                <DateCalendar
+                  value={date}
+                  onChange={(day) => {
+                    day && setDate(day);
+                    handlePopClose();
+                  }}
+                  className="scale-[0.8] origin-top-left rounded-md p-0 text-[#362B44]"
+                />
+              </div>
+                </Popover>
             </div>
           </div>
-          <Divider
-            orientation="vertical"
-            flexItem
-            className="h-[300px]  mx-4"
-          ></Divider>
-          <div className="w-full flex flex-col justify-between  h-[300px] px-2 ">
+          <div className="w-full  h-[300px] px-2 ">
             <div className="flex justify-end">
               <div className=" p-2 flex items-center gap-x-1">
                 <p className="bg-[#47CAD9] text-white rounded-full  px-2 py-1">
@@ -345,81 +367,16 @@ const CalenderContent = () => {
           </div>
         </div>
       </div>
-
       <div className=" rounded mt-16">
-        <p className="text-2xl font-bold mt-4 pl-2">環境</p>
-        <Divider sx={{ borderBottomWidth: 2 }} className=" mb-4 "/>
           <div className="flex gap-x-10  gap-y-10 flex-wrap mb-12">
-            <RecordCard
-            title="気温"
-            icon={<FaThermometerHalf />}
-            className="w-[300px] shadow-md "
-            />
-            <RecordCard
-            title="プール掃除"
-            icon={<FaBroom />}
-            className="w-[300px] shadow-md h-[150px]"
-            />
-            <RecordCard
-            title="収用回数"
-            icon={<FaWarehouse />}
-            className="w-[300px]  h-[150px] shadow-md"
-            />
-            <RecordCard
-            title="エンリッチメント"
-            icon={<FaLeaf />}
-            className="w-[500px] shadow-md"
-            />
-            <RecordCard
-            title="イベント"
-            icon={<FaCalendarDay />}
-            className="w-[500px] shadow-md"
-          />
-        </div>
-        <p className="text-2xl font-bold mt-4 pl-2">給餌</p>
-        <Divider sx={{ borderBottomWidth: 3 }} className="mb-4"/>
-
-        <div className="flex gap-x-10  gap-y-10 flex-wrap mb-12">
-            <RecordCard
-            title="食事"
-            icon={<FaUtensils />}
-            className="w-[500px] shadow-md"
-          />
-            <RecordCard
-            title="飲水量"
-            icon={<FaWater />}
-            className="w-[300px] shadow-md h-[150px] "
-          />
-        </div>
-        <p className="text-2xl font-bold mt-4 pl-2">行動</p>
-        <Divider sx={{ borderBottomWidth: 3 }} className="mb-4"/>
-
-        <div className="flex gap-x-10  gap-y-10 flex-wrap mb-10">
-          <RecordCard
-            title="起床時間"
-            icon={<FaClock />}
-            className="w-[300px] shadow-md h-[150px]"
-          />
-          <RecordCard
-            title="排泄"
-            icon={<FaPoop />}
-            className="w-[300px] shadow-md h-[150px]"
-          />
-          <RecordCard
-            title="トレーニング"
-            icon={<FaRunning />}
-            className="w-[300px] shadow-md h-[150px]"
-          />
-        </div>
-        <p className="text-2xl font-bold mt-4 pl-2">その他</p>
-        <Divider sx={{ borderBottomWidth: 3 }} className="mb-4"/>
-
-        <div className="flex gap-x-10  gap-y-10 flex-wrap mb-10">
-          <RecordCard
-            title="メモ"
-            icon={<FaPen />}
-            className="w-full shadow-md"
-          />
+          {cardData.map((card, index) => (
+                <RecordCard
+                  key={index}
+                  recordType={card.recordType}
+                  icon={card.icon}
+                  className={card.className}
+                />
+              ))}
           </div>
       </div>
       <UploadVideo

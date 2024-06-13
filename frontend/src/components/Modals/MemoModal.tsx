@@ -13,7 +13,6 @@ import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
 
 type MemoModalProps = {
-  title: string;
   content?: MemoProps;
   open: boolean;
   handleClose: () => void;
@@ -22,7 +21,6 @@ type MemoModalProps = {
 };
 
 const MemoModal = ({
-  title,
   content,
   open,
   handleClose,

@@ -1,4 +1,7 @@
+export type RecordType = "temperature" | "poolCleaning" | "expropriation" | "enrichment" | "event"| "meal" | "water" | "excretion" | "memo" | "training" | "wakeUpTime" | "detectTime" | "video"|"cage" | "polarCageLog";
 //シロクマ
+
+
 export type PolarProps = {
   id: number;
   polarName: string;

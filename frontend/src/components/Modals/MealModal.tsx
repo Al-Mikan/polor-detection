@@ -15,7 +15,6 @@ import { AppContext } from "../../pages/_app";
 import { createMeal, updateMeal, deleteMeal } from "../../utils/meal";
 
 type MealModalProps = {
-  title: string;
   content?: MealProps;
   open: boolean;
   handleClose: () => void;
@@ -24,7 +23,6 @@ type MealModalProps = {
 };
 
 const MealModal = ({
-  title,
   content,
   open,
   handleClose,

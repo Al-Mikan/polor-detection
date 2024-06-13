@@ -8,10 +8,10 @@ from datetime import datetime
 
 
 # get
-async def get_temperatures(date, polarId, db: AsyncSession):
+async def get_temperatures(date, animalId, db: AsyncSession):
     stmt = (
         select(Temperature.id, Temperature.time, Temperature.temperature)
-        .where(and_(Temperature.date == date, Temperature.polarId == polarId))
+        .where(and_(Temperature.date == date, Temperature.animalId == animalId))
         .order_by(Temperature.id)
     )
 
@@ -33,7 +33,7 @@ async def get_temperatures(date, polarId, db: AsyncSession):
 # create
 async def create_temperature(db: AsyncSession, temp_create: schema.TemperatureCreate):
     new_temp = Temperature(
-        polarId=temp_create.polarId,
+        animalId=temp_create.animalId,
         date=temp_create.date,
         time=temp_create.time,
         temperature=temp_create.temperature,

@@ -7,10 +7,10 @@ from sqlalchemy import and_
 from datetime import datetime
 
 
-async def get_excretion(date, polarId, db: AsyncSession):
+async def get_excretion(date, animalId, db: AsyncSession):
     stmt = (
         select(Excretion.id, Excretion.number, Excretion.status)
-        .where(and_(Excretion.date == date, Excretion.polarId == polarId))
+        .where(and_(Excretion.date == date, Excretion.animalId == animalId))
         .order_by(Excretion.id)
     )
 
@@ -32,7 +32,7 @@ async def get_excretion(date, polarId, db: AsyncSession):
 # create meal
 async def create_excretion(db: AsyncSession, create_elm: schema.ExcretionCreate):
     new_elm = Excretion(
-        polarId=create_elm.polarId,
+        animalId=create_elm.animalId,
         date=create_elm.date,
         number=create_elm.number,
         status=create_elm.status,

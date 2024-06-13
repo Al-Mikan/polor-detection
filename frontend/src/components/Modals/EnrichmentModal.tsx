@@ -1,6 +1,4 @@
 import { Modal, Box, Button, FormControl, OutlinedInput } from "@mui/material";
-import { TimeField } from "@mui/x-date-pickers/TimeField";
-import dayjs from "dayjs";
 import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
 import {
@@ -15,7 +13,6 @@ import {
 } from "../type";
 
 type EnrichmentModalProps = {
-  title: string;
   content?: EnrichmentProps;
   open: boolean;
   handleClose: () => void;
@@ -24,7 +21,6 @@ type EnrichmentModalProps = {
 };
 
 const EnrichmentModal = ({
-  title,
   content,
   open,
   handleClose,
@@ -44,14 +40,10 @@ const EnrichmentModal = ({
   };
   const { date, setDate } = useContext(AppContext);
   const { id, setId } = useContext(AppContext);
-  const [startTime, setStartTime] = useState(content?.startTime);
-  const [endTime, setEndTime] = useState(content?.endTime);
   const [enrichment, setEnrichment] = useState(content?.enrichment);
 
   const createData = async (content: CreateEnrichmentProps): Promise<void> => {
     await createEnrichment({
-      startTime: content.startTime,
-      endTime: content.endTime,
       enrichment: content.enrichment,
       date: date.format("YYYY-MM-DD"),
       polarId: id,
@@ -62,8 +54,6 @@ const EnrichmentModal = ({
     content: UpdateEnrichmentProps
   ): Promise<void> => {
     await updateEnrichment(id, {
-      startTime: content.startTime,
-      endTime: content.endTime,
       enrichment: content.enrichment,
     });
   };
@@ -78,24 +68,7 @@ const EnrichmentModal = ({
           {isEdit ? "記録の編集・削除" : "記録の追加"}
         </p>
         <div className="pt-6">
-          <div className="flex items-center justify-center space-x-6">
-            <p>開始時刻</p>
-            <TimeField
-              ampm={false}
-              sx={{ m: 1, width: "150px" }}
-              onChange={(e) => setStartTime(e?.format("HH:mm"))}
-              defaultValue={dayjs(content?.startTime, "HH:mm")}
-            />
-          </div>
-          <div className="flex items-center justify-center space-x-6">
-            <p>終了時刻</p>
-            <TimeField
-              ampm={false}
-              sx={{ m: 1, width: "150px" }}
-              onChange={(e) => setEndTime(e?.format("HH:mm"))}
-              defaultValue={dayjs(content?.endTime, "HH:mm")}
-            />
-          </div>
+
           <div className="flex items-center justify-center space-x-6">
             <p>内容</p>
             <FormControl sx={{ m: 1, width: "300px" }} variant="outlined">
@@ -129,8 +102,6 @@ const EnrichmentModal = ({
             <Button
               onClick={async () => {
                 if (
-                  startTime === undefined ||
-                  endTime === undefined ||
                   enrichment === undefined
                 ) {
                   alert("入力してください");
@@ -139,14 +110,10 @@ const EnrichmentModal = ({
                 try {
                   if (isEdit && content?.id) {
                     await updateData(content?.id, {
-                      startTime: startTime,
-                      endTime: endTime,
                       enrichment: enrichment,
                     });
                   } else if (!isEdit) {
                     await createData({
-                      startTime: startTime,
-                      endTime: endTime,
                       enrichment: enrichment,
                       date: date.format("YYYY-MM-DD"),
                       polarId: id,

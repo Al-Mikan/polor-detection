@@ -13,7 +13,6 @@ const ExpropriationCardContent = ({ expropriation, fetchData }: ExpropriationCar
     <div>
       <p>{expropriation.expropriation}</p>
       <Modal
-          title={"収用回数"}
           content={expropriation}
           open={openModal}
                 handleClose={() => {

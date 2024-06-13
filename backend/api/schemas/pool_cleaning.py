@@ -9,7 +9,7 @@ class PoolCleaningBase(BaseModel):
 
 class PoolCleaningCreate(PoolCleaningBase):
     date: date
-    polarId: int
+    animalId: int
 
 
 class PoolCleaningCreateResponse(PoolCleaningCreate):

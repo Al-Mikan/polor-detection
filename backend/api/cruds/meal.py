@@ -7,10 +7,10 @@ from sqlalchemy import and_
 from datetime import datetime
 
 
-async def get_meals(date, polarId, db: AsyncSession):
+async def get_meals(date, animalId, db: AsyncSession):
     stmt = (
         select(Meal.id, Meal.time, Meal.meal, Meal.weight)
-        .where(and_(Meal.date == date, Meal.polarId == polarId))
+        .where(and_(Meal.date == date, Meal.animalId == animalId))
         .order_by(Meal.id)
     )
 
@@ -33,7 +33,7 @@ async def get_meals(date, polarId, db: AsyncSession):
 # create meal
 async def create_meal(db: AsyncSession, meal_create: schema.MealCreate):
     new_meal = Meal(
-        polarId=meal_create.polarId,
+        animalId=meal_create.animalId,
         date=meal_create.date,
         time=meal_create.time,
         meal=meal_create.meal,

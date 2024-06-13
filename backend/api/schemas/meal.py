@@ -11,7 +11,7 @@ class MealBase(BaseModel):
 
 class MealCreate(MealBase):
     date: date
-    polarId: int
+    animalId: int
 
 
 class MealCreateResponse(MealCreate):

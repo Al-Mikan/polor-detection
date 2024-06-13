@@ -38,7 +38,6 @@ const EnrichmentCardContent = ({ enrichments, fetchData }: EnrichmentCardContent
                         </TableCell>
                       </TableRow>
                       <Modal
-                        title={"エンリッチメント"}
                         content={content}
                         open={editModalOpenIndex === index}
                         handleClose={() => {

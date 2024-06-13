@@ -7,10 +7,10 @@ from sqlalchemy import and_
 from datetime import datetime
 
 
-async def get_expropriation(date, polarId, db: AsyncSession):
+async def get_expropriation(date, animalId, db: AsyncSession):
     stmt = (
         select(Expropriation.id, Expropriation.expropriation)
-        .where(and_(Expropriation.date == date, Expropriation.polarId == polarId))
+        .where(and_(Expropriation.date == date, Expropriation.animalId == animalId))
         .order_by(Expropriation.id)
     )
 
@@ -33,7 +33,7 @@ async def create_expropriation(
     db: AsyncSession, create_elm: schema.ExpropriationCreate
 ):
     new_meal = Expropriation(
-        polarId=create_elm.polarId,
+        animalId=create_elm.animalId,
         date=create_elm.date,
         expropriation=create_elm.expropriation,
         createdAt=datetime.now(),

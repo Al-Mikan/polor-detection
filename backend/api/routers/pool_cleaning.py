@@ -11,12 +11,12 @@ import api.schemas.pool_cleaning as schema
 import api.cruds.pool_cleaning as cruds
 
 
-@router.get("/api/poolCleaning/{polarId}", response_model=List[schema.PoolCleaning])
+@router.get("/api/poolCleaning/{animalId}", response_model=List[schema.PoolCleaning])
 async def get_pool_cleaning(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await cruds.get_pool_cleaning(requested_date, polarId, db)
+    return await cruds.get_pool_cleaning(requested_date, animalId, db)
 
 
 @router.post("/api/poolCleaning", response_model=schema.PoolCleaningCreateResponse)

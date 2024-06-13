@@ -3,7 +3,7 @@ import {
   UpdateExpropriationProps,
 } from "@/components/type";
 
-const BASE_URL = "/api";
+const BASE_URL = "http://0.0.0.0:8000/api";
 
 // get expropriation
 export const getExpropriation = async (date: string, polarId: number) => {

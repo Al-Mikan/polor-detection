@@ -7,7 +7,6 @@ import { AppContext } from "../../pages/_app";
 import { createTraining, updateTraining, deleteTraining } from "../../utils/training";
 
 type TrainingModalProps = {
-  title: string;
   content?: TrainingProps;
   open: boolean;
   handleClose: () => void;
@@ -16,7 +15,6 @@ type TrainingModalProps = {
 };
 
 const TrainingModal = ({
-  title,
   content,
   open,
   handleClose,

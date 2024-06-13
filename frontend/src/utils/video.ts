@@ -1,5 +1,5 @@
 import { CreateVideoProps } from "@/components/type";
-const BASE_URL = "/api";
+const BASE_URL = "http://0.0.0.0:8000/api";
 
 // get
 export const getVideo = async (date: string, polarId: number) => {

@@ -1,12 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from api.models.model import Base, Polar, Classification, Cage
+from api.models.model import Base, Animal, Cage
 
 DB_URL = "mysql+pymysql://root@db:3306/polar?charset=utf8"
 engine = create_engine(DB_URL, echo=True)
-
-from datetime import date, datetime, time
 
 
 def reset_database():
@@ -19,13 +17,15 @@ def reset_database():
     polars_data = [
         {
             "id": 1,
-            "polarName": "ほくと",
+            "animalName": "ほくと",
+            "species": "ホッキョクグマ",
             "createdAt": "2023-01-01 00:00:00",
             "updatedAt": "2023-01-01 00:00:00",
         },
         {
             "id": 2,
-            "polarName": "らら",
+            "animalName": "らら",
+            "species": "ホッキョクグマ",
             "createdAt": "2023-01-01 00:00:00",
             "updatedAt": "2023-01-01 00:00:00",
         },
@@ -46,9 +46,10 @@ def reset_database():
     ]
 
     for data in polars_data:
-        record = Polar(
+        record = Animal(
             id=data["id"],
-            polarName=data["polarName"],
+            animalName=data["animalName"],
+            species=data["species"],
             createdAt=data["createdAt"],
             updatedAt=data["updatedAt"],
         )

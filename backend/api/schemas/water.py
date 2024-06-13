@@ -10,7 +10,7 @@ class WaterBase(BaseModel):
 
 class WaterCreate(WaterBase):
     date: date
-    polarId: int
+    animalId: int
 
 
 class WaterCreateResponse(WaterCreate):

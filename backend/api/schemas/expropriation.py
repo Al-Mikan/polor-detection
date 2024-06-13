@@ -10,7 +10,7 @@ class ExpropriationBase(BaseModel):
 
 class ExpropriationCreate(ExpropriationBase):
     date: date
-    polarId: int
+    animalId: int
 
 
 class ExpropriationCreateResponse(ExpropriationCreate):

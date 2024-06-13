@@ -13,7 +13,6 @@ const WakeUpTimeCardContent = ({ wakeUpTime, fetchData }: WakeUpTimeCardContentP
     <div>
       <p> {wakeUpTime.time}</p>
       <Modal
-          title={"起床時間"}
           content={wakeUpTime}
           open={openModal}
                 handleClose={() => {

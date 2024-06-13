@@ -4,23 +4,23 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class PolarCageLogBase(BaseModel):
-    polarId: int
+class AnimalCageLogBase(BaseModel):
+    animalId: int
     cageId: int
 
 
-class PolarCageLogCreate(PolarCageLogBase):
+class AnimalCageLogCreate(AnimalCageLogBase):
     date: date
 
 
-class PolarCageLogCreateResponse(PolarCageLogCreate):
+class AnimalCageLogCreateResponse(AnimalCageLogCreate):
     id: int
 
     class Config:
         from_attributes = True
 
 
-class PolarCageLog(PolarCageLogBase):
+class AnimalCageLog(AnimalCageLogBase):
     id: int
 
     class Config:

@@ -8,10 +8,10 @@ from datetime import datetime
 
 
 # get
-async def get_pool_cleaning(date, polarId, db: AsyncSession):
+async def get_pool_cleaning(date, animalId, db: AsyncSession):
     stmt = (
         select(PoolCleaning.id, PoolCleaning.poolCleaning)
-        .where(and_(PoolCleaning.date == date, PoolCleaning.polarId == polarId))
+        .where(and_(PoolCleaning.date == date, PoolCleaning.animalId == animalId))
         .order_by(PoolCleaning.id)
     )
 
@@ -33,7 +33,7 @@ async def get_pool_cleaning(date, polarId, db: AsyncSession):
 # create
 async def create_pool_cleaning(db: AsyncSession, create_elm: schema.PoolCleaningCreate):
     new_temp = PoolCleaning(
-        polarId=create_elm.polarId,
+        animalId=create_elm.animalId,
         poolCleaning=create_elm.poolCleaning,
         date=create_elm.date,
         createdAt=datetime.now(),

@@ -13,7 +13,6 @@ import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
 
 type PoolCleaningModalProps = {
-  title: string;
   content?: PoolCleaningProps;
   open: boolean;
   handleClose: () => void;
@@ -22,7 +21,6 @@ type PoolCleaningModalProps = {
 };
 
 const PoolCleaningModal = ({
-  title,
   content,
   open,
   handleClose,

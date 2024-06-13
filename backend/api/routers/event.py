@@ -11,12 +11,12 @@ import api.schemas.event as schema
 import api.cruds.event as event_crud
 
 
-@router.get("/api/events/{polarId}", response_model=List[schema.Event])
+@router.get("/api/events/{animalId}", response_model=List[schema.Event])
 async def get_events(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await event_crud.get_events(requested_date, polarId, db)
+    return await event_crud.get_events(requested_date, animalId, db)
 
 
 @router.post("/api/events", response_model=schema.EventCreateResponse)

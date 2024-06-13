@@ -7,10 +7,10 @@ from sqlalchemy import and_
 from datetime import datetime
 
 
-async def get_memo(date, polarId, db: AsyncSession):
+async def get_memo(date, animalId, db: AsyncSession):
     stmt = (
         select(Memo.id, Memo.memo)
-        .where(and_(Memo.date == date, Memo.polarId == polarId))
+        .where(and_(Memo.date == date, Memo.animalId == animalId))
         .order_by(Memo.id)
     )
 
@@ -31,7 +31,7 @@ async def get_memo(date, polarId, db: AsyncSession):
 # create meal
 async def create_memo(db: AsyncSession, create_elm: schema.MemoCreate):
     new_elm = Memo(
-        polarId=create_elm.polarId,
+        animalId=create_elm.animalId,
         date=create_elm.date,
         memo=create_elm.memo,
         createdAt=datetime.now(),

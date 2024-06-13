@@ -11,12 +11,12 @@ import api.schemas.training as schema
 import api.cruds.training as crud
 
 
-@router.get("/api/training/{polarId}", response_model=List[schema.Training])
+@router.get("/api/training/{animalId}", response_model=List[schema.Training])
 async def get_training(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await crud.get_training(requested_date, polarId, db)
+    return await crud.get_training(requested_date, animalId, db)
 
 
 @router.post("/api/training", response_model=schema.TrainingCreateResponse)

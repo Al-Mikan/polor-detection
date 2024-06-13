@@ -42,10 +42,10 @@ async def run_yolov8_on_video(video_path):
             name="polars",
             save=True,
             save_txt=True,
-            save_conf=True,
             save_dir="./api/detect",
             exist_ok=True,
             stream=False,
+            conf=0.30,
         )
 
         event.set()  # 終了

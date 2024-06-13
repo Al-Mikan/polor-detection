@@ -38,7 +38,6 @@ const EventCardContent = ({ events, fetchData }: EventCardContentProps) => {
                         </TableCell>
                       </TableRow>
                       <Modal
-                        title={"イベント"}
                         content={content}
                         open={editModalOpenIndex === index}
                         handleClose={() => {

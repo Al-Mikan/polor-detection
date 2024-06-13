@@ -11,12 +11,12 @@ import api.schemas.meal as schema
 import api.cruds.meal as meal_crud
 
 
-@router.get("/api/meals/{polarId}", response_model=List[schema.Meal])
+@router.get("/api/meals/{animalId}", response_model=List[schema.Meal])
 async def get_meals(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await meal_crud.get_meals(requested_date, polarId, db)
+    return await meal_crud.get_meals(requested_date, animalId, db)
 
 
 @router.post("/api/meals", response_model=schema.MealCreateResponse)

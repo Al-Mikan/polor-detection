@@ -6,6 +6,7 @@ import time
 import psutil
 import threading
 import time
+import os
 
 sys.path.append("../../")
 
@@ -47,7 +48,7 @@ def classification(video_path):
     event = threading.Event()
     initial_time = time.time()
     m = threading.Thread(target=monitor_cpu, args=((initial_time, event)))
-    m.start()  # 開始
+    # m.start()  # 開始
     try:
         print("#########################video_to_image")
         frame_count = video_to_image(video_path, FRAME_DIR)
@@ -81,7 +82,7 @@ def classification(video_path):
 
     try:
         print("#############################MakeDataset")
-        image_data, coordinates_data, speed_data = MakeDataset(frame_count, 8)["data"]
+        image_data, coordinates_data, speed_data = MakeDataset(3199, 8)["data"]
     except Exception as e:
         print(f"MakeDatasetでエラー発生: {e}")
         return
@@ -110,11 +111,26 @@ def classification(video_path):
             predicted_classes = predicted_classes.tolist()  # リストに変換
             for item in predicted_classes:
                 output_file.write(str(item) + "\n")
+    # output_file_path = "./predict_oneday.txt"
+
+    # try:
+    #     with open(output_file_path, "a") as output_file:
+    #         predicted_classes = torch.argmax(predict, dim=1)
+    #         predicted_classes = predicted_classes.tolist()  # リストに変換
+
+    #         # リストの長さを3200に調整
+    #         while len(predicted_classes) < 3200:
+    #             predicted_classes.append(predicted_classes[-1])
+    #         if len(predicted_classes) > 3200:
+    #             predicted_classes = predicted_classes[:3200]
+
+    #         for item in predicted_classes:
+    #             output_file.write(str(item) + "\n")
 
     except Exception as e:
         print(f"ファイル書き込みでエラー発生: {e}")
         return
-    event.set()  # 終了
+    # event.set()  # 終了
 
 
 async def insert_classification(classifications: [schema.ClassificationCreate]):
@@ -142,7 +158,11 @@ if __name__ == "__main__":
     # 引数で動画のパスを指定
     classification_start_time = time.time()
     # 0:いない 1:常同　2:泳ぐ 3:歩く 4:食べる 5:休む 6:座る
-    video_path = "../media/videos/91_2020_09_22_05.mp4"
+    video_path = "../media/videos/91_2020_09_22_14.mp4"
+
+    for item in os.listdir(RESULT_YOLO_DIR):
+        item_path = os.path.join(RESULT_YOLO_DIR, item)
+        os.remove(item_path)
 
     asyncio.run(run_yolov8_on_video(video_path))
 
@@ -203,7 +223,7 @@ if __name__ == "__main__":
             end_time = time_str
 
         # データベースへの挿入
-        asyncio.run(insert_classification(result_list))
+        # asyncio.run(insert_classification(result_list))
 
     except FileNotFoundError:
         print("ファイルが見つかりません: ./predict_output.txt")
@@ -215,4 +235,6 @@ if __name__ == "__main__":
     classification_end_time = time.time()
     elapsed_time = classification_end_time - classification_start_time  # 経過時間
     print("#############################")
+    print(classification_start_time)
+    print(classification_end_time)
     print(f"処理にかかった時間: {elapsed_time}秒")

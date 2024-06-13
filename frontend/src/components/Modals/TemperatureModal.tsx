@@ -15,7 +15,6 @@ import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
 
 type TemperatureModalProps = {
-  title: string;
   content?: TemperatureProps;
   open: boolean;
   handleClose: () => void;
@@ -24,7 +23,6 @@ type TemperatureModalProps = {
 };
 
 const TemperatureModal = ({
-  title,
   content,
   open,
   handleClose,
@@ -129,6 +127,7 @@ const TemperatureModal = ({
                       time: time,
                       temperature: temperature,
                     });
+                    fetchData();
                   } else if (!isEdit) {
                     await createData({
                       time: time,
@@ -136,12 +135,12 @@ const TemperatureModal = ({
                       date: date.format("YYYY-MM-DD"),
                       polarId: id,
                     });
+                    fetchData();
+                    console.log("create");
                   } else {
                     alert("エラー");
                     return;
                   }
-
-                  fetchData();
                   handleClose();
                 } catch (error) {
                   console.error("エラーが発生しました", error);

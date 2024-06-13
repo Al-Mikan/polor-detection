@@ -10,7 +10,7 @@ class WakeUpTimeBase(BaseModel):
 
 class WakeUpTimeCreate(WakeUpTimeBase):
     date: date
-    polarId: int
+    animalId: int
 
 
 class WakeUpTimeCreateResponse(WakeUpTimeCreate):

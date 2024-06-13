@@ -35,7 +35,7 @@ $ docker-compose up -d --build
 
 #### APIDocs
 
-http://localhost:8000/docs
+http://localhost:8000/api/docs
 
 #### migrate
 

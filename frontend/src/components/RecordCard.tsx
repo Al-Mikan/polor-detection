@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import MealModal from "./Modals/MealModal";
 import TemperatureModal from "./Modals/TemperatureModal";
 import EnrichmentModal from "./Modals/EnrichmentModal";
@@ -11,7 +11,7 @@ import TrainingModal from "./Modals/TrainingModal";
 import WakeUpTimeModal from "./Modals/WakeUpTimeModal";
 import WaterModal from "./Modals/WaterModal";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, Icon } from "@mui/material";
 import {
   MealProps,
   TemperatureProps,
@@ -51,15 +51,18 @@ import WakeUpTimeCardContent from "./CardContent/WakeUpTimeCardContent";
 import WaterCardContent from "./CardContent/WaterCardContent";
 import { getPoolCleaning } from "@/utils/poolCleaning";
 
+import { RecordType } from "./type";
+import { IconType } from "react-icons";
+import { recordTypeInfo } from "@/data/cardData";
 
 type RecordCardProps = {
-  title: string;
-  icon: ReactNode;
+  recordType: RecordType;
+  icon: IconType;
   className?: string;
 };
 
 
-const RecordCard = ({ title, icon, className }: RecordCardProps) => {
+const RecordCard = ({ recordType,icon, className }: RecordCardProps) => {
   const { date, setDate } = useContext(AppContext);
   const { id, setId } = useContext(AppContext);
 
@@ -80,82 +83,85 @@ const RecordCard = ({ title, icon, className }: RecordCardProps) => {
   const [excretion, setExcretion] = useState<ExcretionProps>({} as ExcretionProps);
 
 
-const fetchData = async (dataType:string) => {
-  try {
-    let data;
-    switch (dataType) {
-      case 'temperature':
-        data = await getTemperatures(date.format("YYYY-MM-DD"), id);
-        setTemperatureData(data);
-        break;
-      case 'meal':
-        data = await getMeals(date.format("YYYY-MM-DD"), id);
-        setMealData(data);
-        break;
-      case 'enrichment':
-        data = await getEnrichments(date.format("YYYY-MM-DD"), id);
-        setEnrichmentData(data);
-        break;
-      case 'event':
-        data = await getEvents(date.format("YYYY-MM-DD"), id);
-        setEventData(data);
-        break;
-      case 'expropriation':
-        data = await getExpropriation(date.format("YYYY-MM-DD"), id);
-        setExpropriation(data);
-        break;
-      case 'memo':
-        data = await getMemo(date.format("YYYY-MM-DD"), id);
-        setMemo(data);
-        break;
-      case 'poolCleaning':
-        data = await getPoolCleaning(date.format("YYYY-MM-DD"), id);
-        setPoolCleaning(data);
-        break;
-      case 'wakeUpTime':
-        data = await getWakeUpTime(date.format("YYYY-MM-DD"), id);
-        setWakeUpTime(data);
-        break;
-      case 'water':
-        data = await getWater(date.format("YYYY-MM-DD"), id);
-        setWater(data);
-        break;
-      case 'training':
-        data = await getTraining(date.format("YYYY-MM-DD"), id);
-        setTraining(data);
-        break;
-      case 'excretion':
-        data = await getExcretion(date.format("YYYY-MM-DD"), id);
-        setExcretion(data);
-        break;
-      // 他のデータに対するケースも同様に設定
-      default:
-        break;
+  const fetchData = async (dataType:string): Promise<void> => {
+    try {
+      let data;
+      switch (dataType) {
+        case 'temperature':
+          data = await getTemperatures(date.format("YYYY-MM-DD"), id);
+          setTemperatureData(data);
+          console.log("create temperature data", data);
+          break;
+        case 'meal':
+          data = await getMeals(date.format("YYYY-MM-DD"), id);
+          setMealData(data);
+          break;
+        case 'enrichment':
+          data = await getEnrichments(date.format("YYYY-MM-DD"), id);
+          setEnrichmentData(data);
+          break;
+        case 'event':
+          data = await getEvents(date.format("YYYY-MM-DD"), id);
+          setEventData(data);
+          break;
+        case 'expropriation':
+          data = await getExpropriation(date.format("YYYY-MM-DD"), id);
+          setExpropriation(data);
+          break;
+        case 'memo':
+          data = await getMemo(date.format("YYYY-MM-DD"), id);
+          setMemo(data);
+          break;
+        case 'poolCleaning':
+          data = await getPoolCleaning(date.format("YYYY-MM-DD"), id);
+          setPoolCleaning(data);
+          break;
+        case 'wakeUpTime':
+          data = await getWakeUpTime(date.format("YYYY-MM-DD"), id);
+          setWakeUpTime(data);
+          break;
+        case 'water':
+          data = await getWater(date.format("YYYY-MM-DD"), id);
+          setWater(data);
+          break;
+        case 'training':
+          data = await getTraining(date.format("YYYY-MM-DD"), id);
+          setTraining(data);
+          break;
+        case 'excretion':
+          data = await getExcretion(date.format("YYYY-MM-DD"), id);
+          setExcretion(data);
+          break;
+        // 他のデータに対するケースも同様に設定
+        default:
+          break;
+      }
+    } catch (error) {
+      console.error(error);
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+  };
 
-useEffect(() => {
-  fetchData('temperature');
-  fetchData('meal');
-  fetchData('event');
-  fetchData('enrichment');
-  fetchData('expropriation');
-  fetchData('memo');
-  fetchData('poolCleaning');
-  fetchData('wakeUpTime');
-  fetchData('water');
-  fetchData('training');
-  fetchData('excretion');
-}, [date, id]);
+  useEffect(() => {
+    fetchData('temperature');
+    fetchData('meal');
+    fetchData('event');
+    fetchData('enrichment');
+    fetchData('expropriation');
+    fetchData('memo');
+    fetchData('poolCleaning');
+    fetchData('wakeUpTime');
+    fetchData('water');
+    fetchData('training');
+    fetchData('excretion');
+  }, [date, id]);
+
+  const japaneseTranslation = recordTypeInfo.find(info => info.recordType === recordType);
   return (
     <div className={`bg-white px-6 py-6 rounded-3xl   ${className}`}>
       <div className="flex justify-between mb-2">
         <p className="text-xl  text-gray-700 font-bold  flex items-center gap-2">
-          {icon}
-          {title}
+          <Icon component={icon} />
+          {japaneseTranslation?.japanese}
         </p>
         <Button
           variant="contained"
@@ -170,41 +176,41 @@ useEffect(() => {
       </div>
 
       <AddModal
-        title={title}
+        recordType={recordType}
         open={addmodalOpen}
         handleClose={() => {
           setAddmodalOpen(false);
         }}
         isEdit={false}
-        fetchData={()=>fetchData(title)}
+        fetchData={()=>fetchData(recordType)}
       />
-      {title === "気温" ? (
+      {recordType === "temperature" ? (
         <TemperatureCardContent
           temperature={temperatureData}
           fetchData={()=>fetchData("temperature")}
         />
-      ) : title === "イベント" ? (
+      ) : recordType === "event" ? (
         <EventCardContent events={eventData} fetchData={()=>fetchData("event")} />
-      ) : title === "エンリッチメント" ? (
+      ) : recordType === "enrichment" ? (
         <EnrichmentCardContent
           enrichments={enrichmentData}
           fetchData={()=>fetchData("enrichment")}
         />
-      ) : title === "食事" ?(
+      ) : recordType === "meal" ?(
         <MealCardContent meals={mealData} fetchData={()=>fetchData("meal")} />
-      ): title === "排泄" ?(
+      ): recordType === "excretion" ?(
         <ExcretionCardContent excretion={excretion} fetchData={()=>fetchData("excretion")} />
-      ): title === "収用回数" ?(
+      ): recordType === "expropriation" ?(
         <ExpropriationCardContent expropriation={expropriation} fetchData={()=>fetchData("expropriation")} />
-      ): title === "メモ" ?(
+      ): recordType === "memo" ?(
         <MemoCardContent memo={memo} fetchData={()=>fetchData("memo")} />
-      ): title === "プール掃除" ?(
+      ): recordType === "poolCleaning" ?(
         <PoolCleaningCardContent poolCleaning={poolCleaning} fetchData={()=>fetchData("poolCleaning")} />
-      ): title === "起床時間" ?(
+      ): recordType === "wakeUpTime" ?(
         <WakeUpTimeCardContent wakeUpTime={wakeUpTime} fetchData={()=>fetchData("wakeUpTime")} />
-      ): title === "飲水量" ?(
+      ): recordType === "water" ?(
         <WaterCardContent water={water} fetchData={()=>fetchData("water")} />
-      ) : title === "トレーニング" ?(
+      ) : recordType === "training" ?(
         <TrainingCardContent trainings={training} fetchData={()=>fetchData("training")} />
       ) : (
         <div></div>
@@ -215,128 +221,117 @@ useEffect(() => {
 export default RecordCard;
 
 type AddModalProps = {
-  title: string;
+  recordType: RecordType;
   open: boolean;
   isEdit: boolean;
   handleClose: () => void;
-  fetchData: () => void;
+  fetchData: (dataType:string) => void;
 };
 
 const AddModal = ({
-  title,
+  recordType,
   open,
   handleClose,
   isEdit,
   fetchData,
 }: AddModalProps) => {
-  if (title == "食事") {
+  if (recordType == "meal") {
     return (
       <MealModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("meal")}
       />
     );
-  } else if (title == "気温") {
+  } else if (recordType == "temperature") {
     return (
       <TemperatureModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("tem1")}
       />
     );
-  } else if (title == "エンリッチメント") {
+  } else if (recordType == "enrichment") {
     return (
       <EnrichmentModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("meal")}
       />
     );
-  } else if (title == "イベント") {
+  } else if (recordType == "event") {
     return (
       <EventModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("meal")}
       />
     );
-  }else if (title == "プール掃除") {
+  }else if (recordType == "poolCleaning") {
     return (
       <PoolCleaningModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("meal")}
       />
     );
-  }else if (title == "排泄") {
+  }else if (recordType == "excretion") {
     return (
       <ExcretionModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("meal")}
       />
     );
-  }else if (title == "収用回数") {
+  }else if (recordType == "expropriation") {
     return (
       <ExpropriationModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("meal")}
       />
     );
-  }else if (title == "飲水量") {
+  }else if (recordType == "water") {
     return (
       <WaterModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("meal")}
       />
     );
-  }else if (title == "トレーニング") {
+  }else if (recordType == "training") {
     return (
       <TrainingModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("meal")}
       />
     );
-  }else if (title == "メモ") {
+  }else if (recordType == "memo") {
     return (
       <MemoModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("meal")}
       />
     );
-  } else if (title == "起床時間") {
+  } else if (recordType == "wakeUpTime") {
     return (
       <WakeUpTimeModal
-        title={title}
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={fetchData}
+        fetchData={()=>fetchData("meal")}
       />
     );
   } else {

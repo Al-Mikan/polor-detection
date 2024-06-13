@@ -13,7 +13,6 @@ const PoolCleaningCardContent = ({ poolCleaning, fetchData }: PoolCleaningCardCo
     <div>
       <p>{poolCleaning.poolCleaning}</p>
       <Modal
-          title={"プール掃除"}
           content={poolCleaning}
           open={openModal}
                 handleClose={() => {

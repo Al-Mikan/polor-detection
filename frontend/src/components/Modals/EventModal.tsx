@@ -7,7 +7,6 @@ import { AppContext } from "../../pages/_app";
 import { createEvent, updateEvent, deleteEvent } from "../../utils/event";
 
 type EventModalProps = {
-  title: string;
   content?: EventProps;
   open: boolean;
   handleClose: () => void;
@@ -16,7 +15,6 @@ type EventModalProps = {
 };
 
 const EventModal = ({
-  title,
   content,
   open,
   handleClose,
@@ -36,14 +34,10 @@ const EventModal = ({
   };
   const { date, setDate } = useContext(AppContext);
   const { id, setId } = useContext(AppContext);
-  const [startTime, setStartTime] = useState(content?.startTime);
-  const [endTime, setEndTime] = useState(content?.endTime);
   const [event, setEvent] = useState(content?.event);
 
   const createData = async (content: CreateEventProps): Promise<void> => {
     await createEvent({
-      startTime: content.startTime,
-      endTime: content.endTime,
       event: content.event,
       date: date.format("YYYY-MM-DD"),
       polarId: id,
@@ -54,8 +48,6 @@ const EventModal = ({
     content: UpdateEventProps
   ): Promise<void> => {
     await updateEvent(id, {
-      startTime: content.startTime,
-      endTime: content.endTime,
       event: content.event,
     });
   };
@@ -70,24 +62,6 @@ const EventModal = ({
           {isEdit ? "記録の編集・削除" : "記録の追加"}
         </p>
         <div className="pt-6">
-          <div className="flex items-center justify-center space-x-6">
-            <p>開始時刻</p>
-            <TimeField
-              ampm={false}
-              sx={{ m: 1, width: "150px" }}
-              defaultValue={dayjs(content?.startTime, "HH:mm")}
-              onChange={(e) => setStartTime(e?.format("HH:mm"))}
-            />
-          </div>
-          <div className="flex items-center justify-center space-x-6">
-            <p>終了時刻</p>
-            <TimeField
-              ampm={false}
-              sx={{ m: 1, width: "150px" }}
-              defaultValue={dayjs(content?.endTime, "HH:mm")}
-              onChange={(e) => setEndTime(e?.format("HH:mm"))}
-            />
-          </div>
           <div className="flex items-center justify-center space-x-6">
             <p>内容</p>
             <FormControl sx={{ m: 1, width: "300px" }} variant="outlined">
@@ -121,8 +95,6 @@ const EventModal = ({
             <Button
               onClick={async () => {
                 if (
-                  startTime === undefined ||
-                  endTime === undefined ||
                   event === undefined
                 ) {
                   alert("入力してください");
@@ -131,14 +103,10 @@ const EventModal = ({
                 try {
                   if (isEdit && content?.id) {
                     await updateData(content?.id, {
-                      startTime: startTime,
-                      endTime: endTime,
                       event: event,
                     });
                   } else if (!isEdit) {
                     await createData({
-                      startTime: startTime,
-                      endTime: endTime,
                       event: event,
                       date: date.format("YYYY-MM-DD"),
                       polarId: id,

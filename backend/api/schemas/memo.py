@@ -10,7 +10,7 @@ class MemoBase(BaseModel):
 
 class MemoCreate(MemoBase):
     date: date
-    polarId: int
+    animalId: int
 
 
 class MemoCreateResponse(MemoCreate):

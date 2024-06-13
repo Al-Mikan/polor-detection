@@ -13,7 +13,6 @@ const WaterCardContent = ({ water, fetchData }: WaterCardContentProps) => {
     <div>
       <p>{water.value}</p>
       <Modal
-          title={"飲水量"}
           content={water}
           open={openModal}
                 handleClose={() => {

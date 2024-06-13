@@ -13,7 +13,6 @@ const MemoCardContent = ({ memo, fetchData }: MemoCardContentProps) => {
     <div>
       <p>{memo.memo}</p>
       <Modal
-          title={"メモ"}
           content={memo}
           open={openModal}
                 handleClose={() => {

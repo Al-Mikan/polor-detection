@@ -7,7 +7,6 @@ import { AppContext } from "../../pages/_app";
 import { createExpropriation, updateExpropriation, deleteExpropriation } from "../../utils/expropriation";
 
 type ExpropriationModalProps = {
-  title: string;
   content?: ExpropriationProps;
   open: boolean;
   handleClose: () => void;
@@ -16,7 +15,6 @@ type ExpropriationModalProps = {
 };
 
 const ExpropriationModal = ({
-  title,
   content,
   open,
   handleClose,

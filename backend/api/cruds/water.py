@@ -7,10 +7,10 @@ from sqlalchemy import and_
 from datetime import datetime
 
 
-async def get_water(date, polarId, db: AsyncSession):
+async def get_water(date, animalId, db: AsyncSession):
     stmt = (
         select(Water.id, Water.value)
-        .where(and_(Water.date == date, Water.polarId == polarId))
+        .where(and_(Water.date == date, Water.animalId == animalId))
         .order_by(Water.id)
     )
 
@@ -31,7 +31,7 @@ async def get_water(date, polarId, db: AsyncSession):
 # create meal
 async def create_water(db: AsyncSession, create_elm: schema.WaterCreate):
     new_elm = Water(
-        polarId=create_elm.polarId,
+        animalId=create_elm.animalId,
         date=create_elm.date,
         value=create_elm.value,
         createdAt=datetime.now(),

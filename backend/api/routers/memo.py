@@ -11,12 +11,12 @@ import api.schemas.memo as schema
 import api.cruds.memo as crud
 
 
-@router.get("/api/memo/{polarId}", response_model=List[schema.Memo])
+@router.get("/api/memo/{animalId}", response_model=List[schema.Memo])
 async def get_memos(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await crud.get_memo(requested_date, polarId, db)
+    return await crud.get_memo(requested_date, animalId, db)
 
 
 @router.post("/api/memo", response_model=schema.MemoCreateResponse)

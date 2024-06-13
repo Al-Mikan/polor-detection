@@ -13,7 +13,6 @@ import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
 
 type WaterModalProps = {
-  title: string;
   content?: WaterProps;
   open: boolean;
   handleClose: () => void;
@@ -22,7 +21,6 @@ type WaterModalProps = {
 };
 
 const WaterModal = ({
-  title,
   content,
   open,
   handleClose,

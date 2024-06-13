@@ -7,7 +7,6 @@ import { AppContext } from "../../pages/_app";
 import { createExcretion, updateExcretion, deleteExcretion } from "../../utils/excretion";
 
 type ExcretionModalProps = {
-  title: string;
   content?: ExcretionProps;
   open: boolean;
   handleClose: () => void;
@@ -16,7 +15,6 @@ type ExcretionModalProps = {
 };
 
 const ExcretionModal = ({
-  title,
   content,
   open,
   handleClose,

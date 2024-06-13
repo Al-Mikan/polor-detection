@@ -1,22 +1,22 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.models.model import PolarCageLog
-import api.schemas.polar_cage_log as schema
+from api.models.model import AnimalCageLog
+import api.schemas.animal_cage_log as schema
 from sqlalchemy import and_
 from datetime import datetime
 
 
 # get
-async def get_polar_cage_log(date, db: AsyncSession):
+async def get_animal_cage_log(date, db: AsyncSession):
     stmt = (
-        select(PolarCageLog.id, PolarCageLog.polarId, PolarCageLog.cageId)
+        select(AnimalCageLog.id, AnimalCageLog.animalId, AnimalCageLog.cageId)
         .where(
             and_(
-                PolarCageLog.date == date,
+                AnimalCageLog.date == date,
             )
         )
-        .order_by(PolarCageLog.id)
+        .order_by(AnimalCageLog.id)
     )
 
     result = await db.execute(stmt)
@@ -27,7 +27,7 @@ async def get_polar_cage_log(date, db: AsyncSession):
         formatted_elm.append(
             {
                 "id": elm.id,
-                "polarId": elm.polarId,
+                "animalId": elm.animalId,
                 "cageId": elm.cageId,
             }
         )
@@ -35,11 +35,11 @@ async def get_polar_cage_log(date, db: AsyncSession):
 
 
 # create
-async def create_polar_cage_log(
-    db: AsyncSession, create_elm: schema.PolarCageLogCreate
+async def create_animal_cage_log(
+    db: AsyncSession, create_elm: schema.AnimalCageLogCreate
 ):
-    new_temp = PolarCageLog(
-        polarId=create_elm.polarId,
+    new_temp = AnimalCageLog(
+        animalId=create_elm.animalId,
         cageId=create_elm.cageId,
         date=create_elm.date,
         createdAt=datetime.now(),
@@ -52,18 +52,18 @@ async def create_polar_cage_log(
 
 
 # get by id
-async def get_polar_cage_log_by_id(id: int, db: AsyncSession):
-    stmt = select(PolarCageLog).where(PolarCageLog.id == id)
+async def get_animal_cage_log_by_id(id: int, db: AsyncSession):
+    stmt = select(AnimalCageLog).where(AnimalCageLog.id == id)
     result = await db.execute(stmt)
     elm = result.scalar_one_or_none()
     return elm
 
 
 # update
-async def update_polar_cage_log(
-    db: AsyncSession, update_elm: schema.PolarCageLogBase, original: PolarCageLog
+async def update_animal_cage_log(
+    db: AsyncSession, update_elm: schema.AnimalCageLogBase, original: AnimalCageLog
 ):
-    original.polarId = update_elm.polarId
+    original.animalId = update_elm.animalId
     original.cageId = update_elm.cageId
     original.updatedAt = datetime.now()
 
@@ -74,8 +74,8 @@ async def update_polar_cage_log(
 
 
 # delete
-async def delete_polar_cage_log(id: int, db: AsyncSession):
-    stmt = select(PolarCageLog).where(PolarCageLog.id == id)
+async def delete_animal_cage_log(id: int, db: AsyncSession):
+    stmt = select(AnimalCageLog).where(AnimalCageLog.id == id)
     result = await db.execute(stmt)
     elm = result.scalars().first()
 

@@ -53,10 +53,10 @@ def merge_all_files_in_directory(directory, output_file, count=3194, file_path="
                 with open(file_path, "r") as file:
                     content = file.readline().rstrip("\n")
                     if content == "":
-                        content = "0 0 0 0 0 0"
+                        content = "0 0 0 0 0"
                     merged_file.write(content)
             else:
-                merged_file.write("0 0 0 0 0 0")
+                merged_file.write("0 0 0 0 0")
             merged_file.write("\n")
     return count
 
@@ -122,7 +122,7 @@ def clip_image(frame_path="./frames/", image_path="./images/"):
                     new_img.save(new_img_path)
 
 
-def calc_speed(frames=3194, video_path="", result_yolo_path=""):
+def calc_speed(frames=3200, video_path="", result_yolo_path=""):
     result = []
     video_name = video_path.split("/")[-1].split(".")[0]
     x = video_name.split("_")[-1]
@@ -135,7 +135,7 @@ def calc_speed(frames=3194, video_path="", result_yolo_path=""):
                 center = (int(float(data[1]) * 36), int(float(data[2]) * 36))
                 speed = 0.0
                 count = 0
-                for i in range(-5, 6):
+                for i in range(-25, 26):
                     if i == 0:
                         continue
                     neighbor_file_path = (
@@ -159,6 +159,20 @@ def calc_speed(frames=3194, video_path="", result_yolo_path=""):
     with open("./speed.txt", "w") as f:
         for x, y, center, speed in result:
             f.write(f"{x} {y} {center[0]} {center[1]} {speed}\n")
+
+
+def image_preprocess(data):
+    """
+    画像の下処理．
+    ここではint型のtensorをfloat型に変更するだけ
+    Input
+        - data : n_batch*n_channel*h_size*w_size型のTensor
+    Output
+        n_batch*n_channel*h_size*w_size型のTensor
+    """
+    data = data.float()
+    data /= 255.0
+    return data
 
 
 def MakeDataset(n_data, n_class, h_size=256, w_size=256):
@@ -197,6 +211,10 @@ def MakeDataset(n_data, n_class, h_size=256, w_size=256):
     image_datas = torch.tensor(image_datas).float()
     coordinates_data = torch.tensor(coordinates_data).float()
     speed_data = torch.tensor(speed_data).float().unsqueeze(-1)
+    print(speed_data)
+    print(
+        "###########################################################################################################################################"
+    )
 
     labels = torch.tensor(label_data).long()
     ret_data = {"data": (image_datas, coordinates_data, speed_data), "label": labels}

@@ -55,7 +55,6 @@ const MealCardContent = ({ meals, fetchData }: MealCardContentProps) => {
                 </TableCell>
               </TableRow>
               <MealModal
-                title={"食事"}
                 content={content}
                 open={editModalOpenIndex === index}
                 handleClose={() => {

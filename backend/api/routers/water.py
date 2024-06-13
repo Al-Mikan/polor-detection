@@ -11,12 +11,12 @@ import api.schemas.water as schema
 import api.cruds.water as cruds
 
 
-@router.get("/api/water/{polarId}", response_model=List[schema.Water])
+@router.get("/api/water/{animalId}", response_model=List[schema.Water])
 async def get_water(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await cruds.get_water(requested_date, polarId, db)
+    return await cruds.get_water(requested_date, animalId, db)
 
 
 @router.post("/api/water", response_model=schema.WaterCreateResponse)

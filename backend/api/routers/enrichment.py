@@ -11,12 +11,12 @@ import api.schemas.enrichment as schema
 import api.cruds.enrichment as enrichment_crud
 
 
-@router.get("/api/enrichments/{polarId}", response_model=List[schema.Enrichment])
+@router.get("/api/enrichments/{animalId}", response_model=List[schema.Enrichment])
 async def get_enrichments(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await enrichment_crud.get_enrichments(requested_date, polarId, db)
+    return await enrichment_crud.get_enrichments(requested_date, animalId, db)
 
 
 @router.post("/api/enrichments", response_model=schema.EnrichmentCreateResponse)

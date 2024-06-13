@@ -14,7 +14,6 @@ const ExcretionCardContent = ({ excretion, fetchData }: ExcretionCardContentProp
       <p>{excretion.number}</p>
       <p>{excretion.status} </p>
       <Modal
-          title={"排泄"}
           content={excretion}
           open={openModal}
                 handleClose={() => {

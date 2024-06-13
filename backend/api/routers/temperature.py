@@ -11,12 +11,12 @@ import api.schemas.temperature as schema
 import api.cruds.temperature as temperature_crud
 
 
-@router.get("/api/temperatures/{polarId}", response_model=List[schema.Temperature])
+@router.get("/api/temperatures/{animalId}", response_model=List[schema.Temperature])
 async def get_temperatures(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await temperature_crud.get_temperatures(requested_date, polarId, db)
+    return await temperature_crud.get_temperatures(requested_date, animalId, db)
 
 
 @router.post("/api/temperatures", response_model=schema.TemperatureCreateResponse)

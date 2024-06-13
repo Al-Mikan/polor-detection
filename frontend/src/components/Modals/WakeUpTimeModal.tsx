@@ -15,7 +15,6 @@ import { TimeField } from "@mui/x-date-pickers/TimeField";
 import dayjs from "dayjs";
 
 type WakeUpTimeModalProps = {
-  title: string;
   content?: WakeUpTimeProps;
   open: boolean;
   handleClose: () => void;
@@ -24,7 +23,6 @@ type WakeUpTimeModalProps = {
 };
 
 const WakeUpTimeModal = ({
-  title,
   content,
   open,
   handleClose,

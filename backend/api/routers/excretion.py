@@ -11,12 +11,12 @@ import api.schemas.excretion as schema
 import api.cruds.excretion as crud
 
 
-@router.get("/api/excretion/{polarId}", response_model=List[schema.Excretion])
+@router.get("/api/excretion/{animalId}", response_model=List[schema.Excretion])
 async def get_excretion(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await crud.get_excretion(requested_date, polarId, db)
+    return await crud.get_excretion(requested_date, animalId, db)
 
 
 @router.post("/api/excretion", response_model=schema.ExcretionCreateResponse)

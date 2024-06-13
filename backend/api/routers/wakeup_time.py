@@ -11,12 +11,12 @@ import api.schemas.wakeup_time as schema
 import api.cruds.wakeup_time as cruds
 
 
-@router.get("/api/wakeupTime/{polarId}", response_model=List[schema.WakeUpTime])
+@router.get("/api/wakeupTime/{animalId}", response_model=List[schema.WakeUpTime])
 async def get_wakeup_time(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await cruds.get_wakeup_time(requested_date, polarId, db)
+    return await cruds.get_wakeup_time(requested_date, animalId, db)
 
 
 @router.post("/api/wakeupTime", response_model=schema.WakeUpTimeCreateResponse)

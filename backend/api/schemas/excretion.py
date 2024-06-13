@@ -12,7 +12,7 @@ class ExcretionBase(BaseModel):
 
 class ExcretionCreate(ExcretionBase):
     date: date
-    polarId: int
+    animalId: int
 
 
 class ExcretionCreateResponse(ExcretionCreate):

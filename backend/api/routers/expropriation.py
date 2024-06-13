@@ -11,12 +11,12 @@ import api.schemas.expropriation as schema
 import api.cruds.expropriation as crud
 
 
-@router.get("/api/expropriation/{polarId}", response_model=List[schema.Expropriation])
+@router.get("/api/expropriation/{animalId}", response_model=List[schema.Expropriation])
 async def get_expropriation(
-    polarId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
+    animalId: int, date: str = Query(...), db: AsyncSession = Depends(get_db)
 ):
     requested_date = datetime.strptime(date, "%Y-%m-%d").date()
-    return await crud.get_expropriation(requested_date, polarId, db)
+    return await crud.get_expropriation(requested_date, animalId, db)
 
 
 @router.post("/api/expropriation", response_model=schema.ExpropriationCreateResponse)

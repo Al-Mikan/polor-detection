@@ -3,7 +3,7 @@ import {
   UpdateWaterProps,
 } from "@/components/type";
 
-const BASE_URL = "/api";
+const BASE_URL = "http://0.0.0.0:8000/api";
 
 // get water
 export const getWater = async (date: string, polarId: number) => {

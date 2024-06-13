@@ -10,7 +10,7 @@ class TrainingBase(BaseModel):
 
 class TrainingCreate(TrainingBase):
     date: date
-    polarId: int
+    animalId: int
 
 
 class TrainingCreateResponse(TrainingCreate):

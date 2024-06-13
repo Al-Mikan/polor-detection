@@ -10,7 +10,7 @@ class EventBase(BaseModel):
 
 
 class EventCreate(EventBase):
-    polarId: int
+    animalId: int
     date: date
 
 

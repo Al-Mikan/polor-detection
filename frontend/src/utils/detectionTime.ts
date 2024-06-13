@@ -1,4 +1,4 @@
-const BASE_URL = "/api";
+const BASE_URL = "http://0.0.0.0:8000/api";
 import { DetectTimeProps } from "@/components/type";
 //get
 export const getDetectionTimes = async (date: string) => {
