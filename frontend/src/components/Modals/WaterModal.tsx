@@ -1,14 +1,13 @@
+import { CreateWaterProps, WaterProps, UpdateWaterProps } from "../type";
 import {
-  CreateWaterProps,
-  WaterProps,
-  UpdateWaterProps,
-} from "../type";
-import { Modal, Box, Button, TextField,Switch,FormControlLabel } from "@mui/material";
-import {
-  createWater,
-  updateWater,
-  deleteWater,
-} from "../../utils/water";
+  Modal,
+  Box,
+  Button,
+  TextField,
+  Switch,
+  FormControlLabel,
+} from "@mui/material";
+import { createWater, updateWater, deleteWater } from "../../utils/water";
 import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
 
@@ -39,14 +38,14 @@ const WaterModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const [water, setWater] = useState(content?.value);
 
   const createData = async (content: CreateWaterProps): Promise<void> => {
     await createWater({
       value: content.value,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -54,7 +53,7 @@ const WaterModal = ({
     content: UpdateWaterProps
   ): Promise<void> => {
     await updateWater(id, {
-        value: content.value,
+      value: content.value,
     });
   };
   const deleteData = async (id: number): Promise<void> => {
@@ -108,13 +107,13 @@ const WaterModal = ({
                 try {
                   if (isEdit && content?.id) {
                     await updateData(content?.id, {
-                        value: water,
+                      value: water,
                     });
                   } else if (!isEdit) {
-                      await createData({
-                        value: water,
-                        date: date.format("YYYY-MM-DD"),
-                        polarId: id,
+                    await createData({
+                      value: water,
+                      date: date.format("YYYY-MM-DD"),
+                      animalId: animalId,
                     });
                   } else {
                     alert("エラー");

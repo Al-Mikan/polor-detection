@@ -23,7 +23,7 @@ import {
   PoolCleaningProps,
   TrainingProps,
   WakeUpTimeProps,
-  WaterProps
+  WaterProps,
 } from "./type";
 import { getTemperatures } from "@/utils/temperature";
 import { getMeals } from "@/utils/meal";
@@ -42,7 +42,7 @@ import TemperatureCardContent from "./CardContent/TemperatureCardContent";
 import MealCardContent from "./CardContent/MealCardContent";
 import EnrichmentCardContent from "./CardContent/EnrichmentCardContent";
 import EventCardContent from "./CardContent/EventCardContent";
-import PoolCleaningCardContent from "./CardContent/PoolCleaningCardContent"
+import PoolCleaningCardContent from "./CardContent/PoolCleaningCardContent";
 import ExcretionCardContent from "./CardContent/ExcretionCardContent";
 import ExpropriationCardContent from "./CardContent/ExpropriationCardContent";
 import MemoCardContent from "./CardContent/MemoCardContent";
@@ -61,10 +61,9 @@ type RecordCardProps = {
   className?: string;
 };
 
-
-const RecordCard = ({ recordType,icon, className }: RecordCardProps) => {
+const RecordCard = ({ recordType, icon, className }: RecordCardProps) => {
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
 
   const [addmodalOpen, setAddmodalOpen] = useState(false);
 
@@ -74,62 +73,68 @@ const RecordCard = ({ recordType,icon, className }: RecordCardProps) => {
   const [mealData, setMealData] = useState<MealProps[]>([]);
   const [enrichmentData, setEnrichmentData] = useState<EnrichmentProps[]>([]);
   const [eventData, setEventData] = useState<EventProps[]>([]);
-  const [expropriation, setExpropriation] = useState<ExpropriationProps>({} as ExpropriationProps);
+  const [expropriation, setExpropriation] = useState<ExpropriationProps>(
+    {} as ExpropriationProps
+  );
   const [memo, setMemo] = useState<MemoProps>({} as MemoProps);
-  const [poolCleaning, setPoolCleaning] = useState<PoolCleaningProps>({} as PoolCleaningProps);
-  const [wakeUpTime, setWakeUpTime] = useState<WakeUpTimeProps>({} as WakeUpTimeProps);
+  const [poolCleaning, setPoolCleaning] = useState<PoolCleaningProps>(
+    {} as PoolCleaningProps
+  );
+  const [wakeUpTime, setWakeUpTime] = useState<WakeUpTimeProps>(
+    {} as WakeUpTimeProps
+  );
   const [water, setWater] = useState<WaterProps>({} as WaterProps);
   const [training, setTraining] = useState<TrainingProps[]>([]);
-  const [excretion, setExcretion] = useState<ExcretionProps>({} as ExcretionProps);
+  const [excretion, setExcretion] = useState<ExcretionProps>(
+    {} as ExcretionProps
+  );
 
-
-  const fetchData = async (dataType:string): Promise<void> => {
+  const fetchData = async (dataType: string): Promise<void> => {
     try {
       let data;
       switch (dataType) {
-        case 'temperature':
-          data = await getTemperatures(date.format("YYYY-MM-DD"), id);
+        case "temperature":
+          data = await getTemperatures(date.format("YYYY-MM-DD"), animalId);
           setTemperatureData(data);
-          console.log("create temperature data", data);
           break;
-        case 'meal':
-          data = await getMeals(date.format("YYYY-MM-DD"), id);
+        case "meal":
+          data = await getMeals(date.format("YYYY-MM-DD"), animalId);
           setMealData(data);
           break;
-        case 'enrichment':
-          data = await getEnrichments(date.format("YYYY-MM-DD"), id);
+        case "enrichment":
+          data = await getEnrichments(date.format("YYYY-MM-DD"), animalId);
           setEnrichmentData(data);
           break;
-        case 'event':
-          data = await getEvents(date.format("YYYY-MM-DD"), id);
+        case "event":
+          data = await getEvents(date.format("YYYY-MM-DD"), animalId);
           setEventData(data);
           break;
-        case 'expropriation':
-          data = await getExpropriation(date.format("YYYY-MM-DD"), id);
+        case "expropriation":
+          data = await getExpropriation(date.format("YYYY-MM-DD"), animalId);
           setExpropriation(data);
           break;
-        case 'memo':
-          data = await getMemo(date.format("YYYY-MM-DD"), id);
+        case "memo":
+          data = await getMemo(date.format("YYYY-MM-DD"), animalId);
           setMemo(data);
           break;
-        case 'poolCleaning':
-          data = await getPoolCleaning(date.format("YYYY-MM-DD"), id);
+        case "poolCleaning":
+          data = await getPoolCleaning(date.format("YYYY-MM-DD"), animalId);
           setPoolCleaning(data);
           break;
-        case 'wakeUpTime':
-          data = await getWakeUpTime(date.format("YYYY-MM-DD"), id);
+        case "wakeUpTime":
+          data = await getWakeUpTime(date.format("YYYY-MM-DD"), animalId);
           setWakeUpTime(data);
           break;
-        case 'water':
-          data = await getWater(date.format("YYYY-MM-DD"), id);
+        case "water":
+          data = await getWater(date.format("YYYY-MM-DD"), animalId);
           setWater(data);
           break;
-        case 'training':
-          data = await getTraining(date.format("YYYY-MM-DD"), id);
+        case "training":
+          data = await getTraining(date.format("YYYY-MM-DD"), animalId);
           setTraining(data);
           break;
-        case 'excretion':
-          data = await getExcretion(date.format("YYYY-MM-DD"), id);
+        case "excretion":
+          data = await getExcretion(date.format("YYYY-MM-DD"), animalId);
           setExcretion(data);
           break;
         // 他のデータに対するケースも同様に設定
@@ -142,20 +147,22 @@ const RecordCard = ({ recordType,icon, className }: RecordCardProps) => {
   };
 
   useEffect(() => {
-    fetchData('temperature');
-    fetchData('meal');
-    fetchData('event');
-    fetchData('enrichment');
-    fetchData('expropriation');
-    fetchData('memo');
-    fetchData('poolCleaning');
-    fetchData('wakeUpTime');
-    fetchData('water');
-    fetchData('training');
-    fetchData('excretion');
-  }, [date, id]);
+    fetchData("temperature");
+    fetchData("meal");
+    fetchData("event");
+    fetchData("enrichment");
+    fetchData("expropriation");
+    fetchData("memo");
+    fetchData("poolCleaning");
+    fetchData("wakeUpTime");
+    fetchData("water");
+    fetchData("training");
+    fetchData("excretion");
+  }, [date, animalId]);
 
-  const japaneseTranslation = recordTypeInfo.find(info => info.recordType === recordType);
+  const japaneseTranslation = recordTypeInfo.find(
+    (info) => info.recordType === recordType
+  );
   return (
     <div className={`bg-white px-6 py-6 rounded-3xl   ${className}`}>
       <div className="flex justify-between mb-2">
@@ -182,36 +189,54 @@ const RecordCard = ({ recordType,icon, className }: RecordCardProps) => {
           setAddmodalOpen(false);
         }}
         isEdit={false}
-        fetchData={()=>fetchData(recordType)}
+        fetchData={() => fetchData(recordType)}
       />
       {recordType === "temperature" ? (
         <TemperatureCardContent
           temperature={temperatureData}
-          fetchData={()=>fetchData("temperature")}
+          fetchData={() => fetchData("temperature")}
         />
       ) : recordType === "event" ? (
-        <EventCardContent events={eventData} fetchData={()=>fetchData("event")} />
+        <EventCardContent
+          events={eventData}
+          fetchData={() => fetchData("event")}
+        />
       ) : recordType === "enrichment" ? (
         <EnrichmentCardContent
           enrichments={enrichmentData}
-          fetchData={()=>fetchData("enrichment")}
+          fetchData={() => fetchData("enrichment")}
         />
-      ) : recordType === "meal" ?(
-        <MealCardContent meals={mealData} fetchData={()=>fetchData("meal")} />
-      ): recordType === "excretion" ?(
-        <ExcretionCardContent excretion={excretion} fetchData={()=>fetchData("excretion")} />
-      ): recordType === "expropriation" ?(
-        <ExpropriationCardContent expropriation={expropriation} fetchData={()=>fetchData("expropriation")} />
-      ): recordType === "memo" ?(
-        <MemoCardContent memo={memo} fetchData={()=>fetchData("memo")} />
-      ): recordType === "poolCleaning" ?(
-        <PoolCleaningCardContent poolCleaning={poolCleaning} fetchData={()=>fetchData("poolCleaning")} />
-      ): recordType === "wakeUpTime" ?(
-        <WakeUpTimeCardContent wakeUpTime={wakeUpTime} fetchData={()=>fetchData("wakeUpTime")} />
-      ): recordType === "water" ?(
-        <WaterCardContent water={water} fetchData={()=>fetchData("water")} />
-      ) : recordType === "training" ?(
-        <TrainingCardContent trainings={training} fetchData={()=>fetchData("training")} />
+      ) : recordType === "meal" ? (
+        <MealCardContent meals={mealData} fetchData={() => fetchData("meal")} />
+      ) : recordType === "excretion" ? (
+        <ExcretionCardContent
+          excretion={excretion}
+          fetchData={() => fetchData("excretion")}
+        />
+      ) : recordType === "expropriation" ? (
+        <ExpropriationCardContent
+          expropriation={expropriation}
+          fetchData={() => fetchData("expropriation")}
+        />
+      ) : recordType === "memo" ? (
+        <MemoCardContent memo={memo} fetchData={() => fetchData("memo")} />
+      ) : recordType === "poolCleaning" ? (
+        <PoolCleaningCardContent
+          poolCleaning={poolCleaning}
+          fetchData={() => fetchData("poolCleaning")}
+        />
+      ) : recordType === "wakeUpTime" ? (
+        <WakeUpTimeCardContent
+          wakeUpTime={wakeUpTime}
+          fetchData={() => fetchData("wakeUpTime")}
+        />
+      ) : recordType === "water" ? (
+        <WaterCardContent water={water} fetchData={() => fetchData("water")} />
+      ) : recordType === "training" ? (
+        <TrainingCardContent
+          trainings={training}
+          fetchData={() => fetchData("training")}
+        />
       ) : (
         <div></div>
       )}
@@ -225,7 +250,7 @@ type AddModalProps = {
   open: boolean;
   isEdit: boolean;
   handleClose: () => void;
-  fetchData: (dataType:string) => void;
+  fetchData: (dataType: string) => void;
 };
 
 const AddModal = ({
@@ -241,7 +266,7 @@ const AddModal = ({
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("meal")}
+        fetchData={() => fetchData("meal")}
       />
     );
   } else if (recordType == "temperature") {
@@ -250,7 +275,7 @@ const AddModal = ({
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("tem1")}
+        fetchData={() => fetchData("tem1")}
       />
     );
   } else if (recordType == "enrichment") {
@@ -259,7 +284,7 @@ const AddModal = ({
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("meal")}
+        fetchData={() => fetchData("meal")}
       />
     );
   } else if (recordType == "event") {
@@ -268,61 +293,61 @@ const AddModal = ({
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("meal")}
+        fetchData={() => fetchData("meal")}
       />
     );
-  }else if (recordType == "poolCleaning") {
+  } else if (recordType == "poolCleaning") {
     return (
       <PoolCleaningModal
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("meal")}
+        fetchData={() => fetchData("meal")}
       />
     );
-  }else if (recordType == "excretion") {
+  } else if (recordType == "excretion") {
     return (
       <ExcretionModal
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("meal")}
+        fetchData={() => fetchData("meal")}
       />
     );
-  }else if (recordType == "expropriation") {
+  } else if (recordType == "expropriation") {
     return (
       <ExpropriationModal
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("meal")}
+        fetchData={() => fetchData("meal")}
       />
     );
-  }else if (recordType == "water") {
+  } else if (recordType == "water") {
     return (
       <WaterModal
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("meal")}
+        fetchData={() => fetchData("meal")}
       />
     );
-  }else if (recordType == "training") {
+  } else if (recordType == "training") {
     return (
       <TrainingModal
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("meal")}
+        fetchData={() => fetchData("meal")}
       />
     );
-  }else if (recordType == "memo") {
+  } else if (recordType == "memo") {
     return (
       <MemoModal
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("meal")}
+        fetchData={() => fetchData("meal")}
       />
     );
   } else if (recordType == "wakeUpTime") {
@@ -331,7 +356,7 @@ const AddModal = ({
         open={open}
         handleClose={handleClose}
         isEdit={isEdit}
-        fetchData={()=>fetchData("meal")}
+        fetchData={() => fetchData("meal")}
       />
     );
   } else {

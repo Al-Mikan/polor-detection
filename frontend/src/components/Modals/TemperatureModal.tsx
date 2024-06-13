@@ -50,7 +50,7 @@ const TemperatureModal = ({
       time: content.time,
       temperature: content.temperature,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: id,
     });
   };
   const updateData = async (
@@ -133,7 +133,7 @@ const TemperatureModal = ({
                       time: time,
                       temperature: temperature,
                       date: date.format("YYYY-MM-DD"),
-                      polarId: id,
+                      animalId: id,
                     });
                     fetchData();
                     console.log("create");

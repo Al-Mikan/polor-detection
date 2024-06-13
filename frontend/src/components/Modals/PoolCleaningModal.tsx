@@ -3,7 +3,14 @@ import {
   PoolCleaningProps,
   UpdatePoolCleaningProps,
 } from "../type";
-import { Modal, Box, Button, TextField,Switch,FormControlLabel } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Button,
+  TextField,
+  Switch,
+  FormControlLabel,
+} from "@mui/material";
 import {
   createPoolCleaning,
   updatePoolCleaning,
@@ -39,14 +46,18 @@ const PoolCleaningModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
-  const [poolCleaning, setPoolCleaning] = useState(content?.poolCleaning || false);
+  const { animalId, setAnimalId } = useContext(AppContext);
+  const [poolCleaning, setPoolCleaning] = useState(
+    content?.poolCleaning || false
+  );
 
-  const createData = async (content: CreatePoolCleaningProps): Promise<void> => {
+  const createData = async (
+    content: CreatePoolCleaningProps
+  ): Promise<void> => {
     await createPoolCleaning({
       poolCleaning: content.poolCleaning,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -54,7 +65,7 @@ const PoolCleaningModal = ({
     content: UpdatePoolCleaningProps
   ): Promise<void> => {
     await updatePoolCleaning(id, {
-        poolCleaning: content.poolCleaning,
+      poolCleaning: content.poolCleaning,
     });
   };
   const deleteData = async (id: number): Promise<void> => {
@@ -72,11 +83,12 @@ const PoolCleaningModal = ({
             <p>プール掃除</p>
             <FormControlLabel
               control={
-                <Switch checked={content?.poolCleaning}
+                <Switch
+                  checked={content?.poolCleaning}
                   onChange={(e) => setPoolCleaning(Boolean(e.target.value))}
-              />
+                />
               }
-            label="済み" 
+              label="済み"
             />
           </div>
         </div>
@@ -112,10 +124,10 @@ const PoolCleaningModal = ({
                       poolCleaning: poolCleaning,
                     });
                   } else if (!isEdit) {
-                      await createData({
-                        poolCleaning: poolCleaning,
-                        date: date.format("YYYY-MM-DD"),
-                        polarId: id,
+                    await createData({
+                      poolCleaning: poolCleaning,
+                      date: date.format("YYYY-MM-DD"),
+                      animalId: animalId,
                     });
                   } else {
                     alert("エラー");

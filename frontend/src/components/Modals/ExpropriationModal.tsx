@@ -1,10 +1,25 @@
-import { ExpropriationProps, CreateExpropriationProps, UpdateExpropriationProps } from "../type";
-import { Modal, Box, Button, FormControl, OutlinedInput,TextField } from "@mui/material";
+import {
+  ExpropriationProps,
+  CreateExpropriationProps,
+  UpdateExpropriationProps,
+} from "../type";
+import {
+  Modal,
+  Box,
+  Button,
+  FormControl,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
 import dayjs from "dayjs";
 import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
-import { createExpropriation, updateExpropriation, deleteExpropriation } from "../../utils/expropriation";
+import {
+  createExpropriation,
+  updateExpropriation,
+  deleteExpropriation,
+} from "../../utils/expropriation";
 
 type ExpropriationModalProps = {
   content?: ExpropriationProps;
@@ -33,14 +48,18 @@ const ExpropriationModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
-  const [expropriation, setExpropriation] = useState(content?.expropriation||0);
+  const { animalId, setAnimalId } = useContext(AppContext);
+  const [expropriation, setExpropriation] = useState(
+    content?.expropriation || 0
+  );
 
-  const createData = async (content: CreateExpropriationProps): Promise<void> => {
+  const createData = async (
+    content: CreateExpropriationProps
+  ): Promise<void> => {
     await createExpropriation({
       expropriation: content.expropriation,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -95,9 +114,7 @@ const ExpropriationModal = ({
             </Button>
             <Button
               onClick={async () => {
-                if (
-                  expropriation === undefined
-                ) {
+                if (expropriation === undefined) {
                   alert("入力してください");
                   return;
                 }
@@ -110,7 +127,7 @@ const ExpropriationModal = ({
                     await createData({
                       expropriation: expropriation,
                       date: date.format("YYYY-MM-DD"),
-                      polarId: id,
+                      animalId: animalId,
                     });
                   } else {
                     alert("エラー");

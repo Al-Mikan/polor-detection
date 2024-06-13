@@ -33,14 +33,14 @@ const EventModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const [event, setEvent] = useState(content?.event);
 
   const createData = async (content: CreateEventProps): Promise<void> => {
     await createEvent({
       event: content.event,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -94,9 +94,7 @@ const EventModal = ({
             </Button>
             <Button
               onClick={async () => {
-                if (
-                  event === undefined
-                ) {
+                if (event === undefined) {
                   alert("入力してください");
                   return;
                 }
@@ -109,7 +107,7 @@ const EventModal = ({
                     await createData({
                       event: event,
                       date: date.format("YYYY-MM-DD"),
-                      polarId: id,
+                      animalId: animalId,
                     });
                   } else {
                     alert("エラー");

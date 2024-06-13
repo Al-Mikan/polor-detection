@@ -2,16 +2,16 @@ import { Box } from "@mui/material";
 
 import * as React from "react";
 import { Tooltip } from "@mui/material";
-import { DetectionTimeProps } from "@/components/type";
+import { DetectTimeProps } from "@/components/type";
 import { useContext } from "react";
 import { AppContext } from "@/pages/_app";
 
 type DayGridProps = {
-  timeData: DetectionTimeProps[];
+  timeData: DetectTimeProps[];
 };
 
 const DayGrid = ({ timeData }: DayGridProps) => {
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const commonStyles = {
     width: "100%",
     opacity: 0.2,
@@ -57,7 +57,7 @@ const DayGrid = ({ timeData }: DayGridProps) => {
           <Box sx={{ ...commonStyles, border: 1, borderLeft: 0 }}></Box>
           <Box sx={{ ...commonStyles, border: 1, borderLeft: 0 }}></Box>
           {timeData?.map((time, index) => {
-            if (time.cageId === id) {
+            if (time.cageId === animalId) {
               const start = new Date("1970-01-01 " + time.startTime);
               const end = new Date("1970-01-01 " + time.endTime);
 

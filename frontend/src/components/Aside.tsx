@@ -1,56 +1,58 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import * as React from 'react';
-import { useEffect, useState, useContext } from 'react';
-import { FaCalendarAlt, FaChartBar } from 'react-icons/fa';
-import { Button, Dialog, DialogTitle, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Avatar } from '@mui/material';
-import { blue } from '@mui/material/colors';
-import { BiChevronDown } from 'react-icons/bi';
-import PersonIcon from '@mui/icons-material/Person';
-import Image from 'next/image';
-import { AppContext } from '@/pages/_app';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import * as React from "react";
+import { useEffect, useState, useContext } from "react";
+import { FaCalendarAlt, FaChartBar } from "react-icons/fa";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemText,
+  Avatar,
+} from "@mui/material";
+import Image from "next/image";
+import { AppContext } from "@/pages/_app";
 
-import { PolarProps } from './type';
-import { getPolars } from '../utils/polars';
-import { FaGear } from 'react-icons/fa6';
+import { AnimalProps } from "./type";
+import { getAnimals } from "../utils/animal";
+import { FaGear } from "react-icons/fa6";
 
 type DialogProps = {
   open: boolean;
-  selectedValue: PolarProps;
-  onClose: (value: PolarProps) => void;
-  polars: PolarProps[];
+  selectedValue: AnimalProps;
+  onClose: (value: AnimalProps) => void;
+  animals: AnimalProps[];
 };
 
 export const MUIDialog = ({
   open,
   selectedValue,
   onClose,
-  polars,
+  animals,
 }: DialogProps) => {
   const handleClose = () => {
     onClose(selectedValue);
   };
 
-  const effectivePolars = polars.length === 0 ? [{ id: 1, polarName: 'sample' }] : polars;
-
-  const handleListItemClick = (value: PolarProps) => {
+  const handleListItemClick = (value: AnimalProps) => {
     onClose(value);
   };
 
   return (
-    <Dialog
-      onClose={handleClose}
-      open={open}
-      fullWidth
-      maxWidth="md"
-    >
-      <DialogTitle>名前を選択してください</DialogTitle>
+    <Dialog onClose={handleClose} open={open} fullWidth maxWidth="xs">
+      <DialogTitle>個体を選択してください</DialogTitle>
       <List sx={{ pt: 0 }}>
-        {polars.map((polar) => (
-          <ListItem disableGutters key={polar.id}>
-            <ListItemButton onClick={() => handleListItemClick(polar)}>
-              <ListItemText primary="ホッキョクグマ"  />
-              <ListItemText primary={polar.polarName} sx={{fontWeight:400}}/>
+        {animals.map((animal) => (
+          <ListItem disableGutters key={animal.id}>
+            <ListItemButton onClick={() => handleListItemClick(animal)}>
+              <div className="flex justify-between items-center w-full px-2">
+                <p> {animal.species}</p>
+                <p>{animal.animalName}</p>
+              </div>
             </ListItemButton>
           </ListItem>
         ))}
@@ -59,45 +61,69 @@ export const MUIDialog = ({
   );
 };
 
-const PolarSelect = () => {
+const AnimalSelect = () => {
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<PolarProps>({} as PolarProps);
-  const { id, setId, polars, setPolars } = useContext(AppContext);
+  const [selectedValue, setSelectedValue] = useState<AnimalProps>(
+    {} as AnimalProps
+  );
+  const { id, setId, animals, setAnimals } = useContext(AppContext);
   const router = useRouter();
 
+  const fetchData = async () => {
+    try {
+      const data = await getAnimals();
+      if (data.length > 0) {
+        setAnimals(data);
+        setSelectedValue(data[0]);
+      } else {
+        console.error("No data found");
+      }
+    } catch (error) {
+      console.error("Failed to fetch data", error);
+    }
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = (value: PolarProps) => {
+  const handleClose = (value: AnimalProps) => {
     setOpen(false);
     setSelectedValue(value);
     setId(value.id);
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getPolars();
-        if (data.length > 0) {
-          setPolars(data);
-          setSelectedValue(data[0]);
-        } else {
-          console.error('No data found');
-        }
-      } catch (error) {
-        console.error('Failed to fetch data', error);
-      }
-    };
     fetchData();
-  }, [setPolars]);
+  }, []);
 
   return (
     <div>
-      <MUIDialog selectedValue={selectedValue} open={open} onClose={handleClose} polars={polars} />
-      <Button className="rounded-md cursor-pointer bg-[#EAE9E9] w-[160px] h-[50px] text-black px-6 py-2 shadow-none hover:bg-[#EAE9E9] hover:shadow-md" onClick={handleClickOpen} variant="contained">
-        {selectedValue ? selectedValue.polarName : '選択してください'}
-        <BiChevronDown />
+      <MUIDialog
+        selectedValue={selectedValue}
+        open={open}
+        onClose={handleClose}
+        animals={animals}
+      />
+      <Button
+        className="rounded-xl flex flex-col cursor-pointer bg-[#EAE9E9] w-[180px] h-[100px] text-black  shadow-none hover:bg-[#EAE9E9] hover:shadow-md"
+        onClick={handleClickOpen}
+        variant="contained"
+      >
+        <p className="text-sm" style={{ textTransform: "none" }}>
+          {selectedValue ? selectedValue.species : ""}
+        </p>
+        <p
+          className=" text-xl"
+          style={{
+            width: "100%",
+            textTransform: "none",
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {selectedValue ? selectedValue.animalName : "選択してください"}
+        </p>
       </Button>
     </div>
   );
@@ -106,15 +132,24 @@ const PolarSelect = () => {
 const Aside = () => {
   const router = useRouter();
   const { pathname } = router;
-  
+
   return (
     <div className="bg-[#FFFFFF] w-[220px] h-full fixed top-0 z-50">
       <div className="flex flex-col items-center gap-4">
         <div className="py-10">
-          <Image src="./polarIcon.svg" width={120} height={120} alt="Polar Icon" />
+          <Image
+            src="./animalIcon.svg"
+            width={120}
+            height={120}
+            alt="Animal Icon"
+          />
         </div>
         <Link href="/">
-          <Button className={`rounded-full hover:bg-[#EAE9E9] w-[180px] hover:shadow-md ${pathname === "/" ? "bg-[#F4F3F3]" : "bg-white"}`}>
+          <Button
+            className={`rounded-full hover:bg-[#EAE9E9] w-[180px] hover:shadow-md ${
+              pathname === "/" ? "bg-[#F4F3F3]" : "bg-white"
+            }`}
+          >
             <div className="bg-[#48CAD9] p-3 rounded-full mr-3">
               <FaCalendarAlt className="w-[16px] h-[16px] text-white" />
             </div>
@@ -124,7 +159,11 @@ const Aside = () => {
           </Button>
         </Link>
         <Link href="/graph">
-          <Button className={`rounded-full hover:bg-[#EAE9E9] w-[180px] hover:shadow-md ${pathname === "/graph" ? "bg-[#F4F3F3]" : "bg-white"}`}>
+          <Button
+            className={`rounded-full hover:bg-[#EAE9E9] w-[180px] hover:shadow-md ${
+              pathname === "/graph" ? "bg-[#F4F3F3]" : "bg-white"
+            }`}
+          >
             <div className="bg-[#F09783] p-3 rounded-full mr-3">
               <FaChartBar className="w-[16px] h-[16px] text-white" />
             </div>
@@ -134,7 +173,11 @@ const Aside = () => {
           </Button>
         </Link>
         <Link href="/setting">
-          <Button className={`rounded-full hover:bg-[#EAE9E9] w-[180px] hover:shadow-md ${pathname === "/graph" ? "bg-[#F4F3F3]" : "bg-white"}`}>
+          <Button
+            className={`rounded-full hover:bg-[#EAE9E9] w-[180px] hover:shadow-md ${
+              pathname === "/graph" ? "bg-[#F4F3F3]" : "bg-white"
+            }`}
+          >
             <div className="bg-slate-600 p-3 rounded-full mr-3">
               <FaGear className="w-[16px] h-[16px] text-white" />
             </div>
@@ -145,7 +188,7 @@ const Aside = () => {
         </Link>
       </div>
       <div className="absolute bottom-7 left-1/2 -translate-x-1/2">
-        <PolarSelect />
+        <AnimalSelect />
       </div>
     </div>
   );

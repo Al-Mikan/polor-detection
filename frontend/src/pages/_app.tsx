@@ -6,27 +6,27 @@ import Layout from "@/layout/Layout";
 
 import React, { Dispatch, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
-import { PolarProps } from "@/components/type";
+import { AnimalProps } from "@/components/type";
 
 export const AppContext = React.createContext(
   {} as {
-    id: number;
-    setId: Dispatch<React.SetStateAction<number>>;
+    animalId: number;
+    setAnimalId: Dispatch<React.SetStateAction<number>>;
     date: dayjs.Dayjs;
     setDate: Dispatch<React.SetStateAction<Dayjs>>;
-    polars: PolarProps[];
-    setPolars: Dispatch<React.SetStateAction<PolarProps[]>>;
+    animals: AnimalProps[];
+    setAnimals: Dispatch<React.SetStateAction<AnimalProps[]>>;
   }
 );
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
-  const [id, setId] = useState(1);
+  const [animalId, setAnimalId] = useState(1);
   const [date, setDate] = useState(dayjs());
-  const [polars, setPolars] = useState([] as PolarProps[]);
+  const [animals, setAnimals] = useState([] as AnimalProps[]);
   const getLayout = Component.getLayout ?? ((page) => page);
   return getLayout(
     <AppContext.Provider
-      value={{ id, setId, date, setDate, polars, setPolars }}
+      value={{ animalId, setAnimalId, date, setDate, animals, setAnimals }}
     >
       <Layout>
         <LocalizationProvider dateAdapter={AdapterDayjs}>

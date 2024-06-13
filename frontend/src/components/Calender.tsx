@@ -6,12 +6,10 @@ import RecordCard from "./RecordCard";
 import UploadVideo from "./UploadVideo";
 import { DateCalendar } from "@mui/x-date-pickers";
 import { Button, Popover } from "@mui/material";
+import CageSelector from "./atoms/CageSelector";
 
 import { cardData } from "@/data/cardData";
-import {
-  FaTrash,
-  FaCalendar
-} from "react-icons/fa";
+import { FaTrash, FaCalendar } from "react-icons/fa";
 
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 
@@ -23,17 +21,17 @@ import {
   jaJP,
 } from "@mui/x-data-grid";
 
-import { DetectTimeProps, PolarProps, PolarCageLogProps } from "./type";
+import { DetectTimeProps, AnimalProps, AnimalCageLogProps } from "./type";
 import { getDetectionTimes } from "@/utils/detectionTime";
 
 //合計値を計算
 const calculateTotalTime = (
   timeData: DetectTimeProps[] | null,
   id: number,
-  detectionPolarId: number
+  detectionAnimalId: number
 ): number[] => {
   let totalMilliseconds = 0;
-  if (timeData === null || id != detectionPolarId) return [0, 0, 0];
+  if (timeData === null || id != detectionAnimalId) return [0, 0, 0];
 
   // 各時間帯の差分を加算
   for (const time of timeData) {
@@ -51,32 +49,34 @@ const calculateTotalTime = (
 };
 
 const CalenderContent = () => {
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const { date, setDate } = useContext(AppContext);
-  const { polars, setPolars } = useContext(AppContext);
+  const { animals, setAnimals } = useContext(AppContext);
 
   const [totalTimeAry, setTotalTimeAry] = useState<number[]>([0, 0, 0]);
   const [detectionData, setDetectionData] = useState<DetectTimeProps[]>([]);
   const [userSelectedModalOpen, setUserSelectedModalOpen] = useState(false);
-  const [polarCageLog, setPolarCageLog] = useState<PolarCageLogProps[]>([]);
+  const [animalCageLog, setAnimalCageLog] = useState<AnimalCageLogProps[]>([]);
 
   const fetchDetectionTime = async () => {
     try {
       const detectionData = await getDetectionTimes(date.format("YYYY-MM-DD"));
-      const detectionPolar = [{
-        polarId:1,
-      }]
+      const detectionAnimal = [
+        {
+          animalId: 1,
+        },
+      ];
       setDetectionData(detectionData);
-      if (detectionPolar.length !== 0) {
-        const polarId = detectionPolar[0].polarId;
-        const polarObj = polars.find((item) => item.id === polarId);
+      if (detectionAnimal.length !== 0) {
+        const animalId = detectionAnimal[0].animalId;
+        const animalObj = animals.find((item) => item.id === animalId);
       } else {
         setUserSelectedModalOpen(true);
       }
       const totalary = calculateTotalTime(
         detectionData,
-        id,
-        detectionPolar[0].polarId
+        animalId,
+        detectionAnimal[0].animalId
       );
       setTotalTimeAry(totalary);
     } catch (error) {
@@ -86,7 +86,7 @@ const CalenderContent = () => {
 
   useEffect(() => {
     fetchDetectionTime();
-  }, [id, date]);
+  }, [animalId, date]);
   const rows: GridRowsProp = [
     {
       id: 1,
@@ -200,7 +200,7 @@ const CalenderContent = () => {
     },
   };
 
-    // カレンダーの表示状態を管理するための状態
+  // カレンダーの表示状態を管理するための状態
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const timeData: DetectTimeProps[] = [
@@ -253,7 +253,6 @@ const CalenderContent = () => {
     setAnchorEl(null);
   };
 
-
   return (
     <div className="p-8">
       <p className=" text-3xl font-bold mb-4">行動記録</p>
@@ -262,46 +261,44 @@ const CalenderContent = () => {
         <div className=" mb-12 h-[300px] ">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
-            <p className="text-3xl font-bold " >
-              {date?.format("YYYY年MM月DD日")}
-            </p>
-            <Button
-              onClick={handlePopOpen}
-              variant="contained"
-              className="p-4 bg-[#342B43] hover:bg-[#000000]  hover:shadow-xl text-xl rounded-full"
-            ><FaCalendar/></Button>
-                <Popover
-                  id={pop_id}
-                  open={open}
-                  anchorEl={anchorEl}
-                  onClose={handlePopClose}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
+              <p className="text-3xl font-bold ">
+                {date?.format("YYYY年MM月DD日")}
+              </p>
+              <Button
+                onClick={handlePopOpen}
+                variant="contained"
+                className="p-4 bg-[#342B43] hover:bg-[#000000]  hover:shadow-xl text-xl rounded-full"
               >
-              <div className="w-[256px] h-[270px]">
-                <DateCalendar
-                  value={date}
-                  onChange={(day) => {
-                    day && setDate(day);
-                    handlePopClose();
-                  }}
-                  className="scale-[0.8] origin-top-left rounded-md p-0 text-[#362B44]"
-                />
-              </div>
-                </Popover>
+                <FaCalendar />
+              </Button>
+              <Popover
+                id={pop_id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handlePopClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+              >
+                <div className="w-[256px] h-[270px]">
+                  <DateCalendar
+                    value={date}
+                    onChange={(day) => {
+                      day && setDate(day);
+                      handlePopClose();
+                    }}
+                    className="scale-[0.8] origin-top-left rounded-md p-0 text-[#362B44]"
+                  />
+                </div>
+              </Popover>
             </div>
           </div>
           <div className="w-full  h-[300px] px-2 ">
-            <div className="flex justify-end">
-              <div className=" p-2 flex items-center gap-x-1">
-                <p className="bg-[#47CAD9] text-white rounded-full  px-2 py-1">
-                  ゲージ 1
-                </p>
-                <p>に入っています</p>
-              </div>
-            </div>
+            <CageSelector
+              animalId={animalId}
+              date={date.format("YYYY-MM-DD")}
+            />
             <div>
               <div className="flex items-center  ">
                 <p className=" mr-auto">
@@ -368,16 +365,16 @@ const CalenderContent = () => {
         </div>
       </div>
       <div className=" rounded mt-16">
-          <div className="flex gap-x-10  gap-y-10 flex-wrap mb-12">
+        <div className="flex gap-x-10  gap-y-10 flex-wrap mb-12">
           {cardData.map((card, index) => (
-                <RecordCard
-                  key={index}
-                  recordType={card.recordType}
-                  icon={card.icon}
-                  className={card.className}
-                />
-              ))}
-          </div>
+            <RecordCard
+              key={index}
+              recordType={card.recordType}
+              icon={card.icon}
+              className={card.className}
+            />
+          ))}
+        </div>
       </div>
       <UploadVideo
         video_path="./1.mp4"

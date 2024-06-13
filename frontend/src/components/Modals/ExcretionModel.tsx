@@ -1,10 +1,25 @@
-import { ExcretionProps, CreateExcretionProps, UpdateExcretionProps } from "../type";
-import { Modal, Box, Button, FormControl, OutlinedInput,TextField} from "@mui/material";
+import {
+  ExcretionProps,
+  CreateExcretionProps,
+  UpdateExcretionProps,
+} from "../type";
+import {
+  Modal,
+  Box,
+  Button,
+  FormControl,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
 import dayjs from "dayjs";
 import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
-import { createExcretion, updateExcretion, deleteExcretion } from "../../utils/excretion";
+import {
+  createExcretion,
+  updateExcretion,
+  deleteExcretion,
+} from "../../utils/excretion";
 
 type ExcretionModalProps = {
   content?: ExcretionProps;
@@ -33,17 +48,16 @@ const ExcretionModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const [number, setNumber] = useState(content?.number);
   const [status, setStatus] = useState(content?.status);
-
 
   const createData = async (content: CreateExcretionProps): Promise<void> => {
     await createExcretion({
       number: content.number,
       status: content.status,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -109,10 +123,7 @@ const ExcretionModal = ({
             </Button>
             <Button
               onClick={async () => {
-                if (
-                  number === undefined ||
-                  status === undefined 
-                ) {
+                if (number === undefined || status === undefined) {
                   alert("入力してください");
                   return;
                 }
@@ -127,7 +138,7 @@ const ExcretionModal = ({
                       number: number,
                       status: status,
                       date: date.format("YYYY-MM-DD"),
-                      polarId: id,
+                      animalId: animalId,
                     });
                   } else {
                     alert("エラー");

@@ -1,10 +1,18 @@
-import { TrainingProps, CreateTrainingProps, UpdateTrainingProps } from "../type";
+import {
+  TrainingProps,
+  CreateTrainingProps,
+  UpdateTrainingProps,
+} from "../type";
 import { Modal, Box, Button, FormControl, OutlinedInput } from "@mui/material";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
 import dayjs from "dayjs";
 import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
-import { createTraining, updateTraining, deleteTraining } from "../../utils/training";
+import {
+  createTraining,
+  updateTraining,
+  deleteTraining,
+} from "../../utils/training";
 
 type TrainingModalProps = {
   content?: TrainingProps;
@@ -33,14 +41,14 @@ const TrainingModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const [training, setTraining] = useState(content?.training);
 
   const createData = async (content: CreateTrainingProps): Promise<void> => {
     await createTraining({
       training: content.training,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -94,9 +102,7 @@ const TrainingModal = ({
             </Button>
             <Button
               onClick={async () => {
-                if (
-                  training === undefined
-                ) {
+                if (training === undefined) {
                   alert("入力してください");
                   return;
                 }
@@ -109,7 +115,7 @@ const TrainingModal = ({
                     await createData({
                       training: training,
                       date: date.format("YYYY-MM-DD"),
-                      polarId: id,
+                      animalId: animalId,
                     });
                   } else {
                     alert("エラー");

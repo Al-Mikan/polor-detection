@@ -46,7 +46,7 @@ const EnrichmentModal = ({
     await createEnrichment({
       enrichment: content.enrichment,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: id,
     });
   };
   const updateData = async (
@@ -68,7 +68,6 @@ const EnrichmentModal = ({
           {isEdit ? "記録の編集・削除" : "記録の追加"}
         </p>
         <div className="pt-6">
-
           <div className="flex items-center justify-center space-x-6">
             <p>内容</p>
             <FormControl sx={{ m: 1, width: "300px" }} variant="outlined">
@@ -101,9 +100,7 @@ const EnrichmentModal = ({
             </Button>
             <Button
               onClick={async () => {
-                if (
-                  enrichment === undefined
-                ) {
+                if (enrichment === undefined) {
                   alert("入力してください");
                   return;
                 }
@@ -116,7 +113,7 @@ const EnrichmentModal = ({
                     await createData({
                       enrichment: enrichment,
                       date: date.format("YYYY-MM-DD"),
-                      polarId: id,
+                      animalId: id,
                     });
                   } else {
                     alert("エラー");

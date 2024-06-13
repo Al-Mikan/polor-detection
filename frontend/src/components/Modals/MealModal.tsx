@@ -41,7 +41,7 @@ const MealModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const [time, setTime] = useState(content?.time);
   const [meal, setMeal] = useState(content?.meal);
   const [weight, setWeight] = useState(content?.weight);
@@ -52,7 +52,7 @@ const MealModal = ({
       meal: content.meal,
       weight: content.weight,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -150,7 +150,7 @@ const MealModal = ({
                       meal: meal,
                       weight: weight,
                       date: date.format("YYYY-MM-DD"),
-                      polarId: id,
+                      animalId: animalId,
                     });
                   } else {
                     alert("エラー");

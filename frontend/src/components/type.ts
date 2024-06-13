@@ -1,10 +1,33 @@
-export type RecordType = "temperature" | "poolCleaning" | "expropriation" | "enrichment" | "event"| "meal" | "water" | "excretion" | "memo" | "training" | "wakeUpTime" | "detectTime" | "video"|"cage" | "polarCageLog";
+export type RecordType =
+  | "temperature"
+  | "poolCleaning"
+  | "expropriation"
+  | "enrichment"
+  | "event"
+  | "meal"
+  | "water"
+  | "excretion"
+  | "memo"
+  | "training"
+  | "wakeUpTime"
+  | "detectTime"
+  | "video"
+  | "cage"
+  | "animalCageLog";
 //シロクマ
 
-
-export type PolarProps = {
+export type AnimalProps = {
   id: number;
-  polarName: string;
+  animalName: string;
+  species: string;
+};
+export type CreateAnimalProps = {
+  animalName: string;
+  species: string;
+};
+export type UpdateAnimalProps = {
+  animalName: string;
+  species: string;
 };
 
 //ケージ
@@ -12,20 +35,25 @@ export type CageProps = {
   id: number;
   cageName: string;
 };
+export type CreateCageProps = {
+  cageName: string;
+};
+export type UpdateCageProps = {
+  cageName: string;
+};
 
 //シロクマケージ
-export type PolarCageLogProps = {
+export type AnimalCageLogProps = {
   id: number;
-  polarId: number;
+  animalId: number;
   cageId: number;
 };
-export type CreatePolarCageLogProps = {
-  id: number;
-  polarId: number;
+export type CreateAnimalCageLogProps = {
+  animalId: number;
   cageId: number;
 };
-export type UpdatePolarCageLogProps = {
-  polarId: number;
+export type UpdateAnimalCageLogProps = {
+  animalId: number;
   cageId: number;
   date: string;
 };
@@ -39,7 +67,7 @@ export type MealProps = {
 };
 
 export type CreateMealProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   time: string;
   meal: string;
@@ -60,7 +88,7 @@ export type TemperatureProps = {
 };
 
 export type CreateTemperatureProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   time: string;
   temperature: number;
@@ -78,7 +106,7 @@ export type EnrichmentProps = {
 };
 
 export type CreateEnrichmentProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   enrichment: string;
 };
@@ -94,7 +122,7 @@ export type EventProps = {
 };
 
 export type CreateEventProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   event: string;
 };
@@ -107,9 +135,9 @@ export type UpdateEventProps = {
 export type WaterProps = {
   id: number;
   value: number;
-}
+};
 export type CreateWaterProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   value: number;
 };
@@ -123,87 +151,87 @@ export type ExcretionProps = {
   id: number;
   number: number;
   status: string;
-}
+};
 export type CreateExcretionProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   number: number;
   status: string;
-}
+};
 export type UpdateExcretionProps = {
   number: number;
   status: string;
-}
+};
 
 //収用回数
 export type ExpropriationProps = {
   id: number;
   expropriation: number;
-}
+};
 export type CreateExpropriationProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   expropriation: number;
-}
+};
 export type UpdateExpropriationProps = {
   expropriation: number;
-}
+};
 
 //メモ
 export type MemoProps = {
   id: number;
   memo: string;
-}
+};
 export type CreateMemoProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   memo: string;
-}
+};
 export type UpdateMemoProps = {
   memo: string;
-}
+};
 
 //プール掃除
 export type PoolCleaningProps = {
   id: number;
   poolCleaning: boolean;
-}
+};
 export type CreatePoolCleaningProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   poolCleaning: boolean;
-}
+};
 export type UpdatePoolCleaningProps = {
   poolCleaning: boolean;
-}
+};
 
 //トレーニング
 export type TrainingProps = {
   id: number;
   training: string;
-}
+};
 export type CreateTrainingProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   training: string;
-}
+};
 export type UpdateTrainingProps = {
   training: string;
-}
+};
 
 //起床時間
 export type WakeUpTimeProps = {
   id: number;
   time: string;
-}
+};
 export type CreateWakeUpTimeProps = {
-  polarId: number;
+  animalId: number;
   date: string;
   time: string;
-}
+};
 export type UpdateWakeUpTimeProps = {
   time: string;
-}
+};
 
 //検知
 export type DetectTimeProps = {
@@ -211,15 +239,15 @@ export type DetectTimeProps = {
   startTime: string;
   endTime: string;
   cageId: number;
-}
+};
 
 //ビデオ
 export type VideoProps = {
   id: number;
   file: File;
-}
+};
 export type CreateVideoProps = {
-  polarId: number;
+  animalId: number;
   file: File;
   cageId: number;
-}
+};

@@ -3,7 +3,14 @@ import {
   WakeUpTimeProps,
   UpdateWakeUpTimeProps,
 } from "../type";
-import { Modal, Box, Button, TextField,Switch,FormControlLabel } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Button,
+  TextField,
+  Switch,
+  FormControlLabel,
+} from "@mui/material";
 import {
   createWakeUpTime,
   updateWakeUpTime,
@@ -41,14 +48,14 @@ const WakeUpTimeModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const [wakeUpTime, setWakeUpTime] = useState(content?.time);
 
   const createData = async (content: CreateWakeUpTimeProps): Promise<void> => {
     await createWakeUpTime({
       time: content.time,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -56,7 +63,7 @@ const WakeUpTimeModal = ({
     content: UpdateWakeUpTimeProps
   ): Promise<void> => {
     await updateWakeUpTime(id, {
-        time: content.time,
+      time: content.time,
     });
   };
   const deleteData = async (id: number): Promise<void> => {
@@ -112,10 +119,10 @@ const WakeUpTimeModal = ({
                       time: wakeUpTime,
                     });
                   } else if (!isEdit) {
-                      await createData({
-                        time: wakeUpTime,
-                        date: date.format("YYYY-MM-DD"),
-                        polarId: id,
+                    await createData({
+                      time: wakeUpTime,
+                      date: date.format("YYYY-MM-DD"),
+                      animalId: animalId,
                     });
                   } else {
                     alert("エラー");

@@ -1,14 +1,6 @@
-import {
-  CreateMemoProps,
-  MemoProps,
-  UpdateMemoProps,
-} from "../type";
+import { CreateMemoProps, MemoProps, UpdateMemoProps } from "../type";
 import { Modal, Box, Button, TextField } from "@mui/material";
-import {
-  createMemo,
-  updateMemo,
-  deleteMemo,
-} from "../../utils/memo";
+import { createMemo, updateMemo, deleteMemo } from "../../utils/memo";
 import { useContext, useState } from "react";
 import { AppContext } from "../../pages/_app";
 
@@ -39,14 +31,14 @@ const MemoModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const [memo, setMemo] = useState(content?.memo);
 
   const createData = async (content: CreateMemoProps): Promise<void> => {
     await createMemo({
       memo: content.memo,
       date: date.format("YYYY-MM-DD"),
-      polarId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -54,7 +46,7 @@ const MemoModal = ({
     content: UpdateMemoProps
   ): Promise<void> => {
     await updateMemo(id, {
-        memo: content.memo,
+      memo: content.memo,
     });
   };
   const deleteData = async (id: number): Promise<void> => {
@@ -111,10 +103,10 @@ const MemoModal = ({
                       memo: memo,
                     });
                   } else if (!isEdit) {
-                      await createData({
-                        memo: memo,
-                        date: date.format("YYYY-MM-DD"),
-                        polarId: id,
+                    await createData({
+                      memo: memo,
+                      date: date.format("YYYY-MM-DD"),
+                      animalId: animalId,
                     });
                   } else {
                     alert("エラー");
