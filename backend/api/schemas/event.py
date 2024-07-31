@@ -4,8 +4,6 @@ from pydantic import BaseModel
 
 
 class EventBase(BaseModel):
-    startTime: time
-    endTime: time
     event: str
 
 

@@ -174,18 +174,6 @@ const CalenderContent = () => {
   ];
   const hiddenFileInput = useRef<HTMLInputElement | null>(null);
 
-  const handleClick = () => {
-    if (hiddenFileInput.current) {
-      hiddenFileInput.current.click();
-    }
-  };
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const fileUploaded = event.target.files[0];
-      // ここでファイルの処理を行うことができます
-    }
-  };
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState("");
 
@@ -201,7 +189,6 @@ const CalenderContent = () => {
   };
 
   // カレンダーの表示状態を管理するための状態
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const timeData: DetectTimeProps[] = [
     {
@@ -259,7 +246,7 @@ const CalenderContent = () => {
 
       <div className=" bg-white p-6 rounded-3xl shadow-md">
         <div className=" mb-12 h-[300px] ">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mb-12">
             <div className="flex items-center space-x-2">
               <p className="text-3xl font-bold ">
                 {date?.format("YYYY年MM月DD日")}
@@ -293,12 +280,9 @@ const CalenderContent = () => {
                 </div>
               </Popover>
             </div>
+            <CageSelector />
           </div>
           <div className="w-full  h-[300px] px-2 ">
-            <CageSelector
-              animalId={animalId}
-              date={date.format("YYYY-MM-DD")}
-            />
             <div>
               <div className="flex items-center  ">
                 <p className=" mr-auto">
@@ -309,18 +293,6 @@ const CalenderContent = () => {
                     3時間42分30秒
                   </span>
                 </p>
-                <div className="flex gap-x-2 items-end">
-                  <p>前日</p>
-                  <div className="flex gap-x-1 items-center text-2xl text-red-800">
-                    <FaArrowTrendUp />
-                    <p className="">12%</p>
-                  </div>
-                  <p className="ml-2">先週平均</p>
-                  <div className="flex gap-x-1 items-center text-2xl  text-green-900">
-                    <FaArrowTrendDown />
-                    <p className="">9%</p>
-                  </div>
-                </div>
               </div>
               <DayGrid timeData={timeData} />
             </div>

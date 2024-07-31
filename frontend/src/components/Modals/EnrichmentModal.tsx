@@ -39,14 +39,14 @@ const EnrichmentModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const [enrichment, setEnrichment] = useState(content?.enrichment);
 
   const createData = async (content: CreateEnrichmentProps): Promise<void> => {
     await createEnrichment({
       enrichment: content.enrichment,
       date: date.format("YYYY-MM-DD"),
-      animalId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -113,7 +113,7 @@ const EnrichmentModal = ({
                     await createData({
                       enrichment: enrichment,
                       date: date.format("YYYY-MM-DD"),
-                      animalId: id,
+                      animalId: animalId,
                     });
                   } else {
                     alert("エラー");

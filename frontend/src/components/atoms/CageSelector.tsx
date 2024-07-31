@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Button,
   Popover,
@@ -6,42 +6,54 @@ import {
   ListItem,
   ListItemText,
   Dialog,
+  DialogTitle,
 } from "@mui/material";
-import { getCages } from "../../utils/cage"; // ケージ情報を取得する関数
 import {
   AnimalCageLogProps,
   UpdateAnimalCageLogProps,
   CreateAnimalCageLogProps,
+  CageProps,
 } from "../type";
 import {
   getAnimalCageLog,
   createAnimalCageLog,
   updateAnimalCageLog,
 } from "../../utils/animalCageLog";
-import { CageProps } from "../type";
+import { getCages } from "../../utils/cage";
+import { AppContext } from "@/pages/_app";
 
-type CageSelectorProps = {
-  animalId: number;
-  date: string;
-};
-
-const CageSelector = ({ animalId, date }: CageSelectorProps) => {
+const CageSelector = () => {
   const [cages, setCages] = useState<CageProps[]>([]);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [animalCageLog, setAnimalCageLog] = useState<AnimalCageLogProps[]>([]);
+  const [animalCageLog, setAnimalCageLog] = useState<AnimalCageLogProps | null>(
+    null
+  );
+
+  const { animalId, setAnimalId } = useContext(AppContext);
+  const { date, setDate } = useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
       const cagesData = await getCages();
       setCages(cagesData);
-      const cageLogData = await getAnimalCageLog(date);
+      console.log("cage", cagesData);
+
+      const cageLogData = await getAnimalCageLog(date.format("YYYY-MM-DD"));
+      console.log("cageLogData", cageLogData);
       const animalCage = cageLogData.find(
         (log: AnimalCageLogProps) => log.animalId === animalId
       );
-      setAnimalCageLog(animalCage);
+      if (animalCage) {
+        setAnimalCageLog(animalCage);
+      } else {
+        console.log("No animal cage log found");
+        setAnimalCageLog(null);
+      }
     };
+
     fetchData();
-  }, [animalId, date]);
+    console.log("fetch");
+  }, [animalId, date]); // 依存配列に animalId と date を含める
 
   const handleOpenDialog = () => {
     setDialogOpen(true);
@@ -52,42 +64,53 @@ const CageSelector = ({ animalId, date }: CageSelectorProps) => {
   };
 
   const handleSelectCage = async (cageId: number) => {
-    const cageLogExists = animalCageLog.length > 0;
-    console.log(animalCageLog);
     const animalCageData: CreateAnimalCageLogProps | UpdateAnimalCageLogProps =
       {
-        animalId,
-        cageId,
-        date,
+        animalId: animalId,
+        cageId: cageId,
+        date: date.format("YYYY-MM-DD"),
       };
 
-    if (cageLogExists) {
+    if (animalCageLog) {
       await updateAnimalCageLog(
-        animalCageLog[0].id,
+        animalCageLog.id,
         animalCageData as UpdateAnimalCageLogProps
       );
+      setAnimalCageLog({
+        id: animalCageLog.id,
+        ...animalCageData,
+      });
     } else {
-      await createAnimalCageLog(animalCageData as CreateAnimalCageLogProps);
+      const new_log = await createAnimalCageLog(
+        animalCageData as CreateAnimalCageLogProps
+      );
+      setAnimalCageLog(new_log);
     }
 
-    // setCurrentCage(cages.find((cage) => cage.id === cageId) || null);
-    setAnimalCageLog([
-      {
-        id: cageLogExists ? animalCageLog[0].id : 0,
-        ...animalCageData,
-      },
-    ]);
     handleCloseDialog();
+  };
+  const selectedCage = (cageId: number) => {
+    return cages.find((cage) => cage.id === cageId)?.cageName;
   };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpenDialog}>
-        {animalCageLog.length > 0
-          ? cages.find((cage) => cage.id === animalCageLog[0].cageId)?.cageName
-          : "ケージを選択"}
+      <Button
+        onClick={handleOpenDialog}
+        variant="outlined"
+        className={`rounded-full hover:bg-[#EAE9E9] hover:border-2 hover:border-[#342B43] w-[180px] hover:shadow-md p-2 border-2 border-[#342B43]  text-[#342B43]`}
+      >
+        {animalCageLog
+          ? selectedCage(animalCageLog.cageId)
+          : "設定してください"}
       </Button>
-      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+      <Dialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        fullWidth
+        maxWidth="xs"
+      >
+        <DialogTitle>ケージを選択してください</DialogTitle>
         <List>
           {cages.map((cage) => (
             <ListItem key={cage.id} onClick={() => handleSelectCage(cage.id)}>

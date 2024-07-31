@@ -73,21 +73,13 @@ const RecordCard = ({ recordType, icon, className }: RecordCardProps) => {
   const [mealData, setMealData] = useState<MealProps[]>([]);
   const [enrichmentData, setEnrichmentData] = useState<EnrichmentProps[]>([]);
   const [eventData, setEventData] = useState<EventProps[]>([]);
-  const [expropriation, setExpropriation] = useState<ExpropriationProps>(
-    {} as ExpropriationProps
-  );
-  const [memo, setMemo] = useState<MemoProps>({} as MemoProps);
-  const [poolCleaning, setPoolCleaning] = useState<PoolCleaningProps>(
-    {} as PoolCleaningProps
-  );
-  const [wakeUpTime, setWakeUpTime] = useState<WakeUpTimeProps>(
-    {} as WakeUpTimeProps
-  );
-  const [water, setWater] = useState<WaterProps>({} as WaterProps);
+  const [expropriation, setExpropriation] = useState<ExpropriationProps[]>([]);
+  const [memo, setMemo] = useState<MemoProps[]>([]);
+  const [poolCleaning, setPoolCleaning] = useState<PoolCleaningProps[]>([]);
+  const [wakeUpTime, setWakeUpTime] = useState<WakeUpTimeProps[]>([]);
+  const [water, setWater] = useState<WaterProps[]>([]);
   const [training, setTraining] = useState<TrainingProps[]>([]);
-  const [excretion, setExcretion] = useState<ExcretionProps>(
-    {} as ExcretionProps
-  );
+  const [excretion, setExcretion] = useState<ExcretionProps[]>([]);
 
   const fetchData = async (dataType: string): Promise<void> => {
     try {
@@ -164,82 +156,90 @@ const RecordCard = ({ recordType, icon, className }: RecordCardProps) => {
     (info) => info.recordType === recordType
   );
   return (
-    <div className={`bg-white px-6 py-6 rounded-3xl   ${className}`}>
-      <div className="flex justify-between mb-2">
-        <p className="text-xl  text-gray-700 font-bold  flex items-center gap-2">
-          <Icon component={icon} />
-          {japaneseTranslation?.japanese}
-        </p>
-        <Button
-          variant="contained"
-          onClick={() => {
-            setAddmodalOpen(true);
-          }}
-          className="px-4 text-md  rounded-full"
-          style={{ backgroundColor: "#F19784" }}
-        >
-          ＋追加
-        </Button>
-      </div>
+    <div className={`bg-white p-6 rounded-3xl   ${className}`}>
+      <div className="flex flex-col h-full">
+        <div className="flex justify-between mb-2">
+          <p className="text-xl  text-gray-700 font-bold  flex items-center gap-2">
+            <Icon component={icon} />
+            {japaneseTranslation?.japanese}
+          </p>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setAddmodalOpen(true);
+            }}
+            className="px-4 text-md  rounded-full ml-10"
+            style={{ backgroundColor: "#F19784" }}
+          >
+            ＋追加
+          </Button>
+        </div>
 
-      <AddModal
-        recordType={recordType}
-        open={addmodalOpen}
-        handleClose={() => {
-          setAddmodalOpen(false);
-        }}
-        isEdit={false}
-        fetchData={() => fetchData(recordType)}
-      />
-      {recordType === "temperature" ? (
-        <TemperatureCardContent
-          temperature={temperatureData}
-          fetchData={() => fetchData("temperature")}
+        <AddModal
+          recordType={recordType}
+          open={addmodalOpen}
+          handleClose={() => {
+            setAddmodalOpen(false);
+          }}
+          isEdit={false}
+          fetchData={() => fetchData(recordType)}
         />
-      ) : recordType === "event" ? (
-        <EventCardContent
-          events={eventData}
-          fetchData={() => fetchData("event")}
-        />
-      ) : recordType === "enrichment" ? (
-        <EnrichmentCardContent
-          enrichments={enrichmentData}
-          fetchData={() => fetchData("enrichment")}
-        />
-      ) : recordType === "meal" ? (
-        <MealCardContent meals={mealData} fetchData={() => fetchData("meal")} />
-      ) : recordType === "excretion" ? (
-        <ExcretionCardContent
-          excretion={excretion}
-          fetchData={() => fetchData("excretion")}
-        />
-      ) : recordType === "expropriation" ? (
-        <ExpropriationCardContent
-          expropriation={expropriation}
-          fetchData={() => fetchData("expropriation")}
-        />
-      ) : recordType === "memo" ? (
-        <MemoCardContent memo={memo} fetchData={() => fetchData("memo")} />
-      ) : recordType === "poolCleaning" ? (
-        <PoolCleaningCardContent
-          poolCleaning={poolCleaning}
-          fetchData={() => fetchData("poolCleaning")}
-        />
-      ) : recordType === "wakeUpTime" ? (
-        <WakeUpTimeCardContent
-          wakeUpTime={wakeUpTime}
-          fetchData={() => fetchData("wakeUpTime")}
-        />
-      ) : recordType === "water" ? (
-        <WaterCardContent water={water} fetchData={() => fetchData("water")} />
-      ) : recordType === "training" ? (
-        <TrainingCardContent
-          trainings={training}
-          fetchData={() => fetchData("training")}
-        />
-      ) : (
-        <div></div>
-      )}
+        {recordType === "temperature" ? (
+          <TemperatureCardContent
+            temperature={temperatureData}
+            fetchData={() => fetchData("temperature")}
+          />
+        ) : recordType === "event" ? (
+          <EventCardContent
+            events={eventData}
+            fetchData={() => fetchData("event")}
+          />
+        ) : recordType === "enrichment" ? (
+          <EnrichmentCardContent
+            enrichments={enrichmentData}
+            fetchData={() => fetchData("enrichment")}
+          />
+        ) : recordType === "meal" ? (
+          <MealCardContent
+            meals={mealData}
+            fetchData={() => fetchData("meal")}
+          />
+        ) : recordType === "excretion" ? (
+          <ExcretionCardContent
+            excretion={excretion}
+            fetchData={() => fetchData("excretion")}
+          />
+        ) : recordType === "expropriation" ? (
+          <ExpropriationCardContent
+            expropriation={expropriation}
+            fetchData={() => fetchData("expropriation")}
+          />
+        ) : recordType === "memo" ? (
+          <MemoCardContent memo={memo} fetchData={() => fetchData("memo")} />
+        ) : recordType === "poolCleaning" ? (
+          <PoolCleaningCardContent
+            poolCleaning={poolCleaning}
+            fetchData={() => fetchData("poolCleaning")}
+          />
+        ) : recordType === "wakeUpTime" ? (
+          <WakeUpTimeCardContent
+            wakeUpTime={wakeUpTime}
+            fetchData={() => fetchData("wakeUpTime")}
+          />
+        ) : recordType === "water" ? (
+          <WaterCardContent
+            water={water}
+            fetchData={() => fetchData("water")}
+          />
+        ) : recordType === "training" ? (
+          <TrainingCardContent
+            trainings={training}
+            fetchData={() => fetchData("training")}
+          />
+        ) : (
+          <div></div>
+        )}
+      </div>
     </div>
   );
 };

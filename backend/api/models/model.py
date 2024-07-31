@@ -18,7 +18,7 @@ from api.db import Base
 class Animal(Base):
     __tablename__ = "animal"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalName = Column(String(20), nullable=False)
     species = Column(String(30), nullable=False)
     createdAt = Column(DateTime, nullable=False)
@@ -28,7 +28,7 @@ class Animal(Base):
 class Cage(Base):
     __tablename__ = "cage"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     cageName = Column(String(30), nullable=False)
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
@@ -40,7 +40,7 @@ class AnimalCageLog(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     cageId = Column(Integer, ForeignKey("cage.id"), nullable=False)
-    date = Column(Date, primary_key=True, nullable=False, unique=True)
+    date = Column(Date, nullable=False)
     createdAt = Column(DateTime, nullable=False)
     updatedAt = Column(DateTime, nullable=False)
 
@@ -53,7 +53,7 @@ class AnimalCageLog(Base):
 class Temperature(Base):
     __tablename__ = "temperature"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False)
     time = Column(Time, nullable=False)
@@ -68,7 +68,7 @@ class Temperature(Base):
 class PoolCleaning(Base):
     __tablename__ = "pool_cleaning"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False, unique=True)
     poolCleaning = Column(Boolean, nullable=False)
@@ -82,7 +82,7 @@ class PoolCleaning(Base):
 class Expropriation(Base):
     __tablename__ = "expropriation"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False, unique=True)
     expropriation = Column(Integer, nullable=False)
@@ -95,7 +95,7 @@ class Expropriation(Base):
 class Training(Base):
     __tablename__ = "training"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False)
     training = Column(String(100), nullable=False)
@@ -109,7 +109,7 @@ class Training(Base):
 class Meal(Base):
     __tablename__ = "meal"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False)
     time = Column(Time, nullable=False)
@@ -124,7 +124,7 @@ class Meal(Base):
 class Water(Base):
     __tablename__ = "water"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False, unique=True)
     value = Column(Float, nullable=False)
@@ -140,7 +140,7 @@ class Water(Base):
 class Excretion(Base):
     __tablename__ = "excretion"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False, unique=True)
     number = Column(Integer, nullable=False)
@@ -155,7 +155,7 @@ class Excretion(Base):
 class Classification(Base):
     __tablename__ = "classification"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(Date, nullable=False)
     cageId = Column(Integer, ForeignKey("cage.id"), nullable=False)
     classification = Column(Integer, nullable=False)
@@ -170,7 +170,7 @@ class Classification(Base):
 class WakeUpTime(Base):
     __tablename__ = "wake_up_time"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False, primary_key=True)
     time = Column(Time, nullable=False)
@@ -186,7 +186,7 @@ class WakeUpTime(Base):
 class Event(Base):
     __tablename__ = "event"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False)
     event = Column(String(100), nullable=False)
@@ -199,7 +199,7 @@ class Event(Base):
 class Enrichment(Base):
     __tablename__ = "enrichment"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False)
     enrichment = Column(String(100), nullable=False)
@@ -215,7 +215,7 @@ class Enrichment(Base):
 class Memo(Base):
     __tablename__ = "memo"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     animalId = Column(Integer, ForeignKey("animal.id"), nullable=False)
     date = Column(Date, nullable=False, primary_key=True)
     memo = Column(String(500), nullable=False)
@@ -229,7 +229,7 @@ class Memo(Base):
 class Video(Base):
     __tablename__ = "video"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     cageId = Column(Integer, ForeignKey("cage.id"), nullable=False)
     date = Column(Date, nullable=False)
     videoStartTime = Column(Integer, nullable=False)

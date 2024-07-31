@@ -9,10 +9,7 @@ import {
   DialogTitle,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemButton,
-  ListItemText,
-  Avatar,
 } from "@mui/material";
 import Image from "next/image";
 import { AppContext } from "@/pages/_app";
@@ -66,7 +63,7 @@ const AnimalSelect = () => {
   const [selectedValue, setSelectedValue] = useState<AnimalProps>(
     {} as AnimalProps
   );
-  const { id, setId, animals, setAnimals } = useContext(AppContext);
+  const { animalId, setAnimalId, animals, setAnimals } = useContext(AppContext);
   const router = useRouter();
 
   const fetchData = async () => {
@@ -89,7 +86,7 @@ const AnimalSelect = () => {
   const handleClose = (value: AnimalProps) => {
     setOpen(false);
     setSelectedValue(value);
-    setId(value.id);
+    setAnimalId(value.id);
   };
 
   useEffect(() => {
@@ -105,7 +102,7 @@ const AnimalSelect = () => {
         animals={animals}
       />
       <Button
-        className="rounded-xl flex flex-col cursor-pointer bg-[#EAE9E9] w-[180px] h-[100px] text-black  shadow-none hover:bg-[#EAE9E9] hover:shadow-md"
+        className="rounded-xl  flex flex-col cursor-pointer bg-[#EAE9E9] w-[180px] h-[100px] text-black  shadow-none hover:bg-[#EAE9E9] hover:shadow-lg"
         onClick={handleClickOpen}
         variant="contained"
       >
@@ -175,7 +172,7 @@ const Aside = () => {
         <Link href="/setting">
           <Button
             className={`rounded-full hover:bg-[#EAE9E9] w-[180px] hover:shadow-md ${
-              pathname === "/graph" ? "bg-[#F4F3F3]" : "bg-white"
+              pathname === "/setting" ? "bg-[#F4F3F3]" : "bg-white"
             }`}
           >
             <div className="bg-slate-600 p-3 rounded-full mr-3">

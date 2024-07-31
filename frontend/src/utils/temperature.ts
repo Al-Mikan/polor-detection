@@ -6,9 +6,9 @@ import {
 const BASE_URL = "http://0.0.0.0:8000/api";
 
 // get temperature
-export const getTemperatures = async (date: string, polarId: number) => {
+export const getTemperatures = async (date: string, animalId: number) => {
   const response = await fetch(
-    `${BASE_URL}/temperatures/${polarId}?date=${date}`
+    `${BASE_URL}/temperatures/${animalId}?date=${date}`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch temperatures");
@@ -18,6 +18,7 @@ export const getTemperatures = async (date: string, polarId: number) => {
 
 // create temperature
 export const createTemperature = async (tempCreate: CreateTemperatureProps) => {
+  console.log("tempCreate", tempCreate);
   const response = await fetch(`${BASE_URL}/temperatures`, {
     method: "POST",
     headers: {

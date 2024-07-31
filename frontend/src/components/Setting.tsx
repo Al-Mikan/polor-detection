@@ -85,7 +85,7 @@ const CageManager = () => {
   };
 
   return (
-    <div className="bg-white w-2/3 rounded-md">
+    <div className="bg-white w-2/3 rounded-md shadow-md">
       <List>
         {cages.map((cage) => (
           <ListItem key={cage.id}>
@@ -125,7 +125,7 @@ const CageManager = () => {
       )}
       <Button
         onClick={() => handleOpen()}
-        className="bg-slate-600 m-4"
+        className="bg-slate-600 m-4 hover:bg-slate-800"
         variant="contained"
       >
         ＋追加
@@ -195,7 +195,7 @@ const AnimalManager = () => {
   };
 
   return (
-    <div className="bg-white w-2/3 rounded-md">
+    <div className="bg-white w-2/3 rounded-md shadow-md">
       <List>
         {animals.map((animal) => (
           <ListItem key={animal.id}>
@@ -250,7 +250,7 @@ const AnimalManager = () => {
       )}
       <Button
         onClick={() => handleOpen()}
-        className="bg-slate-600 m-4"
+        className="bg-slate-600 m-4 hover:bg-slate-800"
         variant="contained"
       >
         ＋追加

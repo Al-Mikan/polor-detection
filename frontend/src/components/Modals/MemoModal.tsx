@@ -60,16 +60,16 @@ const MemoModal = ({
           {isEdit ? "記録の編集・削除" : "記録の追加"}
         </p>
         <div className="pt-6">
-          <div className="flex items-center justify-center space-x-6">
-            <p>メモ</p>
-            <TextField
-              sx={{ m: 1, width: "150px" }}
-              variant="outlined"
-              defaultValue={content?.memo}
-              onChange={(e) => setMemo(e.target.value)}
-              required
-            ></TextField>
-          </div>
+          <TextField
+            sx={{ fontFamily: "'Kalam', cursive", width: "100%" }}
+            variant="outlined"
+            value={memo}
+            multiline
+            rows={4}
+            onChange={(e) => setMemo(e.target.value)}
+            required
+            placeholder="メモを入力してください"
+          />
         </div>
 
         <div className="mt-6 flex space-x-4 justify-between">

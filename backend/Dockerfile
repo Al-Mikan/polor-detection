@@ -32,5 +32,11 @@ RUN poetry install --no-root
 
 ENV PYTHONPATH="/src/.venv/lib/python3.9/site-packages:$PYTHONPATH"
 
-# uvicornのサーバーを立ち上げる
-ENTRYPOINT ["poetry", "run", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--reload"]
+# スクリプトと起動シェルのコピー
+COPY ./backend/detect/exec.py /src/detect/exec.py
+COPY ./backend/start.sh /src/start.sh
+RUN chmod +x /src/start.sh
+RUN chmod +x /src/detect/exec.py
+
+# スクリプトの実行設定
+ENTRYPOINT ["/src/start.sh"]

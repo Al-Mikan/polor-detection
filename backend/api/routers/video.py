@@ -2,8 +2,10 @@ from datetime import date, datetime, time
 from typing import List
 
 from fastapi import APIRouter, Depends, Query, UploadFile, Form
+
 from sqlalchemy.ext.asyncio import AsyncSession
-from api.detect.yolo_script import run_yolov8_on_video
+
+# from api.detect.yolo_script import run_yolov8_on_video
 
 router = APIRouter()
 

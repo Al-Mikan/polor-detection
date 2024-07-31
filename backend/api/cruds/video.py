@@ -10,7 +10,7 @@ from fastapi import UploadFile
 
 import sys
 
-from api.detect.yolo_script import run_yolov8_on_video
+# from api.detect.yolo_script import run_yolov8_on_video
 
 
 async def get_video(date, db: AsyncSession):

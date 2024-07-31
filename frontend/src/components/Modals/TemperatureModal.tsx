@@ -41,7 +41,7 @@ const TemperatureModal = ({
     p: 4,
   };
   const { date, setDate } = useContext(AppContext);
-  const { id, setId } = useContext(AppContext);
+  const { animalId, setAnimalId } = useContext(AppContext);
   const [time, setTime] = useState(content?.time);
   const [temperature, setTemperature] = useState(content?.temperature);
 
@@ -50,7 +50,7 @@ const TemperatureModal = ({
       time: content.time,
       temperature: content.temperature,
       date: date.format("YYYY-MM-DD"),
-      animalId: id,
+      animalId: animalId,
     });
   };
   const updateData = async (
@@ -133,7 +133,7 @@ const TemperatureModal = ({
                       time: time,
                       temperature: temperature,
                       date: date.format("YYYY-MM-DD"),
-                      animalId: id,
+                      animalId: animalId,
                     });
                     fetchData();
                     console.log("create");
