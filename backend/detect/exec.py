@@ -1,3 +1,4 @@
+import shutil
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import time
@@ -6,10 +7,8 @@ import os
 import torch
 import sys
 import time
-import threading
-import time
-import psutil
 from ultralytics import YOLO
+from ultralytics import settings
 
 
 sys.path.append("../../")
@@ -24,19 +23,45 @@ from detect.classification_func import (
 
 from classification_model.model import Model
 
-RESULT_YOLO_DIR = "./detect/runs/detect/polars/labels"
+
+## YOLOの結果
+RESULT_YOLO_DIR = "./detect/predict"
+## YOLOの結果
+RESULT_YOLO_LABEL_DIR = "./detect/predict/labels"
+## 動画のフレーム
 FRAME_DIR = "./detect/frames/"
+## クロップした画像
 CROP_IMAGE_DIR = "./detect/images/"
-SPEED_FILE = "./detect/speed.txt"
-LABEL_FILE = "./detect/labels.txt"
-IMAGES_FOLDER = "./detect/images/"
+## 速度のファイル
+SPEED_FILE = "./detect/yolo_results/speed.txt"
+## ラベルのファイル
+LABEL_FILE = "./detect/yolo_results/labels.txt"
+## 分類結果のファイル
+RESULT_CLASSIFICATION_DIR = "./detect/classification_results"
+
+
+def reset_directory():
+
+    if os.path.exists(RESULT_YOLO_DIR):
+        shutil.rmtree(RESULT_YOLO_DIR)
+
+    if os.path.exists(RESULT_CLASSIFICATION_DIR):
+        shutil.rmtree(RESULT_CLASSIFICATION_DIR)
+    os.makedirs(RESULT_CLASSIFICATION_DIR)
+
+    if os.path.exists(FRAME_DIR):
+        shutil.rmtree(FRAME_DIR)
+    os.makedirs(FRAME_DIR)
+
+    if os.path.exists(CROP_IMAGE_DIR):
+        shutil.rmtree(CROP_IMAGE_DIR)
+    os.makedirs(CROP_IMAGE_DIR)
+
+    os.remove(SPEED_FILE)
+    os.remove(LABEL_FILE)
 
 
 def classification(video_path):
-    # event = threading.Event()
-    # initial_time = time.time()
-    # m = threading.Thread(target=monitor_cpu, args=((initial_time, event)))
-    # m.start()  # 開始
     try:
         print(f"Starting YOLO model on video: {video_path}")
         try:
@@ -50,7 +75,7 @@ def classification(video_path):
         try:
             print("#########################merge_all_files_in_directory")
             merge_all_files_in_directory(
-                RESULT_YOLO_DIR, LABEL_FILE, frame_count, video_path
+                RESULT_YOLO_LABEL_DIR, LABEL_FILE, frame_count, video_path
             )
         except Exception as e:
             print(f"merge_all_files_in_directoryでエラー発生: {e}")
@@ -67,7 +92,7 @@ def classification(video_path):
 
         try:
             print("#############################calc_speed")
-            calc_speed(frame_count, video_path, RESULT_YOLO_DIR, SPEED_FILE)
+            calc_speed(frame_count, video_path, RESULT_YOLO_LABEL_DIR, SPEED_FILE)
         except Exception as e:
             print(f"calc_speedでエラー発生: {e}")
             return
@@ -75,7 +100,7 @@ def classification(video_path):
         try:
             print("#############################MakeDataset")
             image_data, coordinates_data, speed_data = MakeDataset(
-                frame_count, 8, SPEED_FILE, LABEL_FILE, IMAGES_FOLDER
+                frame_count, 8, SPEED_FILE, LABEL_FILE, CROP_IMAGE_DIR
             )["data"]
         except Exception as e:
             print(f"MakeDatasetでエラー発生: {e}")
@@ -100,7 +125,7 @@ def classification(video_path):
             return
 
         filename_with_extension = os.path.basename(video_path)
-        output_file_path = f"./detect/classification_results/{os.path.splitext(filename_with_extension)[0]}.txt"
+        output_file_path = f"{RESULT_CLASSIFICATION_DIR}/{os.path.splitext(filename_with_extension)[0]}.txt"
         try:
             with open(output_file_path, "w") as output_file:
                 predicted_classes = torch.argmax(predict, dim=1)
@@ -141,10 +166,8 @@ class MyHandler(FileSystemEventHandler):
             return None
         elif event.src_path.endswith(".mp4"):
             print(f"New video file detected: {event.src_path}")
-            # データベースにパスを保存
-            add_path_to_db(event.src_path)
             # YOLOモデルを実行
-            run_yolo_model(event.src_path)
+            run_model(event.src_path)
 
 
 def start_monitoring(path):
@@ -168,38 +191,20 @@ def start_monitoring(path):
             time.sleep(5)  # エラー後の少しの遅延を設ける
 
 
-def list_mp4_files(directory):
-    # 指定されたディレクトリにあるすべてのファイルを走査
-    for filename in os.listdir(directory):
-        if filename.endswith(".mp4"):
-            # .mp4 ファイルが見つかった場合、ファイル名を出力
-            print(filename)
-
-
-def add_path_to_db(video_path):
-    print("add path to db")
-    pass
-
-
-def run_yolo_model(video_path):
-    # YOLOモデルを実行するコマンドをここに記述
+def run_model(video_path):
+    reset_directory()
     print("run yolo model")
-    for item in os.listdir(RESULT_YOLO_DIR):
-        item_path = os.path.join(RESULT_YOLO_DIR, item)
-        os.remove(item_path)
-
     try:
         print("start run_yolov8_on_video !")
+        settings.update({"runs_dir": "./"})
         # YOLOv8の初期化
         model_path = "./detect/yolo_model/best.pt"
         model = YOLO(model=model_path)
 
         result = model.predict(
             video_path,
-            name="polars",
             save=True,
             save_txt=True,
-            save_dir="./detect",
             exist_ok=True,
             stream=False,
             conf=0.30,
@@ -217,25 +222,9 @@ if __name__ == "__main__":
     path = "./media/videos/"  # 監視するディレクトリのパス
     print("start watching--------------------------------")
 
-    list_mp4_files(path)
-
     # 監視ディレクトリが存在しない場合は作成
     if not os.path.exists(path):
         print("create directory")
         os.makedirs(path)
 
     start_monitoring(path)
-
-
-def monitor_cpu(initial_time, event):
-    print("START monitor_cpu")
-    while not event.wait(0.1):
-        elapsed_time = time.time() - initial_time
-        cpu_percent = psutil.cpu_percent(percpu=True)
-        mem = psutil.virtual_memory()
-
-        cpu_percent = "\t".join(["{:10.4f}".format(v) for v in cpu_percent])
-        print("time:", int(elapsed_time))
-        print("cpu: ", cpu_percent)
-        print("memory: ", mem.percent)
-    print("END monitor_cpu")

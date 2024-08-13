@@ -24,10 +24,7 @@ app = FastAPI(docs_url="/api/docs", redoc_url=None, openapi_url="/api/openapi.js
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3001",
-        "http://localhost:3000",
-    ],  # 許可するオリジンを指定
+    allow_origins=["*"],  # 許可するオリジンを指定
     allow_credentials=True,  # クレデンシャル（Cookieなど）の送信を許可
     allow_methods=["GET", "POST", "PUT", "DELETE"],  # 許可するHTTPメソッドを指定
     allow_headers=["*"],

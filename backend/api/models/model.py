@@ -152,19 +152,6 @@ class Excretion(Base):
 
 
 ########################################################行動
-class Classification(Base):
-    __tablename__ = "classification"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    date = Column(Date, nullable=False)
-    cageId = Column(Integer, ForeignKey("cage.id"), nullable=False)
-    classification = Column(Integer, nullable=False)
-    startTime = Column(Time, nullable=False)
-    endTime = Column(Time, nullable=False)
-    createdAt = Column(DateTime, nullable=False)
-    updatedAt = Column(DateTime, nullable=False)
-
-    cage = relationship("Cage", backref="classification")
 
 
 class WakeUpTime(Base):
@@ -238,3 +225,19 @@ class Video(Base):
     updatedAt = Column(DateTime, nullable=False)
 
     cage = relationship("Cage", backref="video")
+
+
+###################################################分類
+class Classification(Base):
+    __tablename__ = "classification"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    date = Column(Date, nullable=False)
+    cageId = Column(Integer, ForeignKey("cage.id"), nullable=False)
+    classification = Column(Integer, nullable=False)
+    startTime = Column(Time, nullable=False)
+    endTime = Column(Time, nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    updatedAt = Column(DateTime, nullable=False)
+
+    cage = relationship("Cage", backref="classification")

@@ -74,7 +74,7 @@ def read_image(image_path):
 def clip_image(frame_path, image_path, label_path):
     if not os.path.exists(image_path):
         os.makedirs(image_path)
-    file_path = os.path.join("./labels.txt")
+    file_path = os.path.join(label_path)
     if os.path.exists(file_path):
         with open(file_path, "r") as f:
             lines = f.readlines()  # ファイル全体の行を読み取る

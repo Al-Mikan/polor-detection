@@ -5,3 +5,6 @@
 ./DatasetSplit
 /frames
 /images
+/classification_results
+/yolo_results
+/predict

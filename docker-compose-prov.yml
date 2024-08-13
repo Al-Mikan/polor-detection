@@ -2,6 +2,8 @@ version: "3.0"
 
 services:
   backend:
+    environment:
+      TZ: "Asia/Tokyo"
     volumes:
       - ./backend/.dockervenv:/src/.venv
       - ./backend:/src
