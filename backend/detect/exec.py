@@ -7,6 +7,9 @@ import os
 import torch
 import sys
 import time
+import httpx
+from datetime import datetime
+import asyncio
 from ultralytics import YOLO
 from ultralytics import settings
 
@@ -41,13 +44,13 @@ RESULT_CLASSIFICATION_DIR = "./detect/classification_results"
 
 
 def reset_directory():
-
+    # Yoloの結果を削除
     if os.path.exists(RESULT_YOLO_DIR):
         shutil.rmtree(RESULT_YOLO_DIR)
 
-    if os.path.exists(RESULT_CLASSIFICATION_DIR):
-        shutil.rmtree(RESULT_CLASSIFICATION_DIR)
-    os.makedirs(RESULT_CLASSIFICATION_DIR)
+    # if os.path.exists(RESULT_CLASSIFICATION_DIR):
+    #     shutil.rmtree(RESULT_CLASSIFICATION_DIR)
+    # os.makedirs(RESULT_CLASSIFICATION_DIR)
 
     if os.path.exists(FRAME_DIR):
         shutil.rmtree(FRAME_DIR)
@@ -132,23 +135,20 @@ def classification(video_path):
                 predicted_classes = predicted_classes.tolist()  # リストに変換
                 for item in predicted_classes:
                     output_file.write(str(item) + "\n")
+                # ファイルを再度開いて行数を確認
+            with open(output_file_path, "r+") as output_file:
+                lines = output_file.readlines()
+                lines_count = len(lines)
+
+                # 3600行未満の場合、最後の行を使用して足りない分を埋める
+                if lines_count < 3600:
+                    last_output = (
+                        lines[-1] if lines_count > 0 else "0\n"
+                    )  # 最後の行が存在しない場合のデフォルト値
+                    additional_lines = [last_output] * (3600 - lines_count)
+                    output_file.writelines(additional_lines)
 
             print(f"Finished classification: {video_path}")
-        # output_file_path = "./predict_oneday.txt"
-
-        # try:
-        #     with open(output_file_path, "a") as output_file:
-        #         predicted_classes = torch.argmax(predict, dim=1)
-        #         predicted_classes = predicted_classes.tolist()  # リストに変換
-
-        #         # リストの長さを3200に調整
-        #         while len(predicted_classes) < 3200:
-        #             predicted_classes.append(predicted_classes[-1])
-        #         if len(predicted_classes) > 3200:
-        #             predicted_classes = predicted_classes[:3200]
-
-        #         for item in predicted_classes:
-        #             output_file.write(str(item) + "\n")
 
         except Exception as e:
             print(f"ファイル書き込みでエラー発生: {e}")
@@ -157,38 +157,6 @@ def classification(video_path):
     except Exception as e:
         # エラーが発生した場合、エラーメッセージを出力
         print(f"Error running YOLO model on video {video_path}: {e}")
-
-
-class MyHandler(FileSystemEventHandler):
-    def on_created(self, event):
-        if event.is_directory:
-            print(f"New directory detected: {event.src_path}")
-            return None
-        elif event.src_path.endswith(".mp4"):
-            print(f"New video file detected: {event.src_path}")
-            # YOLOモデルを実行
-            run_model(event.src_path)
-
-
-def start_monitoring(path):
-    while True:
-        observer = Observer()
-        event_handler = MyHandler()
-        observer.schedule(event_handler, path, recursive=False)
-        observer.start()
-        try:
-            while True:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            observer.stop()
-            observer.join()
-            print("Monitoring stopped by user.")
-            break
-        except Exception as e:
-            observer.stop()
-            observer.join()
-            print(f"Error occurred: {e}. Restarting monitoring...")
-            time.sleep(5)  # エラー後の少しの遅延を設ける
 
 
 def run_model(video_path):
@@ -215,7 +183,62 @@ def run_model(video_path):
         return None
 
     classification(video_path=video_path)
+
     print("complete")
+
+
+class MyHandler(FileSystemEventHandler):
+
+    def on_created(self, event):
+        if event.is_directory:
+            print(f"New directory detected: {event.src_path}")
+            return None
+        elif event.src_path.endswith(".mp4"):
+            print(f"New video file detected: {event.src_path}")
+            # YOLOモデルを実行
+            run_model(event.src_path)
+            # モデルの実行結果を基にDBにデータを追加
+            self.add_db()
+
+    def add_db(self):
+
+        print("add db")
+        url = "http://localhost:8000/api/classification"
+        data = {
+            "startTime": datetime.now().time().isoformat(),
+            "endTime": datetime.now().time().isoformat(),
+            "date": "2021-09-01",
+            "cageId": 1,
+            "classification": 1,
+        }
+        try:
+            with httpx.Client() as client:
+                response = client.post(url, json=data)
+                return response.json()
+        except Exception as e:
+            print(f"Error adding data to DB: {e}")
+            return None
+
+
+def start_monitoring(path):
+    while True:
+        observer = Observer()
+        event_handler = MyHandler()
+        observer.schedule(event_handler, path, recursive=False)
+        observer.start()
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            observer.stop()
+            observer.join()
+            print("Monitoring stopped by user.")
+            break
+        except Exception as e:
+            observer.stop()
+            observer.join()
+            print(f"Error occurred: {e}. Restarting monitoring...")
+            time.sleep(5)  # エラー後の少しの遅延を設ける
 
 
 if __name__ == "__main__":

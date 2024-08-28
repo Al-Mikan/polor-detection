@@ -6,9 +6,7 @@ import datetime
 from api.models.model import Classification
 from sqlalchemy import and_
 import api.schemas.classification as schema
-from fastapi import UploadFile
-
-SAVE_PATH = "../media/videos"
+from datetime import datetime
 
 
 async def get_classification(date, db: AsyncSession):
@@ -43,3 +41,23 @@ async def get_classification(date, db: AsyncSession):
             }
         )
     return formatted_detection_times
+
+
+async def create_classification(
+    db: AsyncSession, classification: schema.ClassificationCreate
+):
+    new_classification = Classification(
+        classification=classification.classification,
+        startTime=classification.startTime,
+        endTime=classification.endTime,
+        date=classification.date,
+        cageId=classification.cageId,
+        createdAt=datetime.now(),
+        updatedAt=datetime.now(),
+    )
+
+    db.add(new_classification)
+    await db.commit()
+    await db.refresh(new_classification)
+
+    return new_classification

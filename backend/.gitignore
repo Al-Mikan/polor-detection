@@ -1,5 +1,4 @@
 __pycache__
-/api/media
 /api/detect/runs
 .DS_Store
 /api/detect/datasets

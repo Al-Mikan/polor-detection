@@ -220,7 +220,3 @@ def MakeDataset(
 
 
 # 0:いない 1:常同　2:泳ぐ 3:歩く 4:食べる 5:休む 6:座る
-
-
-# if __name__ == "__main__":
-#     classification("91_2020_09_28_18")
